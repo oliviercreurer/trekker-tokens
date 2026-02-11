@@ -1,0 +1,2768 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Trekker Design Tokens</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg-primary: #FFFDF6;
+    --bg-secondary: #F7F6ED;
+    --bg-tertiary: #E6E4D9;
+    --text-default: #100F0F;
+    --text-subtle: #6F6E69;
+    --text-subtlest: #B7B5AC;
+    --border-default: #DAD8CE;
+    --border-bold: #B7B5AC;
+    --brand: #205EA6;
+    --brand-subtle: #E1ECEB;
+  }
+
+  .dark {
+    --bg-primary: #100F0F;
+    --bg-secondary: #1C1B1A;
+    --bg-tertiary: #343331;
+    --text-default: #CECDC3;
+    --text-subtle: #878580;
+    --text-subtlest: #575653;
+    --border-default: #343331;
+    --border-bold: #6F6E69;
+    --brand: #4385BE;
+    --brand-subtle: #12253B;
+  }
+
+  body {
+    font-family: 'Outfit', system-ui, sans-serif;
+    background: var(--bg-primary);
+    color: var(--text-default);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .mono { font-family: 'JetBrains Mono', monospace; }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border-bold); border-radius: 3px; }
+
+  /* Toast */
+  @keyframes toast-in {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes toast-out {
+    from { opacity: 1; transform: translateY(0); }
+    to { opacity: 0; transform: translateY(8px); }
+  }
+  .toast-enter { animation: toast-in 0.15s ease-out; }
+  .toast-exit { animation: toast-out 0.15s ease-in forwards; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script id="token-data" type="application/json">
+{
+  "exportedAt": "2026-02-11T22:59:30.984Z",
+  "collections": {
+    "color": {
+      "name": "Color",
+      "modes": [
+        "Light",
+        "Dark"
+      ],
+      "groups": {
+        "text": {
+          "label": "Text",
+          "tokens": [
+            {
+              "name": "text/default",
+              "light": {
+                "alias": "base-1000",
+                "hex": "100F0F"
+              },
+              "dark": {
+                "alias": "base-200",
+                "hex": "CECDC3"
+              },
+              "description": ""
+            },
+            {
+              "name": "text/subtle",
+              "light": {
+                "alias": "base-600",
+                "hex": "6F6E69"
+              },
+              "dark": {
+                "alias": "base-500",
+                "hex": "878580"
+              },
+              "description": ""
+            },
+            {
+              "name": "text/subtlest",
+              "light": {
+                "alias": "base-300",
+                "hex": "B7B5AC"
+              },
+              "dark": {
+                "alias": "base-700",
+                "hex": "575653"
+              },
+              "description": ""
+            },
+            {
+              "name": "text/inverse",
+              "light": {
+                "alias": "base-00",
+                "hex": "FFFDF6"
+              },
+              "dark": {
+                "alias": "base-1000",
+                "hex": "100F0F"
+              },
+              "description": ""
+            },
+            {
+              "name": "text/disabled",
+              "light": {
+                "alias": "base-300",
+                "hex": "B7B5AC"
+              },
+              "dark": {
+                "alias": "base-700",
+                "hex": "575653"
+              },
+              "description": ""
+            },
+            {
+              "name": "text/brand",
+              "light": {
+                "alias": "blue-600",
+                "hex": "205EA6"
+              },
+              "dark": {
+                "alias": "blue-300",
+                "hex": "66A0C8"
+              },
+              "description": ""
+            },
+            {
+              "name": "text/selected",
+              "light": {
+                "alias": "blue-600",
+                "hex": "205EA6"
+              },
+              "dark": {
+                "alias": "blue-300",
+                "hex": "66A0C8"
+              },
+              "description": ""
+            },
+            {
+              "name": "text/danger",
+              "light": {
+                "alias": "red-600",
+                "hex": "AF3029"
+              },
+              "dark": {
+                "alias": "red-300",
+                "hex": "E8705F"
+              },
+              "description": ""
+            },
+            {
+              "name": "text/danger-bolder",
+              "light": {
+                "alias": "red-700",
+                "hex": "942822"
+              },
+              "dark": {
+                "alias": "red-200",
+                "hex": "F89A8A"
+              },
+              "description": ""
+            },
+            {
+              "name": "text/warning",
+              "light": {
+                "alias": "yellow-600",
+                "hex": "AD8301"
+              },
+              "dark": {
+                "alias": "yellow-300",
+                "hex": "DFB431"
+              },
+              "description": ""
+            },
+            {
+              "name": "text/warning-inverse",
+              "light": {
+                "alias": "base-1000",
+                "hex": "100F0F"
+              },
+              "dark": {
+                "alias": "yellow-50",
+                "hex": "FAEEC6"
+              },
+              "description": ""
+            },
+            {
+              "name": "text/warning-bolder",
+              "light": {
+                "alias": "yellow-700",
+                "hex": "8E6B01"
+              },
+              "dark": {
+                "alias": "yellow-200",
+                "hex": "ECCB60"
+              },
+              "description": ""
+            },
+            {
+              "name": "text/success",
+              "light": {
+                "alias": "green-600",
+                "hex": "66800B"
+              },
+              "dark": {
+                "alias": "green-300",
+                "hex": "A0AF54"
+              },
+              "description": ""
+            },
+            {
+              "name": "text/success-bolder",
+              "light": {
+                "alias": "green-700",
+                "hex": "536907"
+              },
+              "dark": {
+                "alias": "green-200",
+                "hex": "BEC97E"
+              },
+              "description": ""
+            },
+            {
+              "name": "text/information",
+              "light": {
+                "alias": "blue-600",
+                "hex": "205EA6"
+              },
+              "dark": {
+                "alias": "blue-300",
+                "hex": "66A0C8"
+              },
+              "description": ""
+            },
+            {
+              "name": "text/information-bolder",
+              "light": {
+                "alias": "blue-700",
+                "hex": "1A4F8C"
+              },
+              "dark": {
+                "alias": "blue-200",
+                "hex": "92BFDB"
+              },
+              "description": ""
+            },
+            {
+              "name": "text/discovery",
+              "light": {
+                "alias": "purple-600",
+                "hex": "5E409D"
+              },
+              "dark": {
+                "alias": "purple-300",
+                "hex": "A699D0"
+              },
+              "description": ""
+            },
+            {
+              "name": "text/discovery-bolder",
+              "light": {
+                "alias": "purple-700",
+                "hex": "4F3685"
+              },
+              "dark": {
+                "alias": "purple-200",
+                "hex": "C4B9E0"
+              },
+              "description": ""
+            }
+          ]
+        },
+        "link": {
+          "label": "Link",
+          "tokens": [
+            {
+              "name": "link/default",
+              "light": {
+                "alias": "blue-600",
+                "hex": "205EA6"
+              },
+              "dark": {
+                "alias": "blue-400",
+                "hex": "4385BE"
+              },
+              "description": ""
+            },
+            {
+              "name": "link/pressed",
+              "light": {
+                "alias": "blue-700",
+                "hex": "1A4F8C"
+              },
+              "dark": {
+                "alias": "blue-300",
+                "hex": "66A0C8"
+              },
+              "description": ""
+            }
+          ]
+        },
+        "icon": {
+          "label": "Icon",
+          "tokens": [
+            {
+              "name": "icon/default",
+              "light": {
+                "alias": "base-600",
+                "hex": "6F6E69"
+              },
+              "dark": {
+                "alias": "base-500",
+                "hex": "878580"
+              },
+              "description": ""
+            },
+            {
+              "name": "icon/subtle",
+              "light": {
+                "alias": "base-500",
+                "hex": "878580"
+              },
+              "dark": {
+                "alias": "base-600",
+                "hex": "6F6E69"
+              },
+              "description": ""
+            },
+            {
+              "name": "icon/subtlest",
+              "light": {
+                "alias": "base-300",
+                "hex": "B7B5AC"
+              },
+              "dark": {
+                "alias": "base-800",
+                "hex": "403E3C"
+              },
+              "description": ""
+            },
+            {
+              "name": "icon/inverse",
+              "light": {
+                "alias": "base-00",
+                "hex": "FFFDF6"
+              },
+              "dark": {
+                "alias": "base-1000",
+                "hex": "100F0F"
+              },
+              "description": ""
+            },
+            {
+              "name": "icon/disabled",
+              "light": {
+                "alias": "base-300",
+                "hex": "B7B5AC"
+              },
+              "dark": {
+                "alias": "base-700",
+                "hex": "575653"
+              },
+              "description": ""
+            },
+            {
+              "name": "icon/brand",
+              "light": {
+                "alias": "blue-600",
+                "hex": "205EA6"
+              },
+              "dark": {
+                "alias": "blue-400",
+                "hex": "4385BE"
+              },
+              "description": ""
+            },
+            {
+              "name": "icon/selected",
+              "light": {
+                "alias": "blue-600",
+                "hex": "205EA6"
+              },
+              "dark": {
+                "alias": "blue-400",
+                "hex": "4385BE"
+              },
+              "description": ""
+            },
+            {
+              "name": "icon/danger",
+              "light": {
+                "alias": "red-600",
+                "hex": "AF3029"
+              },
+              "dark": {
+                "alias": "red-400",
+                "hex": "D14D41"
+              },
+              "description": ""
+            },
+            {
+              "name": "icon/warning",
+              "light": {
+                "alias": "yellow-600",
+                "hex": "AD8301"
+              },
+              "dark": {
+                "alias": "yellow-400",
+                "hex": "D0A215"
+              },
+              "description": ""
+            },
+            {
+              "name": "icon/warning-inverse",
+              "light": {
+                "alias": "base-1000",
+                "hex": "100F0F"
+              },
+              "dark": {
+                "alias": "base-1000",
+                "hex": "100F0F"
+              },
+              "description": ""
+            },
+            {
+              "name": "icon/success",
+              "light": {
+                "alias": "green-600",
+                "hex": "66800B"
+              },
+              "dark": {
+                "alias": "green-400",
+                "hex": "879A39"
+              },
+              "description": ""
+            },
+            {
+              "name": "icon/discovery",
+              "light": {
+                "alias": "purple-600",
+                "hex": "5E409D"
+              },
+              "dark": {
+                "alias": "purple-400",
+                "hex": "8B7EC8"
+              },
+              "description": ""
+            },
+            {
+              "name": "icon/information",
+              "light": {
+                "alias": "blue-600",
+                "hex": "205EA6"
+              },
+              "dark": {
+                "alias": "blue-400",
+                "hex": "4385BE"
+              },
+              "description": ""
+            }
+          ]
+        },
+        "border": {
+          "label": "Border",
+          "tokens": [
+            {
+              "name": "border/default",
+              "light": {
+                "alias": "base-150",
+                "hex": "DAD8CE"
+              },
+              "dark": {
+                "alias": "base-850",
+                "hex": "343331"
+              },
+              "description": ""
+            },
+            {
+              "name": "border/bold",
+              "light": {
+                "alias": "base-300",
+                "hex": "B7B5AC"
+              },
+              "dark": {
+                "alias": "base-600",
+                "hex": "6F6E69"
+              },
+              "description": ""
+            },
+            {
+              "name": "border/bolder",
+              "light": {
+                "alias": "base-600",
+                "hex": "6F6E69"
+              },
+              "dark": {
+                "alias": "base-400",
+                "hex": "9F9D96"
+              },
+              "description": ""
+            },
+            {
+              "name": "border/boldest",
+              "light": {
+                "alias": "base-1000",
+                "hex": "100F0F"
+              },
+              "dark": {
+                "alias": "base-00",
+                "hex": "FFFDF6"
+              },
+              "description": ""
+            },
+            {
+              "name": "border/inverse",
+              "light": {
+                "alias": "base-00",
+                "hex": "FFFDF6"
+              },
+              "dark": {
+                "alias": "base-1000",
+                "hex": "100F0F"
+              },
+              "description": ""
+            },
+            {
+              "name": "border/input",
+              "light": {
+                "alias": "base-200",
+                "hex": "CECDC3"
+              },
+              "dark": {
+                "alias": "base-700",
+                "hex": "575653"
+              },
+              "description": ""
+            },
+            {
+              "name": "border/disabled",
+              "light": {
+                "alias": "base-100",
+                "hex": "E6E4D9"
+              },
+              "dark": {
+                "alias": "base-850",
+                "hex": "343331"
+              },
+              "description": ""
+            },
+            {
+              "name": "border/focused",
+              "light": {
+                "alias": "blue-600",
+                "hex": "205EA6"
+              },
+              "dark": {
+                "alias": "blue-400",
+                "hex": "4385BE"
+              },
+              "description": ""
+            },
+            {
+              "name": "border/focused-subtle",
+              "light": {
+                "alias": "blue-200",
+                "hex": "92BFDB"
+              },
+              "dark": {
+                "alias": "blue-800",
+                "hex": "163B66"
+              },
+              "description": ""
+            },
+            {
+              "name": "border/brand",
+              "light": {
+                "alias": "blue-600",
+                "hex": "205EA6"
+              },
+              "dark": {
+                "alias": "blue-400",
+                "hex": "4385BE"
+              },
+              "description": ""
+            },
+            {
+              "name": "border/brand-subtle",
+              "light": {
+                "alias": "blue-200",
+                "hex": "92BFDB"
+              },
+              "dark": {
+                "alias": "blue-800",
+                "hex": "163B66"
+              },
+              "description": ""
+            },
+            {
+              "name": "border/selected",
+              "light": {
+                "alias": "blue-600",
+                "hex": "205EA6"
+              },
+              "dark": {
+                "alias": "blue-400",
+                "hex": "4385BE"
+              },
+              "description": ""
+            },
+            {
+              "name": "border/selected-subtle",
+              "light": {
+                "alias": "blue-200",
+                "hex": "92BFDB"
+              },
+              "dark": {
+                "alias": "blue-800",
+                "hex": "163B66"
+              },
+              "description": ""
+            },
+            {
+              "name": "border/danger",
+              "light": {
+                "alias": "red-600",
+                "hex": "AF3029"
+              },
+              "dark": {
+                "alias": "red-400",
+                "hex": "D14D41"
+              },
+              "description": ""
+            },
+            {
+              "name": "border/danger-subtle",
+              "light": {
+                "alias": "red-200",
+                "hex": "F89A8A"
+              },
+              "dark": {
+                "alias": "red-800",
+                "hex": "6C201C"
+              },
+              "description": ""
+            },
+            {
+              "name": "border/warning",
+              "light": {
+                "alias": "yellow-600",
+                "hex": "AD8301"
+              },
+              "dark": {
+                "alias": "yellow-400",
+                "hex": "D0A215"
+              },
+              "description": ""
+            },
+            {
+              "name": "border/warning-subtle",
+              "light": {
+                "alias": "yellow-200",
+                "hex": "ECCB60"
+              },
+              "dark": {
+                "alias": "yellow-800",
+                "hex": "664D01"
+              },
+              "description": ""
+            },
+            {
+              "name": "border/success",
+              "light": {
+                "alias": "green-600",
+                "hex": "66800B"
+              },
+              "dark": {
+                "alias": "green-400",
+                "hex": "879A39"
+              },
+              "description": ""
+            },
+            {
+              "name": "border/success-subtle",
+              "light": {
+                "alias": "green-200",
+                "hex": "BEC97E"
+              },
+              "dark": {
+                "alias": "green-800",
+                "hex": "3D4C07"
+              },
+              "description": ""
+            },
+            {
+              "name": "border/discovery",
+              "light": {
+                "alias": "purple-600",
+                "hex": "5E409D"
+              },
+              "dark": {
+                "alias": "purple-400",
+                "hex": "8B7EC8"
+              },
+              "description": ""
+            },
+            {
+              "name": "border/discovery-subtle",
+              "light": {
+                "alias": "purple-200",
+                "hex": "C4B9E0"
+              },
+              "dark": {
+                "alias": "purple-800",
+                "hex": "3C2A62"
+              },
+              "description": ""
+            },
+            {
+              "name": "border/information",
+              "light": {
+                "alias": "blue-600",
+                "hex": "205EA6"
+              },
+              "dark": {
+                "alias": "blue-400",
+                "hex": "4385BE"
+              },
+              "description": ""
+            },
+            {
+              "name": "border/information-subtle",
+              "light": {
+                "alias": "blue-200",
+                "hex": "92BFDB"
+              },
+              "dark": {
+                "alias": "blue-800",
+                "hex": "163B66"
+              },
+              "description": ""
+            }
+          ]
+        },
+        "skeleton": {
+          "label": "Skeleton",
+          "tokens": [
+            {
+              "name": "skeleton/default",
+              "light": {
+                "alias": "base-100",
+                "hex": "E6E4D9"
+              },
+              "dark": {
+                "alias": "base-850",
+                "hex": "343331"
+              },
+              "description": ""
+            },
+            {
+              "name": "skeleton/subtle",
+              "light": {
+                "alias": "base-50",
+                "hex": "F7F6ED"
+              },
+              "dark": {
+                "alias": "base-900",
+                "hex": "282726"
+              },
+              "description": ""
+            }
+          ]
+        },
+        "background": {
+          "label": "Background",
+          "tokens": [
+            {
+              "name": "background/base-primary",
+              "light": {
+                "alias": "base-00",
+                "hex": "FFFDF6"
+              },
+              "dark": {
+                "alias": "base-1000",
+                "hex": "100F0F"
+              },
+              "description": ""
+            },
+            {
+              "name": "background/base-secondary",
+              "light": {
+                "alias": "base-50",
+                "hex": "F7F6ED"
+              },
+              "dark": {
+                "alias": "base-950",
+                "hex": "1C1B1A"
+              },
+              "description": ""
+            },
+            {
+              "name": "background/base-inverted",
+              "light": {
+                "alias": "base-1000",
+                "hex": "100F0F"
+              },
+              "dark": {
+                "alias": "base-00",
+                "hex": "FFFDF6"
+              },
+              "description": ""
+            },
+            {
+              "name": "background/neutral",
+              "light": {
+                "alias": "base-100",
+                "hex": "E6E4D9"
+              },
+              "dark": {
+                "alias": "base-850",
+                "hex": "343331"
+              },
+              "description": ""
+            },
+            {
+              "name": "background/neutral-subtle",
+              "light": {
+                "alias": "base-50",
+                "hex": "F7F6ED"
+              },
+              "dark": {
+                "alias": "base-900",
+                "hex": "282726"
+              },
+              "description": ""
+            },
+            {
+              "name": "background/neutral-bold",
+              "light": {
+                "alias": "base-600",
+                "hex": "6F6E69"
+              },
+              "dark": {
+                "alias": "base-500",
+                "hex": "878580"
+              },
+              "description": ""
+            },
+            {
+              "name": "background/disabled",
+              "light": {
+                "alias": "base-100",
+                "hex": "E6E4D9"
+              },
+              "dark": {
+                "alias": "base-850",
+                "hex": "343331"
+              },
+              "description": ""
+            },
+            {
+              "name": "background/input",
+              "light": {
+                "alias": "base-50",
+                "hex": "F7F6ED"
+              },
+              "dark": {
+                "alias": "base-900",
+                "hex": "282726"
+              },
+              "description": ""
+            },
+            {
+              "name": "background/brand-subtlest",
+              "light": {
+                "alias": "blue-50",
+                "hex": "E1ECEB"
+              },
+              "dark": {
+                "alias": "blue-900",
+                "hex": "12253B"
+              },
+              "description": ""
+            },
+            {
+              "name": "background/brand-bold",
+              "light": {
+                "alias": "blue-600",
+                "hex": "205EA6"
+              },
+              "dark": {
+                "alias": "blue-300",
+                "hex": "66A0C8"
+              },
+              "description": ""
+            },
+            {
+              "name": "background/brand-boldest",
+              "light": {
+                "alias": "blue-700",
+                "hex": "1A4F8C"
+              },
+              "dark": {
+                "alias": "blue-500",
+                "hex": "3171B2"
+              },
+              "description": ""
+            },
+            {
+              "name": "background/selected",
+              "light": {
+                "alias": "blue-50",
+                "hex": "E1ECEB"
+              },
+              "dark": {
+                "alias": "blue-900",
+                "hex": "12253B"
+              },
+              "description": ""
+            },
+            {
+              "name": "background/selected-bold",
+              "light": {
+                "alias": "blue-600",
+                "hex": "205EA6"
+              },
+              "dark": {
+                "alias": "blue-400",
+                "hex": "4385BE"
+              },
+              "description": ""
+            },
+            {
+              "name": "background/danger",
+              "light": {
+                "alias": "red-50",
+                "hex": "FFE1D5"
+              },
+              "dark": {
+                "alias": "red-900",
+                "hex": "3E1715"
+              },
+              "description": ""
+            },
+            {
+              "name": "background/danger-subtler",
+              "light": {
+                "alias": "red-100",
+                "hex": "FFCABB"
+              },
+              "dark": {
+                "alias": "red-950",
+                "hex": "261312"
+              },
+              "description": ""
+            },
+            {
+              "name": "background/danger-bold",
+              "light": {
+                "alias": "red-600",
+                "hex": "AF3029"
+              },
+              "dark": {
+                "alias": "red-300",
+                "hex": "E8705F"
+              },
+              "description": ""
+            },
+            {
+              "name": "background/warning",
+              "light": {
+                "alias": "yellow-50",
+                "hex": "FAEEC6"
+              },
+              "dark": {
+                "alias": "yellow-900",
+                "hex": "3A2D04"
+              },
+              "description": ""
+            },
+            {
+              "name": "background/warning-subtler",
+              "light": {
+                "alias": "yellow-100",
+                "hex": "F6E2A0"
+              },
+              "dark": {
+                "alias": "yellow-950",
+                "hex": "241E08"
+              },
+              "description": ""
+            },
+            {
+              "name": "background/warning-bold",
+              "light": {
+                "alias": "yellow-600",
+                "hex": "AD8301"
+              },
+              "dark": {
+                "alias": "yellow-300",
+                "hex": "DFB431"
+              },
+              "description": ""
+            },
+            {
+              "name": "background/success",
+              "light": {
+                "alias": "green-50",
+                "hex": "EDEECF"
+              },
+              "dark": {
+                "alias": "green-900",
+                "hex": "252D09"
+              },
+              "description": ""
+            },
+            {
+              "name": "background/success-subtler",
+              "light": {
+                "alias": "green-100",
+                "hex": "DDE2B2"
+              },
+              "dark": {
+                "alias": "green-950",
+                "hex": "1A1E0C"
+              },
+              "description": ""
+            },
+            {
+              "name": "background/success-bold",
+              "light": {
+                "alias": "green-600",
+                "hex": "66800B"
+              },
+              "dark": {
+                "alias": "green-300",
+                "hex": "A0AF54"
+              },
+              "description": ""
+            },
+            {
+              "name": "background/discovery",
+              "light": {
+                "alias": "purple-50",
+                "hex": "F0EAEC"
+              },
+              "dark": {
+                "alias": "purple-900",
+                "hex": "261C39"
+              },
+              "description": ""
+            },
+            {
+              "name": "background/discovery-subtler",
+              "light": {
+                "alias": "purple-100",
+                "hex": "E2D9E9"
+              },
+              "dark": {
+                "alias": "purple-950",
+                "hex": "1A1623"
+              },
+              "description": ""
+            },
+            {
+              "name": "background/discovery-bold",
+              "light": {
+                "alias": "purple-600",
+                "hex": "5E409D"
+              },
+              "dark": {
+                "alias": "purple-300",
+                "hex": "A699D0"
+              },
+              "description": ""
+            },
+            {
+              "name": "background/information",
+              "light": {
+                "alias": "blue-50",
+                "hex": "E1ECEB"
+              },
+              "dark": {
+                "alias": "blue-900",
+                "hex": "12253B"
+              },
+              "description": ""
+            },
+            {
+              "name": "background/information-subtler",
+              "light": {
+                "alias": "blue-100",
+                "hex": "C6DDE8"
+              },
+              "dark": {
+                "alias": "blue-950",
+                "hex": "101A24"
+              },
+              "description": ""
+            },
+            {
+              "name": "background/information-bold",
+              "light": {
+                "alias": "blue-600",
+                "hex": "205EA6"
+              },
+              "dark": {
+                "alias": "blue-300",
+                "hex": "66A0C8"
+              },
+              "description": ""
+            }
+          ]
+        },
+        "accent-red": {
+          "label": "Accent / Red",
+          "tokens": [
+            {
+              "name": "background/accent/red/subtlest",
+              "light": {
+                "alias": "red-50",
+                "hex": "FFE1D5"
+              },
+              "dark": {
+                "alias": "red-950",
+                "hex": "261312"
+              },
+              "description": ""
+            },
+            {
+              "name": "background/accent/red/subtler",
+              "light": {
+                "alias": "red-100",
+                "hex": "FFCABB"
+              },
+              "dark": {
+                "alias": "red-900",
+                "hex": "3E1715"
+              },
+              "description": ""
+            },
+            {
+              "name": "background/accent/red/subtle",
+              "light": {
+                "alias": "red-200",
+                "hex": "F89A8A"
+              },
+              "dark": {
+                "alias": "red-800",
+                "hex": "6C201C"
+              },
+              "description": ""
+            },
+            {
+              "name": "background/accent/red/bolder",
+              "light": {
+                "alias": "red-600",
+                "hex": "AF3029"
+              },
+              "dark": {
+                "alias": "red-300",
+                "hex": "E8705F"
+              },
+              "description": ""
+            },
+            {
+              "name": "text/accent/red",
+              "light": {
+                "alias": "red-600",
+                "hex": "AF3029"
+              },
+              "dark": {
+                "alias": "red-300",
+                "hex": "E8705F"
+              },
+              "description": ""
+            },
+            {
+              "name": "text/accent/red/bolder",
+              "light": {
+                "alias": "red-700",
+                "hex": "942822"
+              },
+              "dark": {
+                "alias": "red-200",
+                "hex": "F89A8A"
+              },
+              "description": ""
+            },
+            {
+              "name": "icon/accent/red",
+              "light": {
+                "alias": "red-600",
+                "hex": "AF3029"
+              },
+              "dark": {
+                "alias": "red-400",
+                "hex": "D14D41"
+              },
+              "description": ""
+            },
+            {
+              "name": "border/accent/red/red",
+              "light": {
+                "alias": "red-600",
+                "hex": "AF3029"
+              },
+              "dark": {
+                "alias": "red-400",
+                "hex": "D14D41"
+              },
+              "description": ""
+            },
+            {
+              "name": "border/accent/red/sublte",
+              "light": {
+                "alias": "red-200",
+                "hex": "F89A8A"
+              },
+              "dark": {
+                "alias": "red-800",
+                "hex": "6C201C"
+              },
+              "description": ""
+            }
+          ]
+        },
+        "accent-orange": {
+          "label": "Accent / Orange",
+          "tokens": [
+            {
+              "name": "background/accent/orange/subtlest",
+              "light": {
+                "alias": "orange-50",
+                "hex": "FFE7CE"
+              },
+              "dark": {
+                "alias": "orange-950",
+                "hex": "27180E"
+              },
+              "description": ""
+            },
+            {
+              "name": "background/accent/orange/subtler",
+              "light": {
+                "alias": "orange-100",
+                "hex": "FED3AF"
+              },
+              "dark": {
+                "alias": "orange-900",
+                "hex": "40200D"
+              },
+              "description": ""
+            },
+            {
+              "name": "background/accent/orange/subtle",
+              "light": {
+                "alias": "orange-200",
+                "hex": "F9AE77"
+              },
+              "dark": {
+                "alias": "orange-800",
+                "hex": "71320D"
+              },
+              "description": ""
+            },
+            {
+              "name": "background/accent/orange/bolder",
+              "light": {
+                "alias": "orange-600",
+                "hex": "BC5215"
+              },
+              "dark": {
+                "alias": "orange-300",
+                "hex": "EC8B49"
+              },
+              "description": ""
+            },
+            {
+              "name": "text/accent/orange",
+              "light": {
+                "alias": "orange-600",
+                "hex": "BC5215"
+              },
+              "dark": {
+                "alias": "orange-300",
+                "hex": "EC8B49"
+              },
+              "description": ""
+            },
+            {
+              "name": "text/accent/orange/bolder",
+              "light": {
+                "alias": "orange-700",
+                "hex": "9D4310"
+              },
+              "dark": {
+                "alias": "orange-200",
+                "hex": "F9AE77"
+              },
+              "description": ""
+            },
+            {
+              "name": "icon/accent/orange",
+              "light": {
+                "alias": "orange-600",
+                "hex": "BC5215"
+              },
+              "dark": {
+                "alias": "orange-400",
+                "hex": "DA702C"
+              },
+              "description": ""
+            },
+            {
+              "name": "border/accent/orange/orange",
+              "light": {
+                "alias": "orange-600",
+                "hex": "BC5215"
+              },
+              "dark": {
+                "alias": "orange-400",
+                "hex": "DA702C"
+              },
+              "description": ""
+            },
+            {
+              "name": "border/accent/orange/subtle",
+              "light": {
+                "alias": "orange-200",
+                "hex": "F9AE77"
+              },
+              "dark": {
+                "alias": "orange-800",
+                "hex": "71320D"
+              },
+              "description": ""
+            }
+          ]
+        },
+        "accent-yellow": {
+          "label": "Accent / Yellow",
+          "tokens": [
+            {
+              "name": "background/accent/yellow/subtlest",
+              "light": {
+                "alias": "yellow-50",
+                "hex": "FAEEC6"
+              },
+              "dark": {
+                "alias": "yellow-950",
+                "hex": "241E08"
+              },
+              "description": ""
+            },
+            {
+              "name": "background/accent/yellow/subtler",
+              "light": {
+                "alias": "yellow-100",
+                "hex": "F6E2A0"
+              },
+              "dark": {
+                "alias": "yellow-900",
+                "hex": "3A2D04"
+              },
+              "description": ""
+            },
+            {
+              "name": "background/accent/yellow/subtle",
+              "light": {
+                "alias": "yellow-200",
+                "hex": "ECCB60"
+              },
+              "dark": {
+                "alias": "yellow-800",
+                "hex": "664D01"
+              },
+              "description": ""
+            },
+            {
+              "name": "background/accent/yellow/bolder",
+              "light": {
+                "alias": "yellow-600",
+                "hex": "AD8301"
+              },
+              "dark": {
+                "alias": "yellow-300",
+                "hex": "DFB431"
+              },
+              "description": ""
+            },
+            {
+              "name": "text/accent/yellow",
+              "light": {
+                "alias": "yellow-600",
+                "hex": "AD8301"
+              },
+              "dark": {
+                "alias": "yellow-300",
+                "hex": "DFB431"
+              },
+              "description": ""
+            },
+            {
+              "name": "text/accent/yellow/bolder",
+              "light": {
+                "alias": "yellow-700",
+                "hex": "8E6B01"
+              },
+              "dark": {
+                "alias": "yellow-200",
+                "hex": "ECCB60"
+              },
+              "description": ""
+            },
+            {
+              "name": "icon/accent/yellow",
+              "light": {
+                "alias": "yellow-600",
+                "hex": "AD8301"
+              },
+              "dark": {
+                "alias": "yellow-400",
+                "hex": "D0A215"
+              },
+              "description": ""
+            },
+            {
+              "name": "border/accent/yellow/yellow",
+              "light": {
+                "alias": "yellow-600",
+                "hex": "AD8301"
+              },
+              "dark": {
+                "alias": "yellow-400",
+                "hex": "D0A215"
+              },
+              "description": ""
+            },
+            {
+              "name": "border/accent/yellow/subtle",
+              "light": {
+                "alias": "yellow-200",
+                "hex": "ECCB60"
+              },
+              "dark": {
+                "alias": "yellow-800",
+                "hex": "664D01"
+              },
+              "description": ""
+            }
+          ]
+        },
+        "accent-green": {
+          "label": "Accent / Green",
+          "tokens": [
+            {
+              "name": "background/accent/green/subtlest",
+              "light": {
+                "alias": "green-50",
+                "hex": "EDEECF"
+              },
+              "dark": {
+                "alias": "green-950",
+                "hex": "1A1E0C"
+              },
+              "description": ""
+            },
+            {
+              "name": "background/accent/green/subtler",
+              "light": {
+                "alias": "green-100",
+                "hex": "DDE2B2"
+              },
+              "dark": {
+                "alias": "green-900",
+                "hex": "252D09"
+              },
+              "description": ""
+            },
+            {
+              "name": "background/accent/green/subtle",
+              "light": {
+                "alias": "green-200",
+                "hex": "BEC97E"
+              },
+              "dark": {
+                "alias": "green-800",
+                "hex": "3D4C07"
+              },
+              "description": ""
+            },
+            {
+              "name": "background/accent/green/bolder",
+              "light": {
+                "alias": "green-600",
+                "hex": "66800B"
+              },
+              "dark": {
+                "alias": "green-300",
+                "hex": "A0AF54"
+              },
+              "description": ""
+            },
+            {
+              "name": "text/accent/green",
+              "light": {
+                "alias": "green-600",
+                "hex": "66800B"
+              },
+              "dark": {
+                "alias": "green-300",
+                "hex": "A0AF54"
+              },
+              "description": ""
+            },
+            {
+              "name": "text/accent/green/bolder",
+              "light": {
+                "alias": "green-700",
+                "hex": "536907"
+              },
+              "dark": {
+                "alias": "green-200",
+                "hex": "BEC97E"
+              },
+              "description": ""
+            },
+            {
+              "name": "icon/accent/green",
+              "light": {
+                "alias": "green-600",
+                "hex": "66800B"
+              },
+              "dark": {
+                "alias": "green-400",
+                "hex": "879A39"
+              },
+              "description": ""
+            },
+            {
+              "name": "border/accent/green/green",
+              "light": {
+                "alias": "green-600",
+                "hex": "66800B"
+              },
+              "dark": {
+                "alias": "green-400",
+                "hex": "879A39"
+              },
+              "description": ""
+            },
+            {
+              "name": "border/accent/green/subtle",
+              "light": {
+                "alias": "green-200",
+                "hex": "BEC97E"
+              },
+              "dark": {
+                "alias": "green-800",
+                "hex": "3D4C07"
+              },
+              "description": ""
+            }
+          ]
+        },
+        "accent-cyan": {
+          "label": "Accent / Cyan",
+          "tokens": [
+            {
+              "name": "background/accent/cyan/subtlest",
+              "light": {
+                "alias": "cyan-50",
+                "hex": "DDF1E4"
+              },
+              "dark": {
+                "alias": "cyan-950",
+                "hex": "101F1D"
+              },
+              "description": ""
+            },
+            {
+              "name": "background/accent/cyan/subtler",
+              "light": {
+                "alias": "cyan-100",
+                "hex": "BFE8D9"
+              },
+              "dark": {
+                "alias": "cyan-900",
+                "hex": "122F2C"
+              },
+              "description": ""
+            },
+            {
+              "name": "background/accent/cyan/subtle",
+              "light": {
+                "alias": "cyan-200",
+                "hex": "87D3C3"
+              },
+              "dark": {
+                "alias": "cyan-800",
+                "hex": "164F4A"
+              },
+              "description": ""
+            },
+            {
+              "name": "background/accent/cyan/bolder",
+              "light": {
+                "alias": "cyan-600",
+                "hex": "24837B"
+              },
+              "dark": {
+                "alias": "cyan-300",
+                "hex": "5ABDAC"
+              },
+              "description": ""
+            },
+            {
+              "name": "text/accent/cyan",
+              "light": {
+                "alias": "cyan-600",
+                "hex": "24837B"
+              },
+              "dark": {
+                "alias": "cyan-300",
+                "hex": "5ABDAC"
+              },
+              "description": ""
+            },
+            {
+              "name": "text/accent/cyan/bolder",
+              "light": {
+                "alias": "cyan-700",
+                "hex": "1C6C66"
+              },
+              "dark": {
+                "alias": "cyan-200",
+                "hex": "87D3C3"
+              },
+              "description": ""
+            },
+            {
+              "name": "icon/accent/cyan",
+              "light": {
+                "alias": "cyan-600",
+                "hex": "24837B"
+              },
+              "dark": {
+                "alias": "cyan-400",
+                "hex": "3AA99F"
+              },
+              "description": ""
+            },
+            {
+              "name": "border/accent/cyan/cyan",
+              "light": {
+                "alias": "cyan-600",
+                "hex": "24837B"
+              },
+              "dark": {
+                "alias": "cyan-400",
+                "hex": "3AA99F"
+              },
+              "description": ""
+            },
+            {
+              "name": "border/accent/cyan/subtle",
+              "light": {
+                "alias": "cyan-200",
+                "hex": "87D3C3"
+              },
+              "dark": {
+                "alias": "cyan-800",
+                "hex": "164F4A"
+              },
+              "description": ""
+            }
+          ]
+        },
+        "accent-blue": {
+          "label": "Accent / Blue",
+          "tokens": [
+            {
+              "name": "background/accent/blue/subtlest",
+              "light": {
+                "alias": "blue-50",
+                "hex": "E1ECEB"
+              },
+              "dark": {
+                "alias": "blue-950",
+                "hex": "101A24"
+              },
+              "description": ""
+            },
+            {
+              "name": "background/accent/blue/subtler",
+              "light": {
+                "alias": "blue-100",
+                "hex": "C6DDE8"
+              },
+              "dark": {
+                "alias": "blue-900",
+                "hex": "12253B"
+              },
+              "description": ""
+            },
+            {
+              "name": "background/accent/blue/subtle",
+              "light": {
+                "alias": "blue-200",
+                "hex": "92BFDB"
+              },
+              "dark": {
+                "alias": "blue-800",
+                "hex": "163B66"
+              },
+              "description": ""
+            },
+            {
+              "name": "background/accent/blue/bolder",
+              "light": {
+                "alias": "blue-600",
+                "hex": "205EA6"
+              },
+              "dark": {
+                "alias": "blue-300",
+                "hex": "66A0C8"
+              },
+              "description": ""
+            },
+            {
+              "name": "text/accent/blue",
+              "light": {
+                "alias": "blue-600",
+                "hex": "205EA6"
+              },
+              "dark": {
+                "alias": "blue-300",
+                "hex": "66A0C8"
+              },
+              "description": ""
+            },
+            {
+              "name": "text/accent/blue/bolder",
+              "light": {
+                "alias": "blue-700",
+                "hex": "1A4F8C"
+              },
+              "dark": {
+                "alias": "blue-200",
+                "hex": "92BFDB"
+              },
+              "description": ""
+            },
+            {
+              "name": "icon/accent/blue",
+              "light": {
+                "alias": "blue-600",
+                "hex": "205EA6"
+              },
+              "dark": {
+                "alias": "blue-400",
+                "hex": "4385BE"
+              },
+              "description": ""
+            },
+            {
+              "name": "border/accent/blue/blue",
+              "light": {
+                "alias": "blue-600",
+                "hex": "205EA6"
+              },
+              "dark": {
+                "alias": "blue-400",
+                "hex": "4385BE"
+              },
+              "description": ""
+            },
+            {
+              "name": "border/accent/blue/subtle",
+              "light": {
+                "alias": "blue-200",
+                "hex": "92BFDB"
+              },
+              "dark": {
+                "alias": "blue-800",
+                "hex": "163B66"
+              },
+              "description": ""
+            }
+          ]
+        },
+        "accent-purple": {
+          "label": "Accent / Purple",
+          "tokens": [
+            {
+              "name": "background/accent/purple/subtlest",
+              "light": {
+                "alias": "purple-50",
+                "hex": "F0EAEC"
+              },
+              "dark": {
+                "alias": "purple-950",
+                "hex": "1A1623"
+              },
+              "description": ""
+            },
+            {
+              "name": "background/accent/purple/subtler",
+              "light": {
+                "alias": "purple-100",
+                "hex": "E2D9E9"
+              },
+              "dark": {
+                "alias": "purple-900",
+                "hex": "261C39"
+              },
+              "description": ""
+            },
+            {
+              "name": "background/accent/purple/subtle",
+              "light": {
+                "alias": "purple-200",
+                "hex": "C4B9E0"
+              },
+              "dark": {
+                "alias": "purple-800",
+                "hex": "3C2A62"
+              },
+              "description": ""
+            },
+            {
+              "name": "background/accent/purple/bolder",
+              "light": {
+                "alias": "purple-600",
+                "hex": "5E409D"
+              },
+              "dark": {
+                "alias": "purple-300",
+                "hex": "A699D0"
+              },
+              "description": ""
+            },
+            {
+              "name": "text/accent/purple",
+              "light": {
+                "alias": "purple-600",
+                "hex": "5E409D"
+              },
+              "dark": {
+                "alias": "purple-300",
+                "hex": "A699D0"
+              },
+              "description": ""
+            },
+            {
+              "name": "text/accent/purple/bolder",
+              "light": {
+                "alias": "purple-700",
+                "hex": "4F3685"
+              },
+              "dark": {
+                "alias": "purple-200",
+                "hex": "C4B9E0"
+              },
+              "description": ""
+            },
+            {
+              "name": "icon/accent/purple",
+              "light": {
+                "alias": "purple-600",
+                "hex": "5E409D"
+              },
+              "dark": {
+                "alias": "purple-400",
+                "hex": "8B7EC8"
+              },
+              "description": ""
+            },
+            {
+              "name": "border/accent/purple/purple",
+              "light": {
+                "alias": "purple-600",
+                "hex": "5E409D"
+              },
+              "dark": {
+                "alias": "purple-400",
+                "hex": "8B7EC8"
+              },
+              "description": ""
+            },
+            {
+              "name": "border/accent/purple/subtle",
+              "light": {
+                "alias": "purple-200",
+                "hex": "C4B9E0"
+              },
+              "dark": {
+                "alias": "purple-800",
+                "hex": "3C2A62"
+              },
+              "description": ""
+            }
+          ]
+        },
+        "accent-magenta": {
+          "label": "Accent / Magenta",
+          "tokens": [
+            {
+              "name": "background/accent/magenta/subtlest",
+              "light": {
+                "alias": "magenta-50",
+                "hex": "FEE4E5"
+              },
+              "dark": {
+                "alias": "magenta-950",
+                "hex": "24131D"
+              },
+              "description": ""
+            },
+            {
+              "name": "background/accent/magenta/subtler",
+              "light": {
+                "alias": "magenta-100",
+                "hex": "FCCFDA"
+              },
+              "dark": {
+                "alias": "magenta-900",
+                "hex": "39172B"
+              },
+              "description": ""
+            },
+            {
+              "name": "background/accent/magenta/subtle",
+              "light": {
+                "alias": "magenta-200",
+                "hex": "F4A4C2"
+              },
+              "dark": {
+                "alias": "magenta-800",
+                "hex": "641F46"
+              },
+              "description": ""
+            },
+            {
+              "name": "background/accent/magenta/bolder",
+              "light": {
+                "alias": "magenta-600",
+                "hex": "A02F6F"
+              },
+              "dark": {
+                "alias": "magenta-300",
+                "hex": "E47DA8"
+              },
+              "description": ""
+            },
+            {
+              "name": "text/accent/magenta",
+              "light": {
+                "alias": "magenta-600",
+                "hex": "A02F6F"
+              },
+              "dark": {
+                "alias": "magenta-300",
+                "hex": "E47DA8"
+              },
+              "description": ""
+            },
+            {
+              "name": "text/accent/magenta/bolder",
+              "light": {
+                "alias": "magenta-700",
+                "hex": "87285E"
+              },
+              "dark": {
+                "alias": "magenta-200",
+                "hex": "F4A4C2"
+              },
+              "description": ""
+            },
+            {
+              "name": "icon/accent/magenta",
+              "light": {
+                "alias": "magenta-600",
+                "hex": "A02F6F"
+              },
+              "dark": {
+                "alias": "magenta-400",
+                "hex": "CE5D97"
+              },
+              "description": ""
+            },
+            {
+              "name": "border/accent/magenta/magenta",
+              "light": {
+                "alias": "magenta-600",
+                "hex": "A02F6F"
+              },
+              "dark": {
+                "alias": "magenta-400",
+                "hex": "CE5D97"
+              },
+              "description": ""
+            },
+            {
+              "name": "border/accent/magenta/subtle",
+              "light": {
+                "alias": "magenta-200",
+                "hex": "F4A4C2"
+              },
+              "dark": {
+                "alias": "magenta-800",
+                "hex": "641F46"
+              },
+              "description": ""
+            }
+          ]
+        }
+      }
+    },
+    "typography": {
+      "name": "Typography",
+      "groups": {
+        "family": {
+          "label": "Font Family",
+          "tokens": [
+            {
+              "name": "font/family/body",
+              "value": "Outfit",
+              "description": "Primary app font"
+            },
+            {
+              "name": "font/family/code",
+              "value": "JetBrains Mono",
+              "description": "Use for displaying code (inline and blocks)"
+            },
+            {
+              "name": "font/family/technical",
+              "value": "JetBrains Mono",
+              "description": "Use for numbers in tables and special labels"
+            }
+          ]
+        },
+        "size": {
+          "label": "Font Size",
+          "tokens": [
+            {
+              "name": "font/size/1000",
+              "value": 48,
+              "description": "For H1 headings"
+            },
+            {
+              "name": "font/size/900",
+              "value": 40,
+              "description": "For H2 headings"
+            },
+            {
+              "name": "font/size/800",
+              "value": 32,
+              "description": "For H3 headings"
+            },
+            {
+              "name": "font/size/700",
+              "value": 24,
+              "description": "For H4 headings"
+            },
+            {
+              "name": "font/size/600",
+              "value": 18,
+              "description": "For H5 headings and sub-titles beneath larger headings"
+            },
+            {
+              "name": "font/size/500",
+              "value": 16,
+              "description": "Default text size. Use for main body text."
+            },
+            {
+              "name": "font/size/400",
+              "value": 14,
+              "description": "Smaller text size. Use for input titles, secondary text, small callouts, in toasts, etc."
+            },
+            {
+              "name": "font/size/300",
+              "value": 13,
+              "description": "For use in tags and for both inline code and code blocks"
+            },
+            {
+              "name": "font/size/200",
+              "value": 12,
+              "description": "Use for tertiary text, like disclaimers. Use sparingly, as its accessibility is limited."
+            }
+          ]
+        },
+        "height": {
+          "label": "Line Height",
+          "tokens": [
+            {
+              "name": "font/height/1000",
+              "value": 60,
+              "description": "H1 line-height"
+            },
+            {
+              "name": "font/height/900",
+              "value": 48,
+              "description": "H2 line-height"
+            },
+            {
+              "name": "font/height/800",
+              "value": 40,
+              "description": "H3 line-height"
+            },
+            {
+              "name": "font/height/700",
+              "value": 32,
+              "description": "H4 line-height"
+            },
+            {
+              "name": "font/height/600",
+              "value": 24,
+              "description": "Use to set line-height for H5 headings and default body text (at 16px font-size)"
+            },
+            {
+              "name": "font/height/500",
+              "value": 22,
+              "description": "Use to set line-height for secondary text (14px)"
+            },
+            {
+              "name": "font/height/400",
+              "value": 20,
+              "description": "Use only for inline code or code blocks (not for technical text)"
+            },
+            {
+              "name": "font/height/300",
+              "value": 18,
+              "description": "Use for 12px font-size"
+            },
+            {
+              "name": "font/height/200",
+              "value": 16,
+              "description": "Use to set line-height in tags"
+            }
+          ]
+        },
+        "spacing": {
+          "label": "Letter Spacing",
+          "tokens": [
+            {
+              "name": "font/spacing/normal",
+              "value": 0,
+              "description": "Use for all text styles except H1, H2, H3, H4 headings"
+            },
+            {
+              "name": "font/spacing/tight",
+              "value": -0.5,
+              "description": "Use for H1, H2, H3, H4 headings"
+            }
+          ]
+        },
+        "weight": {
+          "label": "Font Weight",
+          "tokens": [
+            {
+              "name": "font/weight/regular",
+              "value": "Regular",
+              "description": "Use for all primary body text"
+            },
+            {
+              "name": "font/weight/medium",
+              "value": "Medium",
+              "description": "Use for text that needs a bit more emphasis (like primary titles in table rows), labels next to checkboxes and switches, etc."
+            },
+            {
+              "name": "font/weight/semibold",
+              "value": "Semibold",
+              "description": "Use for inline section headers, helping to group related content"
+            },
+            {
+              "name": "font/weight/bold",
+              "value": "Bold",
+              "description": ""
+            }
+          ]
+        }
+      }
+    },
+    "size": {
+      "name": "Size",
+      "groups": {
+        "spacing": {
+          "label": "Spacing",
+          "tokens": [
+            {
+              "name": "spacing/25",
+              "value": 2,
+              "description": "Use for small and compact pieces of UI."
+            },
+            {
+              "name": "spacing/50",
+              "value": 4,
+              "description": "Use for small and compact pieces of UI."
+            },
+            {
+              "name": "spacing/75",
+              "value": 6,
+              "description": "Use for small and compact pieces of UI."
+            },
+            {
+              "name": "spacing/100",
+              "value": 8,
+              "description": "Use for small and compact pieces of UI."
+            },
+            {
+              "name": "spacing/150",
+              "value": 12,
+              "description": "Use for larger and less dense pieces of UI"
+            },
+            {
+              "name": "spacing/200",
+              "value": 16,
+              "description": "Use for larger and less dense pieces of UI"
+            },
+            {
+              "name": "spacing/250",
+              "value": 20,
+              "description": "Use for larger and less dense pieces of UI"
+            },
+            {
+              "name": "spacing/300",
+              "value": 24,
+              "description": "Use for larger and less dense pieces of UI"
+            },
+            {
+              "name": "spacing/400",
+              "value": 32,
+              "description": "Use for the largest pieces of the UI and for layout elements."
+            },
+            {
+              "name": "spacing/500",
+              "value": 40,
+              "description": "Use for the largest pieces of the UI and for layout elements."
+            },
+            {
+              "name": "spacing/600",
+              "value": 48,
+              "description": "Use for the largest pieces of the UI and for layout elements."
+            },
+            {
+              "name": "spacing/800",
+              "value": 64,
+              "description": "Use for the largest pieces of the UI and for layout elements."
+            },
+            {
+              "name": "spacing/1000",
+              "value": 80,
+              "description": "Use for the largest pieces of the UI and for layout elements."
+            }
+          ]
+        },
+        "radius": {
+          "label": "Border Radius",
+          "tokens": [
+            {
+              "name": "radius/square",
+              "value": 0,
+              "description": "No radius applied. Use sparingly."
+            },
+            {
+              "name": "radius/25",
+              "value": 2,
+              "description": "Use for small detail elements: badges, checkboxes, avatar labels, keyboard shortcuts."
+            },
+            {
+              "name": "radius/50",
+              "value": 4,
+              "description": "Use for supporting elements: labels, lozenges, timestamps, tags, dates, tooltip containers, imagery inside a table, compact buttons."
+            },
+            {
+              "name": "radius/75",
+              "value": 6,
+              "description": "Use for interactive elements: buttons, inputs, text areas, selects, navigation items, smart links."
+            },
+            {
+              "name": "radius/100",
+              "value": 8,
+              "description": "Use for containment elements: buttons, small cards cards, in-page containers, floating UI, dropdown menus."
+            },
+            {
+              "name": "radius/150",
+              "value": 12,
+              "description": "Use for larger page elements: small to medium cards, photos"
+            },
+            {
+              "name": "radius/200",
+              "value": 16,
+              "description": "Use for larger page elements: large cards"
+            },
+            {
+              "name": "radius/300",
+              "value": 24,
+              "description": "Use for largest UI elements, like modals"
+            },
+            {
+              "name": "radius/round",
+              "value": 999,
+              "description": "Use for circular elements"
+            }
+          ]
+        },
+        "stroke": {
+          "label": "Stroke",
+          "tokens": [
+            {
+              "name": "stroke/default",
+              "value": 1,
+              "description": "Default stroke width for dividers, inputs, small cards"
+            },
+            {
+              "name": "stroke/bold",
+              "value": 2,
+              "description": "Bolder width for components or elements requiring more emphasis, like large cards"
+            },
+            {
+              "name": "stroke/focused",
+              "value": 2,
+              "description": "Use for focus states on interactive elements like inputs"
+            },
+            {
+              "name": "stroke/selected",
+              "value": 2,
+              "description": "Use to indicate a selected elements, like inputs, cards"
+            }
+          ]
+        }
+      }
+    }
+  }
+}
+</script>
+<script type="text/babel">
+const { useState, useMemo, useCallback, useEffect, useRef } = React;
+
+const DATA = JSON.parse(document.getElementById('token-data').textContent);
+
+/* ── Helpers ── */
+function toDot(name) { return name.replace(/\//g, '.'); }
+
+function contrastOn(hex) {
+  const r = parseInt(hex.slice(0,2),16), g = parseInt(hex.slice(2,4),16), b = parseInt(hex.slice(4,6),16);
+  return (r*299 + g*587 + b*114) / 1000 > 140 ? '#100F0F' : '#FFFDF6';
+}
+
+/* ── Toast ── */
+function Toast({ message, onDone }) {
+  const [exiting, setExiting] = useState(false);
+  useEffect(() => {
+    const t1 = setTimeout(() => setExiting(true), 1600);
+    const t2 = setTimeout(onDone, 1750);
+    return () => { clearTimeout(t1); clearTimeout(t2); };
+  }, [onDone]);
+  return (
+    <div className={exiting ? 'toast-exit' : 'toast-enter'} style={{
+      position:'fixed', bottom:24, left:'50%', transform:'translateX(-50%)',
+      background:'var(--text-default)', color:'var(--bg-primary)',
+      padding:'8px 16px', borderRadius:6, fontSize:13, fontFamily:"'JetBrains Mono', monospace",
+      zIndex:1000, pointerEvents:'none', boxShadow:'0 4px 12px rgba(0,0,0,.15)'
+    }}>
+      {message}
+    </div>
+  );
+}
+
+/* ── Copy button ── */
+function CopyToken({ name }) {
+  const [toast, setToast] = useState(null);
+  const copy = useCallback(() => {
+    navigator.clipboard.writeText(toDot(name));
+    setToast(toDot(name));
+  }, [name]);
+  return (
+    <>
+      <button onClick={copy} style={{
+        all:'unset', cursor:'pointer', fontFamily:"'JetBrains Mono', monospace",
+        fontSize:13, color:'var(--text-default)', padding:'2px 0',
+        borderBottom:'1px dashed var(--border-default)',
+      }}
+      title="Click to copy"
+      onMouseEnter={e => e.target.style.color = 'var(--brand)'}
+      onMouseLeave={e => e.target.style.color = 'var(--text-default)'}
+      >
+        {toDot(name)}
+      </button>
+      {toast && <Toast message={`Copied: ${toast}`} onDone={() => setToast(null)} />}
+    </>
+  );
+}
+
+/* ── Color Swatch ── */
+function Swatch({ hex, alias, size = 28 }) {
+  return (
+    <span style={{ display:'inline-flex', alignItems:'center', gap:8 }}>
+      <span style={{
+        width: size, height: size, borderRadius: 4,
+        background: `#${hex}`, border: '1px solid var(--border-default)',
+        flexShrink: 0,
+      }} />
+      <span style={{ fontSize:13, color:'var(--text-subtle)', fontFamily:"'JetBrains Mono', monospace" }}>
+        {alias} <span style={{ opacity:.5 }}>/ {hex}</span>
+      </span>
+    </span>
+  );
+}
+
+/* ── Color Token Row ── */
+function ColorRow({ token, mode }) {
+  const active = mode === 'dark' ? token.dark : token.light;
+  const other = mode === 'dark' ? token.light : token.dark;
+  return (
+    <tr>
+      <td style={{ padding:'10px 16px 10px 0', verticalAlign:'middle' }}>
+        <CopyToken name={token.name} />
+      </td>
+      <td style={{ padding:'10px 16px', verticalAlign:'middle' }}>
+        <Swatch hex={active.hex} alias={active.alias} />
+      </td>
+      <td style={{ padding:'10px 16px', verticalAlign:'middle', opacity:.45 }}>
+        <Swatch hex={other.hex} alias={other.alias} size={20} />
+      </td>
+      <td style={{ padding:'10px 16px', fontSize:13, color:'var(--text-subtle)', verticalAlign:'middle' }}>
+        {token.description}
+      </td>
+    </tr>
+  );
+}
+
+/* ── Generic Token Row (typography / size) ── */
+function GenericRow({ token, unit }) {
+  const val = typeof token.value === 'number' ? `${token.value}${unit || 'px'}` : token.value;
+  return (
+    <tr>
+      <td style={{ padding:'10px 16px 10px 0', verticalAlign:'middle' }}>
+        <CopyToken name={token.name} />
+      </td>
+      <td style={{ padding:'10px 24px 10px 16px', verticalAlign:'middle', fontFamily:"'JetBrains Mono', monospace", fontSize:13 }}>
+        {val}
+      </td>
+      <td style={{ padding:'10px 16px', fontSize:13, color:'var(--text-subtle)', verticalAlign:'middle', maxWidth:480 }}>
+        {token.description}
+      </td>
+    </tr>
+  );
+}
+
+/* ── Spacing Scale Visual ── */
+function SpacingScale({ tokens }) {
+  return (
+    <div style={{ display:'flex', flexDirection:'column', gap:6, margin:'16px 0 8px' }}>
+      {tokens.map(t => (
+        <div key={t.name} style={{ display:'flex', alignItems:'center', gap:12 }}>
+          <span style={{ width:72, fontSize:12, fontFamily:"'JetBrains Mono', monospace", color:'var(--text-subtle)', textAlign:'right', flexShrink:0 }}>
+            {t.value}px
+          </span>
+          <div style={{
+            height:20, width: Math.max(t.value * 2.5, 6), borderRadius:3,
+            background:'var(--brand)', opacity:.7, transition:'width .2s'
+          }} />
+          <span style={{ fontSize:12, fontFamily:"'JetBrains Mono', monospace", color:'var(--text-subtlest)' }}>
+            {toDot(t.name)}
+          </span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/* ── Radius Preview ── */
+function RadiusPreview({ tokens }) {
+  return (
+    <div style={{ display:'flex', flexWrap:'wrap', gap:16, margin:'16px 0 8px' }}>
+      {tokens.map(t => (
+        <div key={t.name} style={{ display:'flex', flexDirection:'column', alignItems:'center', gap:6 }}>
+          <div style={{
+            width:48, height:48, borderRadius: t.value >= 999 ? '50%' : t.value,
+            border:'2px solid var(--brand)', opacity:.7,
+          }} />
+          <span style={{ fontSize:11, fontFamily:"'JetBrains Mono', monospace", color:'var(--text-subtle)' }}>
+            {t.value >= 999 ? 'round' : `${t.value}px`}
+          </span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/* ── Type Specimen ── */
+function TypeSpecimen({ tokens }) {
+  const sizes = tokens.filter(t => t.name.startsWith('font/size/'));
+  return (
+    <div style={{ display:'flex', flexDirection:'column', gap:2, margin:'16px 0 8px' }}>
+      {sizes.map(t => (
+        <div key={t.name} style={{ display:'flex', alignItems:'baseline', gap:16 }}>
+          <span style={{ width:48, fontSize:12, fontFamily:"'JetBrains Mono', monospace", color:'var(--text-subtlest)', textAlign:'right', flexShrink:0 }}>
+            {t.value}px
+          </span>
+          <span style={{ fontSize: t.value, fontFamily:"'Outfit', sans-serif", lineHeight:1.3, letterSpacing: t.value >= 24 ? -0.5 : 0 }}>
+            The quick brown fox
+          </span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/* ── Section Table ── */
+function SectionTable({ group, type, mode }) {
+  if (type === 'color') {
+    const modeLabel = mode === 'dark' ? 'Dark' : 'Light';
+    const altLabel = mode === 'dark' ? 'Light' : 'Dark';
+    return (
+      <table style={{ width:'100%', borderCollapse:'collapse' }}>
+        <thead>
+          <tr style={{ borderBottom:'1px solid var(--border-default)' }}>
+            <th style={{ padding:'6px 16px 6px 0', fontSize:11, fontWeight:500, color:'var(--text-subtlest)', textAlign:'left', textTransform:'uppercase', letterSpacing:1 }}>Token</th>
+            <th style={{ padding:'6px 16px', fontSize:11, fontWeight:500, color:'var(--text-subtlest)', textAlign:'left', textTransform:'uppercase', letterSpacing:1 }}>{modeLabel}</th>
+            <th style={{ padding:'6px 16px', fontSize:11, fontWeight:500, color:'var(--text-subtlest)', textAlign:'left', textTransform:'uppercase', letterSpacing:1 }}>{altLabel}</th>
+            <th style={{ padding:'6px 16px', fontSize:11, fontWeight:500, color:'var(--text-subtlest)', textAlign:'left', textTransform:'uppercase', letterSpacing:1 }}>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          {group.tokens.map(t => <ColorRow key={t.name} token={t} mode={mode} />)}
+        </tbody>
+      </table>
+    );
+  }
+  return (
+    <table style={{ width:'100%', borderCollapse:'collapse' }}>
+      <thead>
+        <tr style={{ borderBottom:'1px solid var(--border-default)' }}>
+          <th style={{ padding:'6px 16px 6px 0', fontSize:11, fontWeight:500, color:'var(--text-subtlest)', textAlign:'left', textTransform:'uppercase', letterSpacing:1 }}>Token</th>
+          <th style={{ padding:'6px 16px', fontSize:11, fontWeight:500, color:'var(--text-subtlest)', textAlign:'left', textTransform:'uppercase', letterSpacing:1 }}>Value</th>
+          <th style={{ padding:'6px 16px', fontSize:11, fontWeight:500, color:'var(--text-subtlest)', textAlign:'left', textTransform:'uppercase', letterSpacing:1 }}>Usage</th>
+        </tr>
+      </thead>
+      <tbody>
+        {group.tokens.map(t => <GenericRow key={t.name} token={t} />)}
+      </tbody>
+    </table>
+  );
+}
+
+/* ── Nav pill ── */
+function NavPill({ label, active, onClick }) {
+  return (
+    <button onClick={onClick} style={{
+      all:'unset', cursor:'pointer', padding:'6px 14px', borderRadius:6,
+      fontSize:14, fontWeight: active ? 600 : 400,
+      background: active ? 'var(--brand-subtle)' : 'transparent',
+      color: active ? 'var(--brand)' : 'var(--text-subtle)',
+      transition: 'all .15s',
+    }}
+    onMouseEnter={e => { if (!active) e.target.style.background = 'var(--bg-secondary)'; }}
+    onMouseLeave={e => { if (!active) e.target.style.background = 'transparent'; }}
+    >
+      {label}
+    </button>
+  );
+}
+
+/* ── App ── */
+function App() {
+  const [tab, setTab] = useState('color');
+  const [mode, setMode] = useState('light');
+  const [search, setSearch] = useState('');
+  const searchRef = useRef(null);
+
+  useEffect(() => {
+    document.documentElement.className = mode === 'dark' ? 'dark' : '';
+  }, [mode]);
+
+  // Keyboard shortcut: Cmd/Ctrl+K to focus search
+  useEffect(() => {
+    const handler = (e) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault();
+        searchRef.current?.focus();
+      }
+    };
+    window.addEventListener('keydown', handler);
+    return () => window.removeEventListener('keydown', handler);
+  }, []);
+
+  const collection = DATA.collections[tab];
+  const groups = collection.groups;
+
+  // Filter groups by search
+  const filteredGroups = useMemo(() => {
+    if (!search.trim()) return groups;
+    const q = search.toLowerCase();
+    const result = {};
+    for (const [key, group] of Object.entries(groups)) {
+      const filtered = group.tokens.filter(t =>
+        toDot(t.name).toLowerCase().includes(q) ||
+        (t.description || '').toLowerCase().includes(q) ||
+        (t.light?.alias || '').toLowerCase().includes(q) ||
+        (t.dark?.alias || '').toLowerCase().includes(q) ||
+        (String(t.value) || '').toLowerCase().includes(q)
+      );
+      if (filtered.length > 0) result[key] = { ...group, tokens: filtered };
+    }
+    return result;
+  }, [groups, search]);
+
+  const totalTokens = Object.values(groups).reduce((n, g) => n + g.tokens.length, 0);
+  const filteredCount = Object.values(filteredGroups).reduce((n, g) => n + g.tokens.length, 0);
+
+  const tabs = [
+    { id: 'color', label: 'Color', count: Object.values(DATA.collections.color.groups).reduce((n,g) => n + g.tokens.length, 0) },
+    { id: 'typography', label: 'Typography', count: Object.values(DATA.collections.typography.groups).reduce((n,g) => n + g.tokens.length, 0) },
+    { id: 'size', label: 'Size', count: Object.values(DATA.collections.size.groups).reduce((n,g) => n + g.tokens.length, 0) },
+  ];
+
+  return (
+    <div style={{ maxWidth:1080, margin:'0 auto', padding:'40px 32px 80px' }}>
+      {/* Header */}
+      <div style={{ marginBottom:32 }}>
+        <div style={{ display:'flex', alignItems:'baseline', gap:12, marginBottom:4 }}>
+          <h1 style={{ fontSize:24, fontWeight:700, letterSpacing:-.5 }}>Trekker</h1>
+          <span style={{ fontSize:13, color:'var(--text-subtlest)', fontFamily:"'JetBrains Mono', monospace" }}>Design Tokens</span>
+        </div>
+        <p style={{ fontSize:14, color:'var(--text-subtle)', marginTop:4 }}>
+          Exported from Figma — {new Date(DATA.exportedAt).toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric' })}
+        </p>
+      </div>
+
+      {/* Controls */}
+      <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', flexWrap:'wrap', gap:12, marginBottom:24 }}>
+        <div style={{ display:'flex', gap:4, background:'var(--bg-secondary)', borderRadius:8, padding:4 }}>
+          {tabs.map(t => (
+            <NavPill key={t.id} label={`${t.label} (${t.count})`} active={tab === t.id} onClick={() => { setTab(t.id); setSearch(''); }} />
+          ))}
+        </div>
+
+        <div style={{ display:'flex', gap:8, alignItems:'center' }}>
+          {/* Search */}
+          <div style={{ position:'relative' }}>
+            <input
+              ref={searchRef}
+              type="text"
+              placeholder="Filter tokens..."
+              value={search}
+              onChange={e => setSearch(e.target.value)}
+              style={{
+                fontFamily:"'Outfit', sans-serif", fontSize:14,
+                padding:'7px 12px 7px 32px', borderRadius:6,
+                border:'1px solid var(--border-default)',
+                background:'var(--bg-secondary)', color:'var(--text-default)',
+                outline:'none', width:220, transition:'border-color .15s',
+              }}
+              onFocus={e => e.target.style.borderColor = 'var(--brand)'}
+              onBlur={e => e.target.style.borderColor = 'var(--border-default)'}
+            />
+            <svg style={{ position:'absolute', left:10, top:'50%', transform:'translateY(-50%)', color:'var(--text-subtlest)' }} width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+          </div>
+
+          {/* Mode toggle (color only) */}
+          {tab === 'color' && (
+            <button onClick={() => setMode(m => m === 'light' ? 'dark' : 'light')} style={{
+              all:'unset', cursor:'pointer', display:'flex', alignItems:'center', gap:6,
+              padding:'7px 14px', borderRadius:6, fontSize:13, fontWeight:500,
+              border:'1px solid var(--border-default)', background:'var(--bg-secondary)',
+              color:'var(--text-default)', transition:'all .15s',
+            }}
+            onMouseEnter={e => e.target.style.borderColor = 'var(--brand)'}
+            onMouseLeave={e => e.target.style.borderColor = 'var(--border-default)'}
+            >
+              {mode === 'light' ? '☀' : '☾'} {mode === 'light' ? 'Light' : 'Dark'}
+            </button>
+          )}
+        </div>
+      </div>
+
+      {/* Count badge */}
+      {search && (
+        <div style={{ fontSize:13, color:'var(--text-subtlest)', marginBottom:16 }}>
+          Showing {filteredCount} of {totalTokens} tokens
+        </div>
+      )}
+
+      {/* Visuals (type specimen, spacing scale, radius preview) */}
+      {tab === 'typography' && !search && (
+        <div style={{ background:'var(--bg-secondary)', borderRadius:8, padding:'20px 24px', marginBottom:24, border:'1px solid var(--border-default)' }}>
+          <div style={{ fontSize:11, fontWeight:500, color:'var(--text-subtlest)', textTransform:'uppercase', letterSpacing:1, marginBottom:4 }}>Type Scale Preview</div>
+          <TypeSpecimen tokens={Object.values(groups).flatMap(g => g.tokens)} />
+        </div>
+      )}
+      {tab === 'size' && !search && (
+        <div style={{ display:'flex', gap:24, marginBottom:24, flexWrap:'wrap' }}>
+          <div style={{ flex:'1 1 400px', background:'var(--bg-secondary)', borderRadius:8, padding:'20px 24px', border:'1px solid var(--border-default)' }}>
+            <div style={{ fontSize:11, fontWeight:500, color:'var(--text-subtlest)', textTransform:'uppercase', letterSpacing:1, marginBottom:4 }}>Spacing Scale</div>
+            <SpacingScale tokens={groups.spacing.tokens} />
+          </div>
+          <div style={{ flex:'0 0 auto', background:'var(--bg-secondary)', borderRadius:8, padding:'20px 24px', border:'1px solid var(--border-default)' }}>
+            <div style={{ fontSize:11, fontWeight:500, color:'var(--text-subtlest)', textTransform:'uppercase', letterSpacing:1, marginBottom:4 }}>Border Radius</div>
+            <RadiusPreview tokens={groups.radius.tokens} />
+          </div>
+        </div>
+      )}
+
+      {/* Sections */}
+      {Object.entries(filteredGroups).length === 0 && (
+        <div style={{ textAlign:'center', padding:'48px 0', color:'var(--text-subtlest)', fontSize:14 }}>
+          No tokens match "{search}"
+        </div>
+      )}
+      {Object.entries(filteredGroups).map(([key, group]) => (
+        <div key={key} style={{ marginBottom:32 }}>
+          <h2 style={{ fontSize:16, fontWeight:600, marginBottom:12, paddingBottom:8, borderBottom:'1px solid var(--border-default)' }}>
+            {group.label}
+            <span style={{ fontSize:12, fontWeight:400, color:'var(--text-subtlest)', marginLeft:8 }}>{group.tokens.length}</span>
+          </h2>
+          <div style={{ overflowX:'auto' }}>
+            <SectionTable group={group} type={tab} mode={mode} />
+          </div>
+        </div>
+      ))}
+
+      {/* Footer */}
+      <div style={{ marginTop:48, paddingTop:16, borderTop:'1px solid var(--border-default)', fontSize:12, color:'var(--text-subtlest)', display:'flex', justifyContent:'space-between' }}>
+        <span>Generated from Figma — Trekker V2</span>
+        <span>Last export: {new Date(DATA.exportedAt).toISOString().split('T')[0]}</span>
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>
