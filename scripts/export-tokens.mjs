@@ -3,14 +3,14 @@
  * Trekker Design Token Export Pipeline
  *
  * Reads the current token data JSON, merges it into the HTML template,
- * and writes trekker-tokens.html.
+ * and writes index.html.
  *
  * The token data itself is extracted from Figma via the Desktop Bridge
  * plugin (see the companion Cowork shortcut "Sync Trekker Tokens").
  * This script handles the second half: stamping the data into the HTML.
  *
  * Usage:
- *   node scripts/export-tokens.mjs [--data tokens.json] [--template trekker-tokens.html] [--out trekker-tokens.html]
+ *   node scripts/export-tokens.mjs [--data tokens.json] [--template index.html] [--out index.html]
  */
 
 import { readFileSync, writeFileSync } from 'fs';
@@ -28,8 +28,8 @@ function flag(name, fallback) {
 }
 
 const dataPath = resolve(root, flag('data', 'tokens.json'));
-const templatePath = resolve(root, flag('template', 'trekker-tokens.html'));
-const outPath = resolve(root, flag('out', 'trekker-tokens.html'));
+const templatePath = resolve(root, flag('template', 'index.html'));
+const outPath = resolve(root, flag('out', 'index.html'));
 
 // Read
 const tokenData = JSON.parse(readFileSync(dataPath, 'utf-8'));
