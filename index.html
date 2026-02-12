@@ -2555,12 +2555,12 @@ function TypeSpecimen({ tokens }) {
 function SectionTable({ group, type, mode }) {
   if (type === 'color') {
     return (
-      <table style={{ width:'100%', borderCollapse:'collapse' }}>
+      <table style={{ width:'100%', borderCollapse:'collapse', tableLayout:'fixed' }}>
         <thead>
           <tr style={{ borderBottom:'1px solid var(--border-default)' }}>
-            <th style={{ padding:'6px 16px 6px 0', fontSize:11, fontWeight:500, color:'var(--text-subtlest)', textAlign:'left', textTransform:'uppercase', letterSpacing:1 }}>Token</th>
-            <th style={{ padding:'6px 16px', fontSize:11, fontWeight:500, color:'var(--text-subtlest)', textAlign:'left', textTransform:'uppercase', letterSpacing:1 }}>Light</th>
-            <th style={{ padding:'6px 16px', fontSize:11, fontWeight:500, color:'var(--text-subtlest)', textAlign:'left', textTransform:'uppercase', letterSpacing:1 }}>Dark</th>
+            <th style={{ width:300, padding:'6px 16px 6px 0', fontSize:11, fontWeight:500, color:'var(--text-subtlest)', textAlign:'left', textTransform:'uppercase', letterSpacing:1 }}>Token</th>
+            <th style={{ width:160, padding:'6px 16px', fontSize:11, fontWeight:500, color:'var(--text-subtlest)', textAlign:'left', textTransform:'uppercase', letterSpacing:1 }}>Light</th>
+            <th style={{ width:160, padding:'6px 16px', fontSize:11, fontWeight:500, color:'var(--text-subtlest)', textAlign:'left', textTransform:'uppercase', letterSpacing:1 }}>Dark</th>
             <th style={{ padding:'6px 16px', fontSize:11, fontWeight:500, color:'var(--text-subtlest)', textAlign:'left', textTransform:'uppercase', letterSpacing:1 }}>Description</th>
           </tr>
         </thead>
@@ -2571,11 +2571,11 @@ function SectionTable({ group, type, mode }) {
     );
   }
   return (
-    <table style={{ width:'100%', borderCollapse:'collapse' }}>
+    <table style={{ width:'100%', borderCollapse:'collapse', tableLayout:'fixed' }}>
       <thead>
         <tr style={{ borderBottom:'1px solid var(--border-default)' }}>
-          <th style={{ padding:'6px 16px 6px 0', fontSize:11, fontWeight:500, color:'var(--text-subtlest)', textAlign:'left', textTransform:'uppercase', letterSpacing:1 }}>Token</th>
-          <th style={{ padding:'6px 16px', fontSize:11, fontWeight:500, color:'var(--text-subtlest)', textAlign:'left', textTransform:'uppercase', letterSpacing:1 }}>Value</th>
+          <th style={{ width:300, padding:'6px 16px 6px 0', fontSize:11, fontWeight:500, color:'var(--text-subtlest)', textAlign:'left', textTransform:'uppercase', letterSpacing:1 }}>Token</th>
+          <th style={{ width:160, padding:'6px 16px', fontSize:11, fontWeight:500, color:'var(--text-subtlest)', textAlign:'left', textTransform:'uppercase', letterSpacing:1 }}>Value</th>
           <th style={{ padding:'6px 16px', fontSize:11, fontWeight:500, color:'var(--text-subtlest)', textAlign:'left', textTransform:'uppercase', letterSpacing:1 }}>Usage</th>
         </tr>
       </thead>
