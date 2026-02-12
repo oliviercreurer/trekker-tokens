@@ -2439,7 +2439,7 @@ function CopyToken({ name }) {
 /* ── Color Swatch ── */
 function Swatch({ hex, alias, size = 32 }) {
   return (
-    <span style={{ display:'inline-flex', alignItems:'center', gap:12 }}>
+    <span style={{ display:'flex', alignItems:'center', gap:12, height:'100%' }}>
       <span style={{
         width: size, height: size, borderRadius: 2,
         background: `#${hex}`, border: '1px solid var(--border-default)',
@@ -2466,7 +2466,7 @@ function ColorRow({ token, mode }) {
       <td style={{ padding:'10px 16px', verticalAlign:'middle' }}>
         <Swatch hex={token.dark.hex} alias={token.dark.alias} />
       </td>
-      <td style={{ padding:'10px 16px', fontSize:10, color:'var(--text-subtle)', verticalAlign:'middle', fontFamily:"'JetBrains Mono', monospace" }}>
+      <td style={{ padding:'10px 16px', fontSize:12, color:'var(--text-subtle)', verticalAlign:'middle', fontFamily:"'Outfit', sans-serif" }}>
         {token.description}
       </td>
     </tr>
@@ -2484,7 +2484,7 @@ function GenericRow({ token, unit }) {
       <td style={{ padding:'10px 24px 10px 16px', verticalAlign:'middle', fontFamily:"'JetBrains Mono', monospace", fontSize:12 }}>
         {val}
       </td>
-      <td style={{ padding:'10px 16px', fontSize:10, color:'var(--text-subtle)', verticalAlign:'middle', maxWidth:480, fontFamily:"'JetBrains Mono', monospace" }}>
+      <td style={{ padding:'10px 16px', fontSize:12, color:'var(--text-subtle)', verticalAlign:'middle', maxWidth:480, fontFamily:"'Outfit', sans-serif" }}>
         {token.description}
       </td>
     </tr>
