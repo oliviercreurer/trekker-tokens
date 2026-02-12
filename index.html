@@ -2403,7 +2403,7 @@ function Toast({ message, onDone }) {
     <div className={exiting ? 'toast-exit' : 'toast-enter'} style={{
       position:'fixed', bottom:24, left:'50%', transform:'translateX(-50%)',
       background:'var(--text-default)', color:'var(--bg-primary)',
-      padding:'8px 16px', borderRadius:6, fontSize:13, fontFamily:"'JetBrains Mono', monospace",
+      padding:'8px 16px', borderRadius:6, fontSize:12, fontFamily:"'JetBrains Mono', monospace",
       zIndex:1000, pointerEvents:'none', boxShadow:'0 4px 12px rgba(0,0,0,.15)'
     }}>
       {message}
@@ -2422,7 +2422,7 @@ function CopyToken({ name }) {
     <>
       <button onClick={copy} style={{
         all:'unset', cursor:'pointer', fontFamily:"'JetBrains Mono', monospace",
-        fontSize:13, color:'var(--text-default)', padding:'2px 0',
+        fontSize:12, color:'var(--text-default)', padding:'2px 0',
         borderBottom:'1px dashed var(--border-default)',
       }}
       title="Click to copy"
@@ -2437,16 +2437,17 @@ function CopyToken({ name }) {
 }
 
 /* ── Color Swatch ── */
-function Swatch({ hex, alias, size = 28 }) {
+function Swatch({ hex, alias, size = 32 }) {
   return (
-    <span style={{ display:'inline-flex', alignItems:'center', gap:8 }}>
+    <span style={{ display:'inline-flex', alignItems:'center', gap:12 }}>
       <span style={{
-        width: size, height: size, borderRadius: 4,
+        width: size, height: size, borderRadius: 2,
         background: `#${hex}`, border: '1px solid var(--border-default)',
         flexShrink: 0,
       }} />
-      <span style={{ fontSize:13, color:'var(--text-subtle)', fontFamily:"'JetBrains Mono', monospace" }}>
-        {alias} <span style={{ opacity:.5 }}>/ {hex}</span>
+      <span style={{ display:'flex', flexDirection:'column', fontFamily:"'JetBrains Mono', monospace", fontSize:12, lineHeight:'16px' }}>
+        <span style={{ color:'var(--text-default)' }}>{alias}</span>
+        <span style={{ color:'var(--text-subtlest)' }}>{hex}</span>
       </span>
     </span>
   );
@@ -2454,18 +2455,16 @@ function Swatch({ hex, alias, size = 28 }) {
 
 /* ── Color Token Row ── */
 function ColorRow({ token, mode }) {
-  const active = mode === 'dark' ? token.dark : token.light;
-  const other = mode === 'dark' ? token.light : token.dark;
   return (
     <tr>
       <td style={{ padding:'10px 16px 10px 0', verticalAlign:'middle' }}>
         <CopyToken name={token.name} />
       </td>
       <td style={{ padding:'10px 16px', verticalAlign:'middle' }}>
-        <Swatch hex={active.hex} alias={active.alias} />
+        <Swatch hex={token.light.hex} alias={token.light.alias} />
       </td>
       <td style={{ padding:'10px 16px', verticalAlign:'middle' }}>
-        <Swatch hex={other.hex} alias={other.alias} size={20} />
+        <Swatch hex={token.dark.hex} alias={token.dark.alias} />
       </td>
       <td style={{ padding:'10px 16px', fontSize:13, color:'var(--text-subtle)', verticalAlign:'middle' }}>
         {token.description}
@@ -2482,7 +2481,7 @@ function GenericRow({ token, unit }) {
       <td style={{ padding:'10px 16px 10px 0', verticalAlign:'middle' }}>
         <CopyToken name={token.name} />
       </td>
-      <td style={{ padding:'10px 24px 10px 16px', verticalAlign:'middle', fontFamily:"'JetBrains Mono', monospace", fontSize:13 }}>
+      <td style={{ padding:'10px 24px 10px 16px', verticalAlign:'middle', fontFamily:"'JetBrains Mono', monospace", fontSize:12 }}>
         {val}
       </td>
       <td style={{ padding:'10px 16px', fontSize:13, color:'var(--text-subtle)', verticalAlign:'middle', maxWidth:480 }}>
@@ -2524,7 +2523,7 @@ function RadiusPreview({ tokens }) {
             width:48, height:48, borderRadius: t.value >= 999 ? '50%' : t.value,
             border:'2px solid var(--brand)', opacity:.7,
           }} />
-          <span style={{ fontSize:11, fontFamily:"'JetBrains Mono', monospace", color:'var(--text-subtle)' }}>
+          <span style={{ fontSize:12, fontFamily:"'JetBrains Mono', monospace", color:'var(--text-subtle)' }}>
             {t.value >= 999 ? 'round' : `${t.value}px`}
           </span>
         </div>
@@ -2555,15 +2554,13 @@ function TypeSpecimen({ tokens }) {
 /* ── Section Table ── */
 function SectionTable({ group, type, mode }) {
   if (type === 'color') {
-    const modeLabel = mode === 'dark' ? 'Dark' : 'Light';
-    const altLabel = mode === 'dark' ? 'Light' : 'Dark';
     return (
       <table style={{ width:'100%', borderCollapse:'collapse' }}>
         <thead>
           <tr style={{ borderBottom:'1px solid var(--border-default)' }}>
             <th style={{ padding:'6px 16px 6px 0', fontSize:11, fontWeight:500, color:'var(--text-subtlest)', textAlign:'left', textTransform:'uppercase', letterSpacing:1 }}>Token</th>
-            <th style={{ padding:'6px 16px', fontSize:11, fontWeight:500, color:'var(--text-subtlest)', textAlign:'left', textTransform:'uppercase', letterSpacing:1 }}>{modeLabel}</th>
-            <th style={{ padding:'6px 16px', fontSize:11, fontWeight:500, color:'var(--text-subtlest)', textAlign:'left', textTransform:'uppercase', letterSpacing:1 }}>{altLabel}</th>
+            <th style={{ padding:'6px 16px', fontSize:11, fontWeight:500, color:'var(--text-subtlest)', textAlign:'left', textTransform:'uppercase', letterSpacing:1 }}>Light</th>
+            <th style={{ padding:'6px 16px', fontSize:11, fontWeight:500, color:'var(--text-subtlest)', textAlign:'left', textTransform:'uppercase', letterSpacing:1 }}>Dark</th>
             <th style={{ padding:'6px 16px', fontSize:11, fontWeight:500, color:'var(--text-subtlest)', textAlign:'left', textTransform:'uppercase', letterSpacing:1 }}>Description</th>
           </tr>
         </thead>
@@ -2666,7 +2663,7 @@ function App() {
       <div style={{ marginBottom:32 }}>
         <div style={{ display:'flex', alignItems:'baseline', gap:12, marginBottom:4 }}>
           <h1 style={{ fontSize:24, fontWeight:700, letterSpacing:-.5 }}>Trekker</h1>
-          <span style={{ fontSize:13, color:'var(--text-subtlest)', fontFamily:"'JetBrains Mono', monospace" }}>Design Tokens</span>
+          <span style={{ fontSize:12, color:'var(--text-subtlest)', fontFamily:"'JetBrains Mono', monospace" }}>Design Tokens</span>
         </div>
         <p style={{ fontSize:14, color:'var(--text-subtle)', marginTop:4 }}>
           Exported from Figma — {new Date(DATA.exportedAt).toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric' })}
