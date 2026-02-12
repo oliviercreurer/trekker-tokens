@@ -48,7 +48,7 @@ const updated = html.replace(
 writeFileSync(outPath, updated, 'utf-8');
 
 const count = Object.values(tokenData.collections).reduce((n, col) =>
-  n + Object.values(col.groups).reduce((m, g) => m + g.tokens.length, 0), 0);
+  n + Object.values(col.groups).reduce((m, g) => m + (g.tokens || g.styles || []).length, 0), 0);
 
 console.log(`✓ Wrote ${outPath}`);
 console.log(`  ${count} tokens across ${Object.keys(tokenData.collections).length} collections`);
