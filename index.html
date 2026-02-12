@@ -2558,10 +2558,10 @@ function SectionTable({ group, type, mode }) {
       <table style={{ width:'100%', borderCollapse:'collapse', tableLayout:'fixed' }}>
         <thead>
           <tr style={{ borderBottom:'1px solid var(--border-default)' }}>
-            <th style={{ width:300, padding:'6px 16px 6px 0', fontSize:12, fontWeight:500, color:'var(--text-subtlest)', textAlign:'left', textTransform:'uppercase', letterSpacing:1, fontFamily:"'JetBrains Mono', monospace" }}>Token</th>
-            <th style={{ width:160, padding:'6px 16px', fontSize:12, fontWeight:500, color:'var(--text-subtlest)', textAlign:'left', textTransform:'uppercase', letterSpacing:1, fontFamily:"'JetBrains Mono', monospace" }}>Light</th>
-            <th style={{ width:160, padding:'6px 16px', fontSize:12, fontWeight:500, color:'var(--text-subtlest)', textAlign:'left', textTransform:'uppercase', letterSpacing:1, fontFamily:"'JetBrains Mono', monospace" }}>Dark</th>
-            <th style={{ padding:'6px 16px', fontSize:12, fontWeight:500, color:'var(--text-subtlest)', textAlign:'left', textTransform:'uppercase', letterSpacing:1, fontFamily:"'JetBrains Mono', monospace" }}>Description</th>
+            <th style={{ width:300, padding:'6px 16px 6px 0', fontSize:12, fontWeight:500, color:'var(--text-subtlest)', textAlign:'left', letterSpacing:0, fontFamily:"'JetBrains Mono', monospace" }}>Token</th>
+            <th style={{ width:160, padding:'6px 16px', fontSize:12, fontWeight:500, color:'var(--text-subtlest)', textAlign:'left', letterSpacing:0, fontFamily:"'JetBrains Mono', monospace" }}>Light</th>
+            <th style={{ width:160, padding:'6px 16px', fontSize:12, fontWeight:500, color:'var(--text-subtlest)', textAlign:'left', letterSpacing:0, fontFamily:"'JetBrains Mono', monospace" }}>Dark</th>
+            <th style={{ padding:'6px 16px', fontSize:12, fontWeight:500, color:'var(--text-subtlest)', textAlign:'left', letterSpacing:0, fontFamily:"'JetBrains Mono', monospace" }}>Description</th>
           </tr>
         </thead>
         <tbody>
@@ -2574,9 +2574,9 @@ function SectionTable({ group, type, mode }) {
     <table style={{ width:'100%', borderCollapse:'collapse', tableLayout:'fixed' }}>
       <thead>
         <tr style={{ borderBottom:'1px solid var(--border-default)' }}>
-          <th style={{ width:300, padding:'6px 16px 6px 0', fontSize:12, fontWeight:500, color:'var(--text-subtlest)', textAlign:'left', textTransform:'uppercase', letterSpacing:1, fontFamily:"'JetBrains Mono', monospace" }}>Token</th>
-          <th style={{ width:160, padding:'6px 16px', fontSize:12, fontWeight:500, color:'var(--text-subtlest)', textAlign:'left', textTransform:'uppercase', letterSpacing:1, fontFamily:"'JetBrains Mono', monospace" }}>Value</th>
-          <th style={{ padding:'6px 16px', fontSize:12, fontWeight:500, color:'var(--text-subtlest)', textAlign:'left', textTransform:'uppercase', letterSpacing:1, fontFamily:"'JetBrains Mono', monospace" }}>Usage</th>
+          <th style={{ width:300, padding:'6px 16px 6px 0', fontSize:12, fontWeight:500, color:'var(--text-subtlest)', textAlign:'left', letterSpacing:0, fontFamily:"'JetBrains Mono', monospace" }}>Token</th>
+          <th style={{ width:160, padding:'6px 16px', fontSize:12, fontWeight:500, color:'var(--text-subtlest)', textAlign:'left', letterSpacing:0, fontFamily:"'JetBrains Mono', monospace" }}>Value</th>
+          <th style={{ padding:'6px 16px', fontSize:12, fontWeight:500, color:'var(--text-subtlest)', textAlign:'left', letterSpacing:0, fontFamily:"'JetBrains Mono', monospace" }}>Usage</th>
         </tr>
       </thead>
       <tbody>
@@ -2727,18 +2727,18 @@ function App() {
       {/* Visuals (type specimen, spacing scale, radius preview) */}
       {tab === 'typography' && !search && (
         <div style={{ background:'var(--bg-secondary)', borderRadius:8, padding:'20px 24px', marginBottom:24, border:'1px solid var(--border-default)' }}>
-          <div style={{ fontSize:11, fontWeight:500, color:'var(--text-subtlest)', textTransform:'uppercase', letterSpacing:1, marginBottom:4 }}>Type Scale Preview</div>
+          <div style={{ fontSize:11, fontWeight:500, color:'var(--text-subtlest)', letterSpacing:0, marginBottom:4 }}>Type Scale Preview</div>
           <TypeSpecimen tokens={Object.values(groups).flatMap(g => g.tokens)} />
         </div>
       )}
       {tab === 'size' && !search && (
         <div style={{ display:'flex', gap:24, marginBottom:24, flexWrap:'wrap' }}>
           <div style={{ flex:'1 1 400px', background:'var(--bg-secondary)', borderRadius:8, padding:'20px 24px', border:'1px solid var(--border-default)' }}>
-            <div style={{ fontSize:11, fontWeight:500, color:'var(--text-subtlest)', textTransform:'uppercase', letterSpacing:1, marginBottom:4 }}>Spacing Scale</div>
+            <div style={{ fontSize:11, fontWeight:500, color:'var(--text-subtlest)', letterSpacing:0, marginBottom:4 }}>Spacing Scale</div>
             <SpacingScale tokens={groups.spacing.tokens} />
           </div>
           <div style={{ flex:'0 0 auto', background:'var(--bg-secondary)', borderRadius:8, padding:'20px 24px', border:'1px solid var(--border-default)' }}>
-            <div style={{ fontSize:11, fontWeight:500, color:'var(--text-subtlest)', textTransform:'uppercase', letterSpacing:1, marginBottom:4 }}>Border Radius</div>
+            <div style={{ fontSize:11, fontWeight:500, color:'var(--text-subtlest)', letterSpacing:0, marginBottom:4 }}>Border Radius</div>
             <RadiusPreview tokens={groups.radius.tokens} />
           </div>
         </div>
