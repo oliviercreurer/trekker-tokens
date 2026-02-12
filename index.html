@@ -71,7 +71,7 @@
 <div id="root"></div>
 <script id="token-data" type="application/json">
 {
-  "exportedAt": "2026-02-11T23:28:15.676Z",
+  "exportedAt": "2026-02-12T11:42:07.294Z",
   "collections": {
     "color": {
       "name": "Color",
@@ -2466,7 +2466,7 @@ function ColorRow({ token, mode }) {
       <td style={{ padding:'10px 16px', verticalAlign:'middle' }}>
         <Swatch hex={token.dark.hex} alias={token.dark.alias} />
       </td>
-      <td style={{ padding:'10px 16px', fontSize:13, color:'var(--text-subtle)', verticalAlign:'middle' }}>
+      <td style={{ padding:'10px 16px', fontSize:10, color:'var(--text-subtle)', verticalAlign:'middle', fontFamily:"'JetBrains Mono', monospace" }}>
         {token.description}
       </td>
     </tr>
@@ -2484,7 +2484,7 @@ function GenericRow({ token, unit }) {
       <td style={{ padding:'10px 24px 10px 16px', verticalAlign:'middle', fontFamily:"'JetBrains Mono', monospace", fontSize:12 }}>
         {val}
       </td>
-      <td style={{ padding:'10px 16px', fontSize:13, color:'var(--text-subtle)', verticalAlign:'middle', maxWidth:480 }}>
+      <td style={{ padding:'10px 16px', fontSize:10, color:'var(--text-subtle)', verticalAlign:'middle', maxWidth:480, fontFamily:"'JetBrains Mono', monospace" }}>
         {token.description}
       </td>
     </tr>
@@ -2558,10 +2558,10 @@ function SectionTable({ group, type, mode }) {
       <table style={{ width:'100%', borderCollapse:'collapse', tableLayout:'fixed' }}>
         <thead>
           <tr style={{ borderBottom:'1px solid var(--border-default)' }}>
-            <th style={{ width:300, padding:'6px 16px 6px 0', fontSize:11, fontWeight:500, color:'var(--text-subtlest)', textAlign:'left', textTransform:'uppercase', letterSpacing:1 }}>Token</th>
-            <th style={{ width:160, padding:'6px 16px', fontSize:11, fontWeight:500, color:'var(--text-subtlest)', textAlign:'left', textTransform:'uppercase', letterSpacing:1 }}>Light</th>
-            <th style={{ width:160, padding:'6px 16px', fontSize:11, fontWeight:500, color:'var(--text-subtlest)', textAlign:'left', textTransform:'uppercase', letterSpacing:1 }}>Dark</th>
-            <th style={{ padding:'6px 16px', fontSize:11, fontWeight:500, color:'var(--text-subtlest)', textAlign:'left', textTransform:'uppercase', letterSpacing:1 }}>Description</th>
+            <th style={{ width:300, padding:'6px 16px 6px 0', fontSize:12, fontWeight:500, color:'var(--text-subtlest)', textAlign:'left', textTransform:'uppercase', letterSpacing:1, fontFamily:"'JetBrains Mono', monospace" }}>Token</th>
+            <th style={{ width:160, padding:'6px 16px', fontSize:12, fontWeight:500, color:'var(--text-subtlest)', textAlign:'left', textTransform:'uppercase', letterSpacing:1, fontFamily:"'JetBrains Mono', monospace" }}>Light</th>
+            <th style={{ width:160, padding:'6px 16px', fontSize:12, fontWeight:500, color:'var(--text-subtlest)', textAlign:'left', textTransform:'uppercase', letterSpacing:1, fontFamily:"'JetBrains Mono', monospace" }}>Dark</th>
+            <th style={{ padding:'6px 16px', fontSize:12, fontWeight:500, color:'var(--text-subtlest)', textAlign:'left', textTransform:'uppercase', letterSpacing:1, fontFamily:"'JetBrains Mono', monospace" }}>Description</th>
           </tr>
         </thead>
         <tbody>
@@ -2574,9 +2574,9 @@ function SectionTable({ group, type, mode }) {
     <table style={{ width:'100%', borderCollapse:'collapse', tableLayout:'fixed' }}>
       <thead>
         <tr style={{ borderBottom:'1px solid var(--border-default)' }}>
-          <th style={{ width:300, padding:'6px 16px 6px 0', fontSize:11, fontWeight:500, color:'var(--text-subtlest)', textAlign:'left', textTransform:'uppercase', letterSpacing:1 }}>Token</th>
-          <th style={{ width:160, padding:'6px 16px', fontSize:11, fontWeight:500, color:'var(--text-subtlest)', textAlign:'left', textTransform:'uppercase', letterSpacing:1 }}>Value</th>
-          <th style={{ padding:'6px 16px', fontSize:11, fontWeight:500, color:'var(--text-subtlest)', textAlign:'left', textTransform:'uppercase', letterSpacing:1 }}>Usage</th>
+          <th style={{ width:300, padding:'6px 16px 6px 0', fontSize:12, fontWeight:500, color:'var(--text-subtlest)', textAlign:'left', textTransform:'uppercase', letterSpacing:1, fontFamily:"'JetBrains Mono', monospace" }}>Token</th>
+          <th style={{ width:160, padding:'6px 16px', fontSize:12, fontWeight:500, color:'var(--text-subtlest)', textAlign:'left', textTransform:'uppercase', letterSpacing:1, fontFamily:"'JetBrains Mono', monospace" }}>Value</th>
+          <th style={{ padding:'6px 16px', fontSize:12, fontWeight:500, color:'var(--text-subtlest)', textAlign:'left', textTransform:'uppercase', letterSpacing:1, fontFamily:"'JetBrains Mono', monospace" }}>Usage</th>
         </tr>
       </thead>
       <tbody>
