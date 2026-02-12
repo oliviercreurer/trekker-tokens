@@ -22,6 +22,8 @@
     --text-subtlest: #B7B5AC;
     --border-default: #DAD8CE;
     --border-bold: #B7B5AC;
+    --border-boldest: #100F0F;
+    --bg-inverted: #100F0F;
     --brand: #205EA6;
     --brand-subtle: #E1ECEB;
   }
@@ -35,6 +37,8 @@
     --text-subtlest: #575653;
     --border-default: #343331;
     --border-bold: #6F6E69;
+    --border-boldest: #FFFCF0;
+    --bg-inverted: #FFFCF0;
     --brand: #4385BE;
     --brand-subtle: #12253B;
   }
@@ -2502,7 +2506,7 @@ function SpacingScale({ tokens }) {
           </span>
           <div style={{
             height:20, width: Math.max(t.value * 2.5, 6), borderRadius:3,
-            background:'var(--brand)', opacity:.7, transition:'width .2s'
+            background:'var(--bg-inverted)', transition:'width .2s'
           }} />
           <span style={{ fontSize:12, fontFamily:"'JetBrains Mono', monospace", color:'var(--text-subtlest)' }}>
             {toDot(t.name)}
@@ -2516,12 +2520,12 @@ function SpacingScale({ tokens }) {
 /* ── Radius Preview ── */
 function RadiusPreview({ tokens }) {
   return (
-    <div style={{ display:'flex', flexWrap:'wrap', gap:16, margin:'16px 0 8px' }}>
+    <div style={{ display:'flex', gap:16, margin:'16px 0 8px' }}>
       {tokens.map(t => (
-        <div key={t.name} style={{ display:'flex', flexDirection:'column', alignItems:'center', gap:6 }}>
+        <div key={t.name} style={{ display:'flex', flexDirection:'column', alignItems:'center', gap:6, flex:1 }}>
           <div style={{
-            width:48, height:48, borderRadius: t.value >= 999 ? '50%' : t.value,
-            border:'2px solid var(--brand)', opacity:.7,
+            width:'100%', height:48, borderRadius: t.value >= 999 ? '50%' : t.value,
+            border:'2px solid var(--border-boldest)',
           }} />
           <span style={{ fontSize:12, fontFamily:"'JetBrains Mono', monospace", color:'var(--text-subtle)' }}>
             {t.value >= 999 ? 'round' : `${t.value}px`}
@@ -2729,19 +2733,6 @@ function App() {
           <TypeSpecimen tokens={Object.values(groups).flatMap(g => g.tokens)} />
         </div>
       )}
-      {tab === 'size' && !search && (
-        <div style={{ display:'flex', gap:24, marginBottom:24, flexWrap:'wrap' }}>
-          <div style={{ flex:'1 1 400px', background:'var(--bg-secondary)', borderRadius:8, padding:'20px 24px', border:'1px solid var(--border-default)' }}>
-            <div style={{ fontSize:11, fontWeight:500, color:'var(--text-subtlest)', letterSpacing:0, marginBottom:4 }}>Spacing Scale</div>
-            <SpacingScale tokens={groups.spacing.tokens} />
-          </div>
-          <div style={{ flex:'0 0 auto', background:'var(--bg-secondary)', borderRadius:8, padding:'20px 24px', border:'1px solid var(--border-default)' }}>
-            <div style={{ fontSize:11, fontWeight:500, color:'var(--text-subtlest)', letterSpacing:0, marginBottom:4 }}>Border Radius</div>
-            <RadiusPreview tokens={groups.radius.tokens} />
-          </div>
-        </div>
-      )}
-
       {/* Sections */}
       {Object.entries(filteredGroups).length === 0 && (
         <div style={{ textAlign:'center', padding:'48px 0', color:'var(--text-subtlest)', fontSize:14 }}>
@@ -2757,6 +2748,16 @@ function App() {
           <div style={{ overflowX:'auto' }}>
             <SectionTable group={group} type={tab} mode={mode} />
           </div>
+          {tab === 'size' && key === 'spacing' && !search && (
+            <div style={{ background:'var(--bg-secondary)', borderRadius:8, padding:'20px 24px', border:'1px solid var(--border-default)', marginTop:16 }}>
+              <SpacingScale tokens={group.tokens} />
+            </div>
+          )}
+          {tab === 'size' && key === 'radius' && !search && (
+            <div style={{ background:'var(--bg-secondary)', borderRadius:8, padding:'20px 24px', border:'1px solid var(--border-default)', marginTop:16 }}>
+              <RadiusPreview tokens={group.tokens} />
+            </div>
+          )}
         </div>
       ))}
 
