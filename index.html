@@ -2587,18 +2587,16 @@ function SectionTable({ group, type, mode }) {
 }
 
 /* ── Nav pill ── */
-function NavPill({ label, active, onClick }) {
+function NavPill({ label, active, onClick, isLast }) {
   return (
     <button onClick={onClick} style={{
-      all:'unset', cursor:'pointer', padding:'6px 14px', borderRadius:6,
-      fontSize:14, fontWeight: active ? 600 : 400,
-      background: active ? 'var(--brand-subtle)' : 'transparent',
-      color: active ? 'var(--brand)' : 'var(--text-subtle)',
+      all:'unset', cursor:'pointer', padding:'8px 16px',
+      fontSize:14, fontWeight:500, fontFamily:"'Outfit', sans-serif",
+      background: active ? 'var(--bg-primary)' : 'var(--bg-tertiary)',
+      color: active ? 'var(--text-default)' : 'var(--text-subtlest)',
+      borderRight: isLast ? 'none' : '1px solid var(--border-default)',
       transition: 'all .15s',
-    }}
-    onMouseEnter={e => { if (!active) e.target.style.background = 'var(--bg-secondary)'; }}
-    onMouseLeave={e => { if (!active) e.target.style.background = 'transparent'; }}
-    >
+    }}>
       {label}
     </button>
   );
@@ -2672,9 +2670,9 @@ function App() {
 
       {/* Controls */}
       <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', flexWrap:'wrap', gap:12, marginBottom:24 }}>
-        <div style={{ display:'flex', gap:4, background:'var(--bg-secondary)', borderRadius:8, padding:4 }}>
-          {tabs.map(t => (
-            <NavPill key={t.id} label={`${t.label} (${t.count})`} active={tab === t.id} onClick={() => { setTab(t.id); setSearch(''); }} />
+        <div style={{ display:'flex', border:'1px solid var(--border-default)', borderRadius:6, overflow:'hidden' }}>
+          {tabs.map((t, i) => (
+            <NavPill key={t.id} label={`${t.label} (${t.count})`} active={tab === t.id} isLast={i === tabs.length - 1} onClick={() => { setTab(t.id); setSearch(''); }} />
           ))}
         </div>
 
