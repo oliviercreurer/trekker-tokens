@@ -37,8 +37,8 @@
     --text-subtlest: #575653;
     --border-default: #343331;
     --border-bold: #6F6E69;
-    --border-boldest: #FFFCF0;
-    --bg-inverted: #FFFCF0;
+    --border-boldest: #FFFDF6;
+    --bg-inverted: #FFFDF6;
     --brand: #4385BE;
     --brand-subtle: #12253B;
   }
@@ -75,7 +75,7 @@
 <div id="root"></div>
 <script id="token-data" type="application/json">
 {
-  "exportedAt": "2026-02-12T16:36:28.638Z",
+  "exportedAt": "2026-02-13T00:00:00.000Z",
   "collections": {
     "color": {
       "name": "Color",
@@ -128,7 +128,7 @@
               "description": "",
               "light": {
                 "alias": "base-00",
-                "hex": "FFFCF0"
+                "hex": "FFFDF6"
               },
               "dark": {
                 "alias": "base-1000",
@@ -312,24 +312,24 @@
               "name": "link/default",
               "description": "",
               "light": {
-                "alias": "cyan-600",
-                "hex": "24837B"
+                "alias": "blue-600",
+                "hex": "205EA6"
               },
               "dark": {
-                "alias": "cyan-400",
-                "hex": "3AA99F"
+                "alias": "blue-400",
+                "hex": "4385BE"
               }
             },
             {
               "name": "link/pressed",
               "description": "",
               "light": {
-                "alias": "cyan-700",
-                "hex": "1C6C66"
+                "alias": "blue-700",
+                "hex": "1A4F8C"
               },
               "dark": {
-                "alias": "cyan-300",
-                "hex": "5ABDAC"
+                "alias": "blue-300",
+                "hex": "66A0C8"
               }
             }
           ]
@@ -337,18 +337,6 @@
         "icon": {
           "label": "Icon",
           "tokens": [
-            {
-              "name": "icon/bold",
-              "description": "",
-              "light": {
-                "alias": "base-900",
-                "hex": "282726"
-              },
-              "dark": {
-                "alias": "base-200",
-                "hex": "CECDC3"
-              }
-            },
             {
               "name": "icon/default",
               "description": "",
@@ -390,7 +378,7 @@
               "description": "",
               "light": {
                 "alias": "base-00",
-                "hex": "FFFCF0"
+                "hex": "FFFDF6"
               },
               "dark": {
                 "alias": "base-1000",
@@ -555,7 +543,7 @@
               },
               "dark": {
                 "alias": "base-00",
-                "hex": "FFFCF0"
+                "hex": "FFFDF6"
               }
             },
             {
@@ -563,7 +551,7 @@
               "description": "",
               "light": {
                 "alias": "base-00",
-                "hex": "FFFCF0"
+                "hex": "FFFDF6"
               },
               "dark": {
                 "alias": "base-1000",
@@ -808,7 +796,7 @@
               "description": "",
               "light": {
                 "alias": "base-50",
-                "hex": "F2F0E5"
+                "hex": "F7F6ED"
               },
               "dark": {
                 "alias": "base-900",
@@ -825,7 +813,7 @@
               "description": "",
               "light": {
                 "alias": "base-00",
-                "hex": "FFFCF0"
+                "hex": "FFFDF6"
               },
               "dark": {
                 "alias": "base-1000",
@@ -837,7 +825,7 @@
               "description": "",
               "light": {
                 "alias": "base-50",
-                "hex": "F2F0E5"
+                "hex": "F7F6ED"
               },
               "dark": {
                 "alias": "base-950",
@@ -853,7 +841,7 @@
               },
               "dark": {
                 "alias": "base-00",
-                "hex": "FFFCF0"
+                "hex": "FFFDF6"
               }
             },
             {
@@ -873,7 +861,7 @@
               "description": "",
               "light": {
                 "alias": "base-50",
-                "hex": "F2F0E5"
+                "hex": "F7F6ED"
               },
               "dark": {
                 "alias": "base-900",
@@ -909,7 +897,7 @@
               "description": "",
               "light": {
                 "alias": "base-50",
-                "hex": "F2F0E5"
+                "hex": "F7F6ED"
               },
               "dark": {
                 "alias": "base-900",
@@ -2281,11 +2269,6 @@
               "description": "Use for the largest pieces of the UI and for layout elements."
             },
             {
-              "name": "spacing/500",
-              "value": 40,
-              "description": "Use for the largest pieces of the UI and for layout elements."
-            },
-            {
               "name": "spacing/600",
               "value": 48,
               "description": "Use for the largest pieces of the UI and for layout elements."
@@ -2341,8 +2324,18 @@
               "description": "Use for larger page elements: large cards"
             },
             {
+              "name": "radius/250",
+              "value": 20,
+              "description": "Use for larger page elements: large cards"
+            },
+            {
               "name": "radius/300",
               "value": 24,
+              "description": "Use for largest UI elements, like modals"
+            },
+            {
+              "name": "radius/400",
+              "value": 32,
               "description": "Use for largest UI elements, like modals"
             },
             {
@@ -2388,13 +2381,7 @@
             {
               "name": "text.heading.xxlarge",
               "specimen": "Fire",
-              "resolved": {
-                "fontFamily": "Outfit",
-                "fontStyle": "SemiBold",
-                "fontSize": 48,
-                "lineHeight": 60,
-                "letterSpacing": -0.5
-              },
+              "resolved": { "fontFamily": "Outfit", "fontStyle": "SemiBold", "fontSize": 48, "lineHeight": 60, "letterSpacing": -0.5 },
               "recipe": {
                 "fontFamily": "font.family.body",
                 "fontWeight": "font.weight.semibold",
@@ -2406,13 +2393,7 @@
             {
               "name": "text.heading.xlarge",
               "specimen": "Walk",
-              "resolved": {
-                "fontFamily": "Outfit",
-                "fontStyle": "SemiBold",
-                "fontSize": 40,
-                "lineHeight": 48,
-                "letterSpacing": -0.5
-              },
+              "resolved": { "fontFamily": "Outfit", "fontStyle": "SemiBold", "fontSize": 40, "lineHeight": 48, "letterSpacing": -0.5 },
               "recipe": {
                 "fontFamily": "font.family.body",
                 "fontWeight": "font.weight.semibold",
@@ -2424,13 +2405,7 @@
             {
               "name": "text.heading.large",
               "specimen": "With me",
-              "resolved": {
-                "fontFamily": "Outfit",
-                "fontStyle": "SemiBold",
-                "fontSize": 32,
-                "lineHeight": 40,
-                "letterSpacing": -0.5
-              },
+              "resolved": { "fontFamily": "Outfit", "fontStyle": "SemiBold", "fontSize": 32, "lineHeight": 40, "letterSpacing": -0.5 },
               "recipe": {
                 "fontFamily": "font.family.body",
                 "fontWeight": "font.weight.semibold",
@@ -2442,13 +2417,7 @@
             {
               "name": "text.heading.medium",
               "specimen": "One chants out",
-              "resolved": {
-                "fontFamily": "Outfit",
-                "fontStyle": "SemiBold",
-                "fontSize": 24,
-                "lineHeight": 32,
-                "letterSpacing": 0
-              },
+              "resolved": { "fontFamily": "Outfit", "fontStyle": "SemiBold", "fontSize": 24, "lineHeight": 32, "letterSpacing": 0 },
               "recipe": {
                 "fontFamily": "font.family.body",
                 "fontWeight": "font.weight.semibold",
@@ -2460,13 +2429,7 @@
             {
               "name": "text.heading.small",
               "specimen": "Between two worlds",
-              "resolved": {
-                "fontFamily": "Outfit",
-                "fontStyle": "SemiBold",
-                "fontSize": 18,
-                "lineHeight": 24,
-                "letterSpacing": 0
-              },
+              "resolved": { "fontFamily": "Outfit", "fontStyle": "SemiBold", "fontSize": 18, "lineHeight": 24, "letterSpacing": 0 },
               "recipe": {
                 "fontFamily": "font.family.body",
                 "fontWeight": "font.weight.semibold",
@@ -2478,13 +2441,7 @@
             {
               "name": "text.heading.xsmall",
               "specimen": "The magician longs to see",
-              "resolved": {
-                "fontFamily": "Outfit",
-                "fontStyle": "SemiBold",
-                "fontSize": 16,
-                "lineHeight": 24,
-                "letterSpacing": 0
-              },
+              "resolved": { "fontFamily": "Outfit", "fontStyle": "SemiBold", "fontSize": 16, "lineHeight": 24, "letterSpacing": 0 },
               "recipe": {
                 "fontFamily": "font.family.body",
                 "fontWeight": "font.weight.semibold",
@@ -2501,13 +2458,7 @@
             {
               "name": "text.body.large.semibold",
               "specimen": "Through the darkness of future's past, the magician longs to see. One chants out between two worlds...Fire walk with me.",
-              "resolved": {
-                "fontFamily": "Outfit",
-                "fontStyle": "SemiBold",
-                "fontSize": 18,
-                "lineHeight": 24,
-                "letterSpacing": 0
-              },
+              "resolved": { "fontFamily": "Outfit", "fontStyle": "SemiBold", "fontSize": 18, "lineHeight": 24, "letterSpacing": 0 },
               "recipe": {
                 "fontFamily": "font.family.body",
                 "fontWeight": "font.weight.semibold",
@@ -2519,13 +2470,7 @@
             {
               "name": "text.body.large.medium",
               "specimen": "Through the darkness of future's past, the magician longs to see. One chants out between two worlds...Fire walk with me.",
-              "resolved": {
-                "fontFamily": "Outfit",
-                "fontStyle": "Medium",
-                "fontSize": 18,
-                "lineHeight": 24,
-                "letterSpacing": 0
-              },
+              "resolved": { "fontFamily": "Outfit", "fontStyle": "Medium", "fontSize": 18, "lineHeight": 24, "letterSpacing": 0 },
               "recipe": {
                 "fontFamily": "font.family.body",
                 "fontWeight": "font.weight.medium",
@@ -2537,13 +2482,7 @@
             {
               "name": "text.body.large.regular",
               "specimen": "Through the darkness of future's past, the magician longs to see. One chants out between two worlds...Fire walk with me.",
-              "resolved": {
-                "fontFamily": "Outfit",
-                "fontStyle": "Regular",
-                "fontSize": 18,
-                "lineHeight": 24,
-                "letterSpacing": 0
-              },
+              "resolved": { "fontFamily": "Outfit", "fontStyle": "Regular", "fontSize": 18, "lineHeight": 24, "letterSpacing": 0 },
               "recipe": {
                 "fontFamily": "font.family.body",
                 "fontWeight": "font.weight.regular",
@@ -2555,13 +2494,7 @@
             {
               "name": "text.body.normal.semibold",
               "specimen": "Through the darkness of future's past, the magician longs to see. One chants out between two worlds...Fire walk with me.",
-              "resolved": {
-                "fontFamily": "Outfit",
-                "fontStyle": "SemiBold",
-                "fontSize": 16,
-                "lineHeight": 24,
-                "letterSpacing": 0
-              },
+              "resolved": { "fontFamily": "Outfit", "fontStyle": "SemiBold", "fontSize": 16, "lineHeight": 24, "letterSpacing": 0 },
               "recipe": {
                 "fontFamily": "font.family.body",
                 "fontWeight": "font.weight.semibold",
@@ -2573,13 +2506,7 @@
             {
               "name": "text.body.normal.medium",
               "specimen": "Through the darkness of future's past, the magician longs to see. One chants out between two worlds...Fire walk with me.",
-              "resolved": {
-                "fontFamily": "Outfit",
-                "fontStyle": "Medium",
-                "fontSize": 16,
-                "lineHeight": 24,
-                "letterSpacing": 0
-              },
+              "resolved": { "fontFamily": "Outfit", "fontStyle": "Medium", "fontSize": 16, "lineHeight": 24, "letterSpacing": 0 },
               "recipe": {
                 "fontFamily": "font.family.body",
                 "fontWeight": "font.weight.medium",
@@ -2591,13 +2518,7 @@
             {
               "name": "text.body.normal.regular",
               "specimen": "Through the darkness of future's past, the magician longs to see. One chants out between two worlds...Fire walk with me.",
-              "resolved": {
-                "fontFamily": "Outfit",
-                "fontStyle": "Regular",
-                "fontSize": 16,
-                "lineHeight": 24,
-                "letterSpacing": 0
-              },
+              "resolved": { "fontFamily": "Outfit", "fontStyle": "Regular", "fontSize": 16, "lineHeight": 24, "letterSpacing": 0 },
               "recipe": {
                 "fontFamily": "font.family.body",
                 "fontWeight": "font.weight.regular",
@@ -2609,13 +2530,7 @@
             {
               "name": "text.body.small.semibold",
               "specimen": "Through the darkness of future's past, the magician longs to see. One chants out between two worlds...Fire walk with me.",
-              "resolved": {
-                "fontFamily": "Outfit",
-                "fontStyle": "SemiBold",
-                "fontSize": 14,
-                "lineHeight": 22,
-                "letterSpacing": 0
-              },
+              "resolved": { "fontFamily": "Outfit", "fontStyle": "SemiBold", "fontSize": 14, "lineHeight": 22, "letterSpacing": 0 },
               "recipe": {
                 "fontFamily": "font.family.body",
                 "fontWeight": "font.weight.semibold",
@@ -2627,13 +2542,7 @@
             {
               "name": "text.body.small.medium",
               "specimen": "Through the darkness of future's past, the magician longs to see. One chants out between two worlds...Fire walk with me.",
-              "resolved": {
-                "fontFamily": "Outfit",
-                "fontStyle": "Medium",
-                "fontSize": 14,
-                "lineHeight": 22,
-                "letterSpacing": 0
-              },
+              "resolved": { "fontFamily": "Outfit", "fontStyle": "Medium", "fontSize": 14, "lineHeight": 22, "letterSpacing": 0 },
               "recipe": {
                 "fontFamily": "font.family.body",
                 "fontWeight": "font.weight.medium",
@@ -2645,13 +2554,7 @@
             {
               "name": "text.body.small.regular",
               "specimen": "Through the darkness of future's past, the magician longs to see. One chants out between two worlds...Fire walk with me.",
-              "resolved": {
-                "fontFamily": "Outfit",
-                "fontStyle": "Regular",
-                "fontSize": 14,
-                "lineHeight": 22,
-                "letterSpacing": 0
-              },
+              "resolved": { "fontFamily": "Outfit", "fontStyle": "Regular", "fontSize": 14, "lineHeight": 22, "letterSpacing": 0 },
               "recipe": {
                 "fontFamily": "font.family.body",
                 "fontWeight": "font.weight.regular",
@@ -2663,13 +2566,7 @@
             {
               "name": "text.body.xsmall.semibold",
               "specimen": "Through the darkness of future's past, the magician longs to see. One chants out between two worlds...Fire walk with me.",
-              "resolved": {
-                "fontFamily": "Outfit",
-                "fontStyle": "SemiBold",
-                "fontSize": 12,
-                "lineHeight": 18,
-                "letterSpacing": 0
-              },
+              "resolved": { "fontFamily": "Outfit", "fontStyle": "SemiBold", "fontSize": 12, "lineHeight": 18, "letterSpacing": 0 },
               "recipe": {
                 "fontFamily": "font.family.body",
                 "fontWeight": "font.weight.semibold",
@@ -2681,13 +2578,7 @@
             {
               "name": "text.body.xsmall.medium",
               "specimen": "Through the darkness of future's past, the magician longs to see. One chants out between two worlds...Fire walk with me.",
-              "resolved": {
-                "fontFamily": "Outfit",
-                "fontStyle": "Medium",
-                "fontSize": 12,
-                "lineHeight": 18,
-                "letterSpacing": 0
-              },
+              "resolved": { "fontFamily": "Outfit", "fontStyle": "Medium", "fontSize": 12, "lineHeight": 18, "letterSpacing": 0 },
               "recipe": {
                 "fontFamily": "font.family.body",
                 "fontWeight": "font.weight.medium",
@@ -2699,13 +2590,7 @@
             {
               "name": "text.body.xsmall.regular",
               "specimen": "Through the darkness of future's past, the magician longs to see. One chants out between two worlds...Fire walk with me.",
-              "resolved": {
-                "fontFamily": "Outfit",
-                "fontStyle": "Regular",
-                "fontSize": 12,
-                "lineHeight": 18,
-                "letterSpacing": 0
-              },
+              "resolved": { "fontFamily": "Outfit", "fontStyle": "Regular", "fontSize": 12, "lineHeight": 18, "letterSpacing": 0 },
               "recipe": {
                 "fontFamily": "font.family.body",
                 "fontWeight": "font.weight.regular",
@@ -2722,13 +2607,7 @@
             {
               "name": "text.technical.code",
               "specimen": "const greeting = 'Fire walk with me';",
-              "resolved": {
-                "fontFamily": "JetBrains Mono",
-                "fontStyle": "Regular",
-                "fontSize": 13,
-                "lineHeight": 20,
-                "letterSpacing": 0
-              },
+              "resolved": { "fontFamily": "JetBrains Mono", "fontStyle": "Regular", "fontSize": 13, "lineHeight": 20, "letterSpacing": 0 },
               "recipe": {
                 "fontFamily": "font.family.code",
                 "fontWeight": "font.weight.regular",
@@ -2740,13 +2619,7 @@
             {
               "name": "text.technical.large",
               "specimen": "Through the darkness of future's past, the magician longs to see.",
-              "resolved": {
-                "fontFamily": "JetBrains Mono",
-                "fontStyle": "Medium",
-                "fontSize": 16,
-                "lineHeight": 24,
-                "letterSpacing": 0
-              },
+              "resolved": { "fontFamily": "JetBrains Mono", "fontStyle": "Medium", "fontSize": 16, "lineHeight": 24, "letterSpacing": 0 },
               "recipe": {
                 "fontFamily": "font.family.technical",
                 "fontWeight": "font.weight.medium",
@@ -2758,13 +2631,7 @@
             {
               "name": "text.technical.medium",
               "specimen": "Through the darkness of future's past, the magician longs to see.",
-              "resolved": {
-                "fontFamily": "JetBrains Mono",
-                "fontStyle": "Medium",
-                "fontSize": 14,
-                "lineHeight": 22,
-                "letterSpacing": 0
-              },
+              "resolved": { "fontFamily": "JetBrains Mono", "fontStyle": "Medium", "fontSize": 14, "lineHeight": 22, "letterSpacing": 0 },
               "recipe": {
                 "fontFamily": "font.family.technical",
                 "fontWeight": "font.weight.medium",
@@ -2776,13 +2643,7 @@
             {
               "name": "text.technical.small",
               "specimen": "Through the darkness of future's past, the magician longs to see.",
-              "resolved": {
-                "fontFamily": "JetBrains Mono",
-                "fontStyle": "Medium",
-                "fontSize": 12,
-                "lineHeight": 20,
-                "letterSpacing": 0
-              },
+              "resolved": { "fontFamily": "JetBrains Mono", "fontStyle": "Medium", "fontSize": 12, "lineHeight": 20, "letterSpacing": 0 },
               "recipe": {
                 "fontFamily": "font.family.technical",
                 "fontWeight": "font.weight.medium",
@@ -2797,6 +2658,7 @@
     }
   }
 }
+
 </script>
 <script type="text/babel">
 const { useState, useMemo, useCallback, useEffect, useRef } = React;
