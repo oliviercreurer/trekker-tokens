@@ -5,7 +5,7 @@ description: "Sync design tokens from the Trekker V2 Figma file to tokens.json. 
 
 # Sync Trekker Tokens
 
-Extracts all design tokens and text styles from the Trekker V2 Figma file using the **plugin runtime** (figma_execute), then writes them to `tokens.json` and optionally stamps them into `index.html` via the export pipeline.
+Extracts all design tokens and text styles from the Trekker V2 Figma file using the **plugin runtime** (figma_execute), then writes them to `tokens.json` and stamps them into `index.html` via the export pipeline.
 
 ## Why plugin runtime matters
 
@@ -99,13 +99,15 @@ python3 <workspace>/.skills/sync-trekker-tokens/scripts/build_tokens.py \
 
 The script takes three positional arguments: variables input, styles input, and output path. It produces `tokens.json` following the schema documented in `references/token-schema.md`.
 
-### Step 5: Stamp into HTML (optional)
+### Step 5: Stamp into HTML
 
-If the user wants the HTML updated too, run the export pipeline:
+Run the export pipeline to inject the updated tokens into `index.html`:
 
 ```bash
-node scripts/export-tokens.mjs
+cd <workspace> && node scripts/export-tokens.mjs
 ```
+
+This replaces the JSON blob inside `<script id="token-data">` in `index.html` with the freshly built `tokens.json`. This step is **mandatory** — `index.html` is the actual site and must always reflect the latest token data.
 
 ### Step 6: Verify
 
