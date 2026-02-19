@@ -1,0 +1,2122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Travel Progress</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet" />
+  <link href="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.css" rel="stylesheet" />
+  <script src="https://fast.wistia.com/player.js" async></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body, #root { height: 100%; width: 100%; overflow: hidden; }
+    body { background: #fffdf6; -webkit-font-smoothing: antialiased; }
+    ::-webkit-scrollbar { width: 0; height: 0; background: transparent; }
+    /* Mapbox overrides */
+    .mapboxgl-map { font-family: 'Outfit', sans-serif; }
+    .mapboxgl-ctrl-attrib { font-size: 10px !important; }
+    .stop-marker {
+      display: flex; align-items: center; justify-content: center;
+      width: 32px; height: 32px; border-radius: 8px;
+      font-family: 'Outfit', sans-serif; font-weight: 600; font-size: 14px;
+      color: #fffdf6; line-height: 22px;
+      transition: scale .3s ease, box-shadow .3s ease, background .3s ease;
+      border: 2px solid transparent;
+      cursor: pointer;
+    }
+    .stop-marker.inactive {
+      background: #66800b; scale: 1;
+      box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.40);
+    }
+    .stop-marker.inactive.tracking {
+      background: #b7b5ac; scale: 0.85;
+      box-shadow: none;
+    }
+    .stop-marker.active {
+      background: #66800b; scale: 1.15;
+      box-shadow: 0 4px 12px rgba(102,128,11,.4);
+      border-color: #fffdf6;
+    }
+    .stop-marker.visited { background: #536907; scale: 0.95; }
+    .mapboxgl-popup-content {
+      border-radius: 12px; font-family: 'Outfit', sans-serif;
+      box-shadow: 0 4px 16px rgba(0,0,0,.12);
+      padding: 12px 16px; font-size: 14px; line-height: 20px;
+    }
+    .mapboxgl-popup-content b { font-weight: 600; }
+    .mapboxgl-popup-close-button { font-size: 18px; padding: 4px 8px; }
+    /* Wistia player placeholder */
+    wistia-player:not(:defined) {
+      background: center / contain no-repeat url('');
+      display: block; filter: blur(5px); padding-top: 56.25%;
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
+  <script src="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.js"></script>
+  <script type="text/babel" data-type="module">
+    const { useState, useEffect, useLayoutEffect, useRef, useCallback, useMemo } = React;
+
+    // ─── Design tokens ──────────────────────────────────────────
+    const BG      = "#fffdf6";
+    const BORDER  = "#DAD8CE";
+    const SUBTLE  = "#6f6e69";
+    const PRIMARY = "#1c1b1a";
+
+    // Gradient segment colors: track (stroke/ring) and bg (dot fill)
+    const TRACK_RGB = [
+      [249, 174, 119], // #F9AE77  orange
+      [236, 203,  96], // #ECCB60  yellow
+      [146, 191, 219], // #92BFDB  blue
+      [196, 185, 224], // #C4B9E0  purple
+    ];
+    const BG_RGB = [
+      [255, 231, 206], // #FFE7CE
+      [250, 238, 198], // #FAEEC6
+      [225, 236, 235], // #E1ECEB
+      [240, 234, 236], // #F0EAEC
+    ];
+
+    // Day section accent colors (for the scroll content below)
+    const DAY_ACCENTS = ["#D38B5C", "#C4A83E", "#5B94B8", "#8B7BB8"];
+
+    // ─── Color interpolation ────────────────────────────────────
+    function lerpColors(palette, t) {
+      const boundaries = [0.25, 0.5, 0.75];
+      const halfTrans  = 0.035;
+      let c = palette[0];
+      for (let b = 0; b < boundaries.length; b++) {
+        const bd = boundaries[b];
+        if (t > bd + halfTrans) {
+          c = palette[b + 1];
+        } else if (t > bd - halfTrans) {
+          const f = (t - (bd - halfTrans)) / (2 * halfTrans);
+          const s = f * f * (3 - 2 * f);
+          c = palette[b].map((v, k) => Math.round(v + (palette[b + 1][k] - v) * s));
+        }
+      }
+      return c;
+    }
+    function rgb(c) { return `rgb(${c[0]},${c[1]},${c[2]})`; }
+    function hex(c) { return "#" + c.map(v => v.toString(16).padStart(2, "0")).join(""); }
+
+    // ─── Pill geometry ──────────────────────────────────────────
+    const PW = 230, PH = 48, SW = 4;
+    const INSET = SW / 2, PR = (PH - SW) / 2;
+
+    function pillD() {
+      const i = INSET, w = PW - SW, h = PH - SW, r = PR;
+      const cx = PW / 2;
+      return [
+        `M ${cx} ${i}`,
+        `L ${i+w-r} ${i}`,
+        `A ${r} ${r} 0 0 1 ${i+w} ${i+r}`,
+        `A ${r} ${r} 0 0 1 ${i+w-r} ${i+h}`,
+        `L ${i+r} ${i+h}`,
+        `A ${r} ${r} 0 0 1 ${i} ${i+r}`,
+        `A ${r} ${r} 0 0 1 ${i+r} ${i}`,
+        `L ${cx} ${i}`,
+      ].join(" ");
+    }
+    const PILL_D = pillD();
+
+    // ─── Accent color derivation ────────────────────────────────
+    // Relative luminance per WCAG 2.0
+    function sRGBtoLinear(c) { c /= 255; return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4); }
+    function luminance(r, g, b) { return 0.2126 * sRGBtoLinear(r) + 0.7152 * sRGBtoLinear(g) + 0.0722 * sRGBtoLinear(b); }
+    function contrastRatio(l1, l2) { return (Math.max(l1, l2) + 0.05) / (Math.min(l1, l2) + 0.05); }
+
+    function hexToRgb(h) {
+      h = h.replace("#", "");
+      return [parseInt(h.slice(0,2),16), parseInt(h.slice(2,4),16), parseInt(h.slice(4,6),16)];
+    }
+    function rgbToHex(r, g, b) { return "#" + [r,g,b].map(v => Math.round(v).toString(16).padStart(2,"0")).join(""); }
+    function rgbToHsl(r, g, b) {
+      r /= 255; g /= 255; b /= 255;
+      const max = Math.max(r,g,b), min = Math.min(r,g,b), d = max - min;
+      let h = 0, s = 0, l = (max + min) / 2;
+      if (d > 0) {
+        s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+        if (max === r) h = ((g - b) / d + (g < b ? 6 : 0)) / 6;
+        else if (max === g) h = ((b - r) / d + 2) / 6;
+        else h = ((r - g) / d + 4) / 6;
+      }
+      return [h * 360, s * 100, l * 100];
+    }
+    function hslToRgb(h, s, l) {
+      h /= 360; s /= 100; l /= 100;
+      if (s === 0) { const v = Math.round(l * 255); return [v, v, v]; }
+      const hue2rgb = (p, q, t) => { if (t < 0) t += 1; if (t > 1) t -= 1; if (t < 1/6) return p + (q - p) * 6 * t; if (t < 1/2) return q; if (t < 2/3) return p + (q - p) * (2/3 - t) * 6; return p; };
+      const q = l < 0.5 ? l * (1 + s) : l + s - l * s, p = 2 * l - q;
+      return [Math.round(hue2rgb(p, q, h + 1/3) * 255), Math.round(hue2rgb(p, q, h) * 255), Math.round(hue2rgb(p, q, h - 1/3) * 255)];
+    }
+
+    // Enforce AA contrast (4.5:1) against white text by darkening if needed
+    function enforceAADark(hexColor) {
+      const [r, g, b] = hexToRgb(hexColor);
+      let [h, s, l] = rgbToHsl(r, g, b);
+      const whiteLum = 1;
+      // Darken until contrast ratio >= 4.5 with white
+      while (l > 5) {
+        const [tr, tg, tb] = hslToRgb(h, s, l);
+        const lum = luminance(tr, tg, tb);
+        if (contrastRatio(whiteLum, lum) >= 4.5) break;
+        l -= 1;
+      }
+      const [fr, fg, fb] = hslToRgb(h, s, l);
+      return rgbToHex(fr, fg, fb);
+    }
+
+    // Derive accent palette from a single hex color
+    function deriveAccent(inputHex) {
+      const bold = enforceAADark(inputHex);
+      const [r, g, b] = hexToRgb(bold);
+      const [h, s, l] = rgbToHsl(r, g, b);
+      // Text variant: slightly darker
+      const textRgb = hslToRgb(h, Math.min(s + 5, 100), Math.max(l - 8, 0));
+      const text = rgbToHex(...textRgb);
+      // Light BG variant: very desaturated, high lightness
+      const bgRgb = hslToRgb(h, Math.min(s * 0.35, 30), 91);
+      const bg = rgbToHex(...bgRgb);
+      // Border variant: medium desaturated
+      const borderRgb = hslToRgb(h, Math.min(s * 0.55, 50), 72);
+      const border = rgbToHex(...borderRgb);
+      return { bold, text, bg, border };
+    }
+
+    const DEFAULT_ACCENT = "#66800b";
+    const LINK        = "#24837b";
+    const SUBTLEST    = "#b7b5ac";
+
+    // ─── Responsive hook ──────────────────────────────────────
+    const MOBILE_BP = 768;
+    function useIsMobile() {
+      const [mobile, setMobile] = useState(() =>
+        typeof window !== "undefined" && window.innerWidth < MOBILE_BP
+      );
+      useEffect(() => {
+        const mq = window.matchMedia(`(max-width: ${MOBILE_BP - 1}px)`);
+        const handler = (e) => setMobile(e.matches);
+        mq.addEventListener("change", handler);
+        return () => mq.removeEventListener("change", handler);
+      }, []);
+      return mobile;
+    }
+
+    // ─── Image assets (Figma CDN, valid 7 days) ───────────────
+    const IMG_HERO    = "https://www.figma.com/api/mcp/asset/6a4c36b6-43f1-40de-837f-2fcc9295d62e";
+    const IMG_STOP = [
+      "https://www.figma.com/api/mcp/asset/60159158-91c8-4fe2-8428-fd2589a8ed98",
+      "https://www.figma.com/api/mcp/asset/542ed560-9052-4bb5-8037-22f1fe28b41c",
+      "https://www.figma.com/api/mcp/asset/632b7146-2236-4f45-ba9e-ab34366c0841",
+      "https://www.figma.com/api/mcp/asset/85ab6bb6-f955-44af-bcf2-02d4ff82e239",
+      "https://www.figma.com/api/mcp/asset/052a8ed4-e8a6-4920-865e-082c20cfb021",
+      "https://www.figma.com/api/mcp/asset/ae45c787-f913-49db-80d3-0198fa9604cc",
+      "https://www.figma.com/api/mcp/asset/60ea813a-af57-4deb-8c27-a338d24c9e12",
+      "https://www.figma.com/api/mcp/asset/dc9ac162-517c-4d67-9a47-d68380d508c0",
+      "https://www.figma.com/api/mcp/asset/d50efe0f-f2fe-410e-a33f-5cec03e3252f",
+    ];
+
+    // ─── Itinerary data (corrected addresses from Figma) ───────
+    // Items can be a regular stop, a stopGroup, or a message.
+    // stopGroup: { type: "group", label, area, desc, boundary: [[lng,lat]...], stops: [...] }
+    // message: { type: "message", icon, title, text }
+    // Regular stop: { num, tag, title, desc, biz, address, phone, img, lat, lng }
+    const ITINERARY = [
+      { day: 1, distance: "152.7km", items: [
+        { num: 1, tag: "Transportation", title: "Book your transportation with Executive Chauffeur Driving",
+          desc: "Executive Chauffeur Driving Inc. delivers premium black-car service across Alberta, offering luxury transportation for airport transfers, corporate travel, special events, and VIP clients. Professional drivers, pristine vehicles, and a commitment to exceptional service ensure every ride feels elevated, comfortable, and reliable.",
+          biz: "Executive Chauffeur Driving", address: "9804 100 Avenue, Grande Prairie, AB", phone: "(780) 228-2400", img: IMG_STOP[0],
+          lat: 55.17058, lng: -118.79520 },
+        { num: 2, tag: "Retail", title: "Stock up at The Joosed Moose Winery",
+          desc: "Grande Prairie's Cottage Winery, featuring Saskatoon and other fruit wines and mead. All locally grown fruit and honey.",
+          biz: "Joosed Moose Winery", address: "Grande Prairie, AB T8X 4K1", phone: "(780) 228-2400", img: IMG_STOP[1],
+          lat: 55.15520, lng: -118.76880 },
+        { type: "message", icon: "tree", title: "Scenery",
+          text: "This next stretch features some amazing nature spots, including Glastonbury Grove and Jack Rabbit\u2019s Palace \u2014 both of which might open up a portal to the Black Lodge if you\u2019re keen to have a freaky adventure on your way to the next stop." },
+        { num: 3, tag: "Retail", title: "Take in the views \u2014 and the amazing wines \u2014 at Broken Tine Orchard",
+          desc: "The surrounding views of the mountains to the south and the rolling hills provide a tranquil setting for our farm and haskap orchard. Broken Tine orchard makes wine, mead, haskap juice, fricey\u2019s (fruit covered ice cream bar) and offers private wine tours.",
+          biz: "Broken Tine Orchard", address: "705016 Range Road 125, Elmworth, AB", phone: "(780) 228-2400", img: IMG_STOP[2],
+          lat: 55.05100, lng: -119.61700 },
+        { type: "group", label: "Downtown Grande Prairie", tag: "Explore",
+          area: "Downtown core",
+          desc: "Spend the evening exploring downtown Grande Prairie\u2019s vibrant food and drink scene. Three stops, all within walking distance of each other in the historic downtown core.",
+          media: { type: "wistia", mediaId: "9c14yujqo1" },
+          // Rough polygon around downtown Grande Prairie
+          boundary: [
+            [-118.8140, 55.1740], [-118.8140, 55.1680], [-118.7990, 55.1680],
+            [-118.7990, 55.1740], [-118.8140, 55.1740],
+          ],
+          center: { lat: 55.1710, lng: -118.8060 },
+          stops: [
+            { num: 4, tag: "Meal", title: "Dinner time at Latitude 55",
+              desc: "Latitude 55 is Grande Prairie\u2019s cask-to-glass destination for locally crafted northern spirits, tapas-style bites, cocktails, mocktails, wine, and beer. Located in the historic Firehall, enjoy tastings, tours, live music, and a retail shop filled with unique take-home souvenirs. All ages welcome until 9pm.",
+              biz: "Latitude 55 Distillery & Lounge", address: "10030 102 Avenue, Grande Prairie, AB", phone: "(780) 228-2400", img: IMG_STOP[3],
+              lat: 55.17142, lng: -118.80520 },
+            { num: 5, tag: "Overnight", title: "Rest up at Pomeroy Hotel",
+              desc: "Elevate your experience with POM Club, the region\u2019s first premium hotel club floor experience. Located in the heart of Grande Prairie, Alberta, the Pomeroy Hotel & Conference Centre offers expansive meeting and event spaces, making our hotel a premier destination for business conferences and events, and travellers.",
+              biz: "Pomeroy Hotel and Conference Centre Grande Prairie", address: "11633 100 Street, Grande Prairie, AB", phone: "(780) 228-2400", img: IMG_STOP[4],
+              lat: 55.17530, lng: -118.79450 },
+          ],
+        },
+      ]},
+      { day: 2, distance: "84.3km", items: [
+        { num: 6, tag: "Meal", title: "Start your day at Stolen Harvest with some of Alberta\u2019s finest, hand-crafted meads",
+          desc: "Experience Stolen Harvest Meadery\u2019s hand-crafted Alberta meads made from local honey and foraged ingredients. Enjoy intimate tastings, seasonal flavours, and a light lunch in our Grovedale countryside setting. Tastings by appointment only.",
+          biz: "Stolen Harvest", address: "69156 Range Road 63, Grovedale, AB", phone: "(780) 380-7776", img: IMG_STOP[5],
+          lat: 55.02600, lng: -118.86400 },
+        { type: "group", label: "Downtown Crawl", tag: "Nightlife",
+          area: "Downtown Grande Prairie",
+          desc: "A curated crawl through downtown Grande Prairie\u2019s best spots for craft beer, cocktails, and live entertainment\u2014all within a few blocks of each other.",
+          boundary: [
+            [-118.8140, 55.1785], [-118.8140, 55.1690], [-118.7770, 55.1690],
+            [-118.7770, 55.1785], [-118.8140, 55.1785],
+          ],
+          center: { lat: 55.1730, lng: -118.7950 },
+          stops: [
+            { num: 7, tag: "Retail", title: "Explore Grain Bin Brewing, one of Grande Prairie\u2019s craft staples",
+              desc: "Grain Bin Brewing Company has been a craft staple in Grande Prairie over the last 10 years. With a focus on quality craft and local ingredients, they have product available in bars and liquor stores around town, as well as their cozy taproom.",
+              biz: "Grain Bin Brewing Company", address: "#101 - 11707 97 Avenue, Grande Prairie, AB", phone: "(780) 380-7776", img: IMG_STOP[6],
+              lat: 55.17640, lng: -118.78150 },
+            { num: 8, tag: "Meal", title: "Relax with a cocktail at 92 Bev Co.",
+              desc: "92 Beverage Co is a cocktail bar offering a relaxed vibe in an upscale environment, located in downtown Grande Prairie, AB. It offers the best in Peace Country hospitality with a combination of chill vibes, warm, friendly service, and upscale menu offerings.",
+              biz: "92 Bev Co.", address: "10017 100 Avenue, Grande Prairie, AB", phone: "(780) 380-7776", img: IMG_STOP[7],
+              lat: 55.17095, lng: -118.80100 },
+            { num: 9, tag: "Activity", title: "Take in a show at Grande Prairie Live Theatre",
+              desc: "For over 60 years, Grande Prairie Live Theatre has been powered by the talents of more than 4,100 volunteers \u2014 actors, singers, dancers, directors, producers, designers, technicians, and behind-the-scenes magicians of every kind. GPLT is a vibrant hub for various plays, concerts, films, and special events.",
+              biz: "Grande Prairie Live Theatre", address: "10130 98 Avenue, Grande Prairie, AB", phone: "(780) 380-7776", img: IMG_STOP[8],
+              lat: 55.17020, lng: -118.80880 },
+          ],
+        },
+      ]},
+    ];
+
+    // Flatten all stops for map (including stops inside groups, excluding messages)
+    const ALL_STOPS = ITINERARY.flatMap(d =>
+      d.items.flatMap(item =>
+        item.type === "group" ? item.stops :
+        item.type === "message" ? [] : [item]
+      )
+    );
+
+    // Flatten all items for scroll tracking (each item = one scrollable card)
+    // Groups get a sequential "itemIdx" just like individual stops
+    const ALL_ITEMS = ITINERARY.flatMap(d =>
+      d.items.map(item => ({ ...item, day: d.day }))
+    );
+
+    // Collect all groups for boundary rendering
+    const ALL_GROUPS = ITINERARY.flatMap(d =>
+      d.items.filter(item => item.type === "group")
+    );
+
+    // ─── Progress Pill ──────────────────────────────────────────
+    const COMPLETE_TRACK = "#BEC97E";
+    const COMPLETE_BG    = "#EDEECF";
+
+    function ProgressPill({ dayNumber, distance, progress, isComplete = false }) {
+      const canvasRef  = useRef(null);
+      const ctxRef     = useRef(null);
+      const pathRef    = useRef(null);
+      const pointsRef  = useRef([]);
+      const dotRef     = useRef(null);
+      const displayRef = useRef(0);
+      const targetRef  = useRef(0);
+      const rafRef     = useRef(null);
+      const [ready, setReady] = useState(false);
+      const hasStartedRef = useRef(false);
+      if (progress > 0.01) hasStartedRef.current = true;
+
+      // Track day changes to detect backward scrolling across days
+      const prevDayNumRef = useRef(dayNumber);
+      const dayTransitionRef = useRef(null); // { from: colorArray, fade: 0..1 }
+
+      // When day changes backward, snap position and start color crossfade
+      useEffect(() => {
+        if (dayNumber !== prevDayNumRef.current) {
+          const wentBack = dayNumber < prevDayNumRef.current;
+          if (wentBack) {
+            // Snap dot + display immediately to new progress (no looping animation)
+            displayRef.current = progress;
+            targetRef.current = progress;
+            // Start a crossfade from the old day's track color to the new day's
+            // Old color = color at progress ~0 (start of old day), new = color at current progress
+            dayTransitionRef.current = {
+              fromColor: lerpColors(TRACK_RGB, 0.0), // color at start of the day we came from
+              fade: 0,
+            };
+          }
+          prevDayNumRef.current = dayNumber;
+        }
+      }, [dayNumber, progress]);
+
+      targetRef.current = progress;
+
+      useEffect(() => {
+        const cvs = canvasRef.current;
+        const dpr = window.devicePixelRatio || 1;
+        cvs.width  = PW * dpr;
+        cvs.height = PH * dpr;
+        cvs.style.width  = PW + "px";
+        cvs.style.height = PH + "px";
+        const ctx = cvs.getContext("2d");
+        ctx.scale(dpr, dpr);
+        ctxRef.current = ctx;
+
+        const path = pathRef.current;
+        const totalLen = path.getTotalLength();
+        const step = 1.4;
+        const n = Math.ceil(totalLen / step);
+        const pts = [];
+        for (let i = 0; i <= n; i++) {
+          const t = i / n;
+          const pt = path.getPointAtLength(t * totalLen);
+          pts.push({ x: pt.x, y: pt.y, t });
+        }
+        pointsRef.current = pts;
+        setReady(true);
+      }, []);
+
+      useLayoutEffect(() => {
+        const ctx = ctxRef.current;
+        const pts = pointsRef.current;
+        if (!ctx || pts.length === 0) return;
+
+        ctx.clearRect(0, 0, PW, PH);
+        if (progress < 0.003) return;
+
+        ctx.lineWidth = SW;
+        ctx.lineCap   = "butt";
+
+        const visibleIdx = Math.floor(Math.min(progress, 0.998) * (pts.length - 1));
+
+        // Override track color when itinerary is complete
+        let trackColor;
+        if (isComplete) {
+          trackColor = COMPLETE_TRACK;
+        } else {
+          // During a day-backward crossfade, blend colors
+          const trans = dayTransitionRef.current;
+          if (trans && trans.fade < 1) {
+            const targetColor = lerpColors(TRACK_RGB, Math.min(progress, 0.998));
+            const f = trans.fade;
+            trackColor = rgb([
+              Math.round(trans.fromColor[0] * (1 - f) + targetColor[0] * f),
+              Math.round(trans.fromColor[1] * (1 - f) + targetColor[1] * f),
+              Math.round(trans.fromColor[2] * (1 - f) + targetColor[2] * f),
+            ]);
+          } else {
+            trackColor = rgb(lerpColors(TRACK_RGB, Math.min(progress, 0.998)));
+          }
+        }
+        ctx.strokeStyle = trackColor;
+
+        for (let i = 0; i < visibleIdx; i++) {
+          const p1 = pts[i];
+          const p2 = pts[i + 1];
+          if (!p2) break;
+          const dx = p2.x - p1.x, dy = p2.y - p1.y;
+          const segLen = Math.sqrt(dx * dx + dy * dy);
+          const ov = segLen > 0 ? 0.3 / segLen : 0;
+          ctx.beginPath();
+          ctx.moveTo(p1.x, p1.y);
+          ctx.lineTo(p2.x + dx * ov, p2.y + dy * ov);
+          ctx.stroke();
+        }
+      }, [progress, ready, isComplete]);
+
+      useEffect(() => {
+        if (!ready) return;
+        let lastTime = 0;
+        const EASE = 12;
+        function tick(now) {
+          rafRef.current = requestAnimationFrame(tick);
+          const dt = lastTime ? Math.min((now - lastTime) / 1000, 0.05) : 0.016;
+          lastTime = now;
+
+          // Advance crossfade if active
+          const trans = dayTransitionRef.current;
+          if (trans && trans.fade < 1) {
+            trans.fade = Math.min(trans.fade + dt * 2.5, 1); // ~400ms crossfade
+            if (trans.fade >= 1) dayTransitionRef.current = null;
+          }
+
+          const target  = targetRef.current;
+          const current = displayRef.current;
+          const diff    = target - current;
+          // Snap if large backward jump (within same day) or if crossfade is active
+          if (diff < -0.3) {
+            displayRef.current = target;
+          } else {
+            const step = 1 - Math.exp(-EASE * dt);
+            displayRef.current = current + diff * step;
+            if (Math.abs(diff) < 0.001) displayRef.current = target;
+          }
+          const dot = dotRef.current;
+          const pts = pointsRef.current;
+          if (!dot || pts.length === 0 || !hasStartedRef.current) return;
+          const p = Math.min(Math.max(displayRef.current, 0), 0.998);
+          const idx = Math.min(Math.floor(p * (pts.length - 1)), pts.length - 1);
+          const pt = pts[idx];
+          dot.setAttribute("cx", pt.x);
+          dot.setAttribute("cy", pt.y);
+
+          // During crossfade, blend dot colors too
+          if (trans && trans.fade < 1) {
+            const f = trans.fade;
+            const targetBg = lerpColors(BG_RGB, pt.t);
+            const targetStroke = lerpColors(TRACK_RGB, pt.t);
+            const fromBg = lerpColors(BG_RGB, 0.0);
+            const fromStroke = trans.fromColor;
+            dot.setAttribute("fill", rgb([
+              Math.round(fromBg[0] * (1 - f) + targetBg[0] * f),
+              Math.round(fromBg[1] * (1 - f) + targetBg[1] * f),
+              Math.round(fromBg[2] * (1 - f) + targetBg[2] * f),
+            ]));
+            dot.setAttribute("stroke", rgb([
+              Math.round(fromStroke[0] * (1 - f) + targetStroke[0] * f),
+              Math.round(fromStroke[1] * (1 - f) + targetStroke[1] * f),
+              Math.round(fromStroke[2] * (1 - f) + targetStroke[2] * f),
+            ]));
+          } else {
+            dot.setAttribute("fill",   rgb(lerpColors(BG_RGB,    pt.t)));
+            dot.setAttribute("stroke", rgb(lerpColors(TRACK_RGB, pt.t)));
+          }
+        }
+        rafRef.current = requestAnimationFrame(tick);
+        return () => { if (rafRef.current) cancelAnimationFrame(rafRef.current); };
+      }, [ready]);
+
+      const labelColor = "#100F0F";
+
+      const [textPhase, setTextPhase] = useState("idle");
+      const [displayDay, setDisplayDay] = useState(dayNumber);
+      const [displayDist, setDisplayDist] = useState(distance);
+      const [displayComplete, setDisplayComplete] = useState(false);
+      const prevDayRef = useRef(dayNumber);
+      const prevCompleteRef = useRef(false);
+
+      useEffect(() => {
+        const dayChanged = dayNumber !== prevDayRef.current;
+        const completeChanged = isComplete !== prevCompleteRef.current;
+        if (!dayChanged && !completeChanged) return;
+        prevDayRef.current = dayNumber;
+        prevCompleteRef.current = isComplete;
+        setTextPhase("exiting");
+        const exitTimer = setTimeout(() => {
+          setDisplayDay(dayNumber);
+          setDisplayDist(distance);
+          setDisplayComplete(isComplete);
+          setTextPhase("entering");
+          const enterTimer = setTimeout(() => { setTextPhase("idle"); }, 280);
+          return () => clearTimeout(enterTimer);
+        }, 240);
+        return () => clearTimeout(exitTimer);
+      }, [dayNumber, distance, isComplete]);
+
+      useEffect(() => {
+        if (textPhase === "idle" && dayNumber === displayDay && !isComplete) {
+          setDisplayDist(distance);
+        }
+      }, [distance, textPhase, dayNumber, displayDay, isComplete]);
+
+      const textStyle = (() => {
+        switch (textPhase) {
+          case "exiting":
+            return { opacity: 0, transform: "translateY(-10px)", transition: "opacity .24s ease-in, transform .24s ease-in" };
+          case "entering":
+            return { opacity: 1, transform: "translateY(0px)", transition: "opacity .28s ease-out, transform .28s ease-out" };
+          default:
+            return { opacity: 1, transform: "translateY(0px)", transition: "none" };
+        }
+      })();
+
+      const textEnterRef = useRef(null);
+      useLayoutEffect(() => {
+        if (textPhase === "entering" && textEnterRef.current) {
+          const el = textEnterRef.current;
+          el.style.transition = "none";
+          el.style.opacity = "0";
+          el.style.transform = "translateY(10px)";
+          el.getBoundingClientRect();
+          el.style.transition = "opacity .28s ease-out, transform .28s ease-out";
+          el.style.opacity = "1";
+          el.style.transform = "translateY(0px)";
+        }
+      }, [textPhase]);
+
+      const initX = PW / 2, initY = INSET;
+      const pillBg = isComplete
+        ? COMPLETE_BG
+        : (hasStartedRef.current && progress > 0.003
+          ? rgb(lerpColors(BG_RGB, Math.min(progress, 0.998)))
+          : BG);
+
+      return (
+        <div style={{ position: "relative", width: PW, height: PH }}>
+          <svg width={PW} height={PH} viewBox={`0 0 ${PW} ${PH}`}
+               style={{ position: "absolute", top: 0, left: 0, overflow: "visible" }}>
+            <rect x={INSET} y={INSET} width={PW - SW} height={PH - SW}
+                  rx={PR} ry={PR} fill={pillBg} stroke={isComplete ? COMPLETE_TRACK : BORDER} strokeWidth={SW}
+                  style={{ transition: "fill .6s ease, stroke .6s ease" }} />
+            <path ref={pathRef} d={PILL_D} fill="none" stroke="none" />
+          </svg>
+          <canvas ref={canvasRef}
+                  style={{ position: "absolute", top: 0, left: 0, pointerEvents: "none" }} />
+          {hasStartedRef.current && (
+            <svg width={PW} height={PH} viewBox={`0 0 ${PW} ${PH}`}
+                 style={{
+                   position: "absolute", top: 0, left: 0, overflow: "visible", pointerEvents: "none",
+                   opacity: isComplete ? 0 : 1,
+                   transition: "opacity .5s ease",
+                 }}>
+              <circle ref={dotRef} cx={initX} cy={initY} r={5.5}
+                      fill={rgb(BG_RGB[0])} stroke={rgb(TRACK_RGB[0])} strokeWidth={2.5}
+                      style={{ filter: "drop-shadow(0 1px 2px rgba(0,0,0,0.12))" }} />
+            </svg>
+          )}
+          <div style={{
+            position: "absolute", inset: 0, overflow: "hidden",
+            display: "flex", alignItems: "center", justifyContent: "center",
+            pointerEvents: "none",
+          }}>
+            <div ref={textEnterRef} style={{
+              display: "flex", alignItems: "center", justifyContent: "center", gap: 12,
+              ...textStyle,
+            }}>
+              {displayComplete ? (
+                <span style={{
+                  fontFamily: "'Outfit', sans-serif", fontWeight: 600, fontSize: 16,
+                  color: labelColor, fontFeatureSettings: "'lnum' 1, 'tnum' 1",
+                }}>End of itinerary</span>
+              ) : (
+                <>
+                  <span style={{
+                    fontFamily: "'Outfit', sans-serif", fontWeight: 600, fontSize: 16,
+                    color: labelColor, fontFeatureSettings: "'lnum' 1, 'tnum' 1",
+                  }}>Day {displayDay}</span>
+                  <svg width="1" height="16" style={{ flexShrink: 0 }}>
+                    <line x1=".5" y1="0" x2=".5" y2="16"
+                          stroke={hasStartedRef.current && progress > 0.003 ? rgb(lerpColors(TRACK_RGB, Math.min(progress, 0.998))) : BORDER}
+                          style={{ transition: "stroke .6s ease" }} />
+                  </svg>
+                  <span style={{
+                    fontFamily: "'JetBrains Mono', monospace", fontSize: 14, color: SUBTLE,
+                  }}>{displayDist}</span>
+                </>
+              )}
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    // ─── Tag pill ──────────────────────────────────────────────
+    function Tag({ text, accent }) {
+      return (
+        <span style={{
+          display: "inline-flex", alignItems: "center", gap: 6,
+          padding: "1px 12px", borderRadius: 999,
+          background: accent.bg, border: `1px solid ${accent.border}`,
+          fontFamily: "'Outfit', sans-serif", fontWeight: 600, fontSize: 14,
+          color: accent.text, lineHeight: "22px",
+          fontFeatureSettings: "'lnum' 1, 'tnum' 1",
+          transition: "background .3s ease, border-color .3s ease, color .3s ease",
+        }}>{text}</span>
+      );
+    }
+
+    // ─── Stop card ──────────────────────────────────────────────
+    function StopCard({ stop, isLast, isActive, accent }) {
+      return (
+        <div style={{
+          display: "flex", flexDirection: "column", gap: 15,
+          filter: isActive ? "none" : "grayscale(1)",
+          opacity: isActive ? 1 : 0.45,
+          transition: "filter .4s ease, opacity .4s ease",
+        }}>
+          <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
+            <div style={{
+              width: 32, height: 32, borderRadius: 8,
+              background: isActive ? accent.bold : SUBTLEST,
+              display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0,
+              fontFamily: "'Outfit', sans-serif", fontWeight: 600, fontSize: 14,
+              color: BG, lineHeight: "22px",
+              fontFeatureSettings: "'lnum' 1, 'tnum' 1",
+              transition: "background .3s ease",
+            }}>{stop.num}</div>
+            <Tag text={stop.tag} accent={accent} />
+          </div>
+          <div style={{ display: "flex", gap: 12 }}>
+            <div style={{
+              width: 32, flexShrink: 0, display: "flex", flexDirection: "column", alignItems: "center",
+            }}>
+              <div style={{
+                width: 2, flex: 1,
+                background: "linear-gradient(180deg, #DAD8CE 0%, rgba(218, 216, 206, 0.00) 86.26%)",
+                borderRadius: 1,
+              }} />
+            </div>
+            <div style={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column", gap: 16 }}>
+              <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+                <p style={{
+                  fontFamily: "'Outfit', sans-serif", fontWeight: 600, fontSize: 18,
+                  lineHeight: "24px", color: "#100f0f", margin: 0,
+                  fontFeatureSettings: "'lnum' 1, 'tnum' 1",
+                }}>{stop.title}</p>
+                <p style={{
+                  fontFamily: "'Outfit', sans-serif", fontWeight: 400, fontSize: 16,
+                  lineHeight: "24px", color: SUBTLE, margin: 0,
+                  fontFeatureSettings: "'lnum' 1, 'tnum' 1",
+                }}>{stop.desc}</p>
+              </div>
+              <div style={{ display: "flex", gap: 16, alignItems: "flex-start" }}>
+                <img src={stop.img} alt="" style={{
+                  width: 100, height: 100, borderRadius: 8, objectFit: "cover", flexShrink: 0,
+                }} />
+                <div style={{ display: "flex", flexDirection: "column", gap: 4, minWidth: 0 }}>
+                  <span style={{
+                    fontFamily: "'Outfit', sans-serif", fontWeight: 600, fontSize: 14,
+                    color: LINK, lineHeight: "22px",
+                    fontFeatureSettings: "'lnum' 1, 'tnum' 1",
+                  }}>{stop.biz}</span>
+                  <span style={{
+                    fontFamily: "'Outfit', sans-serif", fontWeight: 500, fontSize: 14,
+                    color: SUBTLEST, lineHeight: "22px",
+                    fontFeatureSettings: "'lnum' 1, 'tnum' 1",
+                  }}>{stop.address}</span>
+                  <div style={{
+                    display: "flex", flexDirection: "column", gap: 2,
+                    fontFamily: "'Outfit', sans-serif", fontWeight: 400, fontSize: 14,
+                    color: "#100f0f", lineHeight: "22px", textDecoration: "underline",
+                    fontFeatureSettings: "'lnum' 1, 'tnum' 1",
+                  }}>
+                    <span>{stop.phone}</span>
+                    <span>Google Maps</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    // ─── Explore icon (from explore.svg — starburst/compass) ────
+    function ExploreIcon({ size = 16, color = "#fffdf6" }) {
+      return (
+        <svg width={size} height={size} viewBox="0 0 16 16" fill="none">
+          <mask id="explore-mask" style={{ maskType: "alpha" }} maskUnits="userSpaceOnUse" x="0" y="0" width="16" height="16">
+            <g clipPath="url(#explore-clip)">
+              <path d="M8 1.333V4" stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M8 12v2.667" stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M14.666 8H12" stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M4 8H1.333" stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M3.285 3.286l1.886 1.886" stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M10.828 10.829l1.886 1.885" stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M12.715 3.286L10.83 5.172" stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M5.172 10.829L3.286 12.714" stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            </g>
+          </mask>
+          <g mask="url(#explore-mask)">
+            <rect width="16" height="16" fill={color}/>
+          </g>
+          <defs>
+            <clipPath id="explore-clip">
+              <rect width="16" height="16" fill="white"/>
+            </clipPath>
+          </defs>
+        </svg>
+      );
+    }
+
+    // ─── Tree icon (from tree.svg) ──────────────────────────────
+    function TreeIcon({ size = 20, color = "#6F6E69" }) {
+      return (
+        <svg width={size} height={size} viewBox="0 0 20 20" fill="none">
+          <mask id="tree-mask" style={{ maskType: "alpha" }} maskUnits="userSpaceOnUse" x="0" y="0" width="20" height="20">
+            <g clipPath="url(#tree-clip)">
+              <path d="M10 18.333V11.667M10 8.333v3.334M10 11.667l3.333-1.667" stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M14.167 5.833c0-2.301-1.865-4.166-4.167-4.166-2.301 0-4.166 1.865-4.166 4.166" stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M10 15H6.25c-2.532 0-4.584-2.052-4.584-4.583 0-2.532 2.052-4.584 4.584-4.584H7.5" stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M10 15h3.75c2.532 0 4.584-2.052 4.584-4.583 0-2.391-1.831-4.354-4.167-4.565" stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            </g>
+          </mask>
+          <g mask="url(#tree-mask)">
+            <rect width="20" height="20" fill={color}/>
+          </g>
+          <defs>
+            <clipPath id="tree-clip">
+              <rect width="20" height="20" fill="white"/>
+            </clipPath>
+          </defs>
+        </svg>
+      );
+    }
+
+    // ─── Whereabouts logo ──────────────────────────────────────────
+    function WaLogo({ size = 24 }) {
+      return (
+        <svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+          <mask id="wa-mask" style={{ maskType: "alpha" }} maskUnits="userSpaceOnUse" x="0" y="1" width="24" height="22">
+            <path d="M15.3845 3.93215L22.5149 16.5062C24.2188 19.5098 21.1436 22.9402 17.8043 21.7625L13.327 20.1836C12.4702 19.8815 11.5296 19.8815 10.6729 20.1836L6.19553 21.7625C2.85629 22.9402 -0.218514 19.5098 1.48493 16.5062L8.61636 3.93215C10.0773 1.35595 13.9235 1.35595 15.3845 3.93215Z" fill="#D9D9D9" stroke="black"/>
+          </mask>
+          <g mask="url(#wa-mask)">
+            <path opacity="0.75" d="M31.831 2.62317C36.4896 8.38919 38.4864 19.4373 36.2284 27.5018C34.0003 35.6063 27.4915 40.7273 21.3276 43.6305C15.1946 46.4933 9.3786 47.1384 4.37311 44.2756C-0.632668 41.3724 -4.85698 34.9612 -6.91122 26.6147C-8.99456 18.268 -8.90762 8.02632 -5.29093 2.58284C-1.67414 -2.8606 5.4727 -3.50575 12.6774 -3.58639C19.91 -3.62671 27.2014 -3.14285 31.831 2.62317Z" fill="#66800B"/>
+            <path opacity="0.75" d="M19.3624 32.7392C15.2011 33.6412 9.97589 31.6653 7.63119 28.2397C5.25951 24.8174 5.78184 19.9295 7.05779 15.8373C8.33759 11.7717 10.3826 8.48668 13.5146 6.6004C16.663 4.72509 20.9101 4.23319 25.0752 5.43349C29.251 6.61847 33.3294 9.48455 34.082 12.9157C34.8347 16.3468 32.2635 20.343 29.4418 24.2148C26.5931 28.0907 23.5111 31.8533 19.3624 32.7392Z" fill="#CDD597"/>
+            <path opacity="0.75" d="M46.457 16.5114C49.0898 19.9961 49.2922 25.6847 46.8444 29.3069C44.413 32.9531 39.3111 34.5291 34.6921 35.0697C30.0961 35.5948 25.9638 35.0807 22.7749 32.9665C19.5908 30.8325 17.3319 27.094 16.797 22.7186C16.2429 18.3392 17.4089 13.3423 20.5236 11.1958C23.6383 9.04939 28.7017 9.75344 33.7438 10.7418C38.8032 11.7541 43.8453 13.0309 46.457 16.5114Z" fill="#536907"/>
+          </g>
+        </svg>
+      );
+    }
+
+    // ─── Interstitial message ─────────────────────────────────────
+    function InterstitialMessage({ message, isMobile = false }) {
+      const pad = isMobile ? 32 : 40;
+      // Icon lookup — extensible with more icons
+      const icons = {
+        tree: <TreeIcon size={20} color="#6F6E69" />,
+        explore: <ExploreIcon size={16} color="#fffdf6" />,
+      };
+      return (
+        <div style={{
+          margin: `0 -${pad}px`,
+          background: GROUP_BG,
+          borderTop: `1px solid ${BORDER}`,
+          borderBottom: `1px solid ${BORDER}`,
+          padding: `32px ${pad}px`,
+          display: "flex", flexDirection: "column", gap: 12,
+        }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+            <div style={{
+              width: 32, height: 32, borderRadius: 8, background: "#E6E4D9",
+              display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0,
+            }}>
+              {icons[message.icon] || icons.tree}
+            </div>
+            <span style={{
+              fontFamily: "'Outfit', sans-serif", fontWeight: 600, fontSize: 16,
+              color: "#100f0f", lineHeight: "24px",
+              fontFeatureSettings: "'lnum' 1, 'tnum' 1",
+            }}>{message.title}</span>
+          </div>
+          <p style={{
+            fontFamily: "'Outfit', sans-serif", fontWeight: 400, fontSize: 16,
+            lineHeight: "24px", color: SUBTLE, margin: 0,
+            fontFeatureSettings: "'lnum' 1, 'tnum' 1",
+          }}>{message.text}</p>
+        </div>
+      );
+    }
+
+    // ─── Wistia video embed ─────────────────────────────────────
+    function WistiaEmbed({ mediaId, accentHex }) {
+      const containerRef = useRef(null);
+      const playerColor = (accentHex || "#66800b").replace("#", "");
+
+      useEffect(() => {
+        if (!containerRef.current) return;
+        // Load the per-video embed module
+        const s = document.createElement("script");
+        s.src = `https://fast.wistia.com/embed/${mediaId}.js`;
+        s.async = true;
+        s.type = "module";
+        document.head.appendChild(s);
+        // Render the custom element
+        containerRef.current.innerHTML =
+          `<wistia-player media-id="${mediaId}" player-color="${playerColor}" seo="false" aspect="1.7777777777777777"></wistia-player>`;
+        return () => { s.remove(); };
+      }, [mediaId]);
+
+      // Reactively update player color when accent changes
+      useEffect(() => {
+        if (!containerRef.current) return;
+        const player = containerRef.current.querySelector("wistia-player");
+        if (player) player.setAttribute("player-color", playerColor);
+      }, [playerColor]);
+
+      return <div ref={containerRef} style={{ borderRadius: 12, overflow: "hidden" }} />;
+    }
+
+    // ─── Group media renderer ─────────────────────────────────────
+    function GroupMedia({ media, accentHex }) {
+      if (!media) return null;
+      if (media.type === "wistia") return <WistiaEmbed mediaId={media.mediaId} accentHex={accentHex} />;
+      if (media.type === "image") return (
+        <img src={media.src} alt={media.alt || ""} style={{
+          width: "100%", borderRadius: 12, objectFit: "cover",
+        }} />
+      );
+      return null;
+    }
+
+    // ─── Stop Group card ────────────────────────────────────────
+    const GROUP_BG = "#f7f6ed"; // slightly darker — exempt from accent changes
+
+    function StopGroupCard({ group, isActive, accent, activeStopNum, stopRefCallback, isMobile = false }) {
+      const pad = isMobile ? 32 : 40;
+      return (
+        <div style={{
+          // Break out of parent padding to span full width
+          margin: `0 -${pad}px`,
+          background: GROUP_BG,
+          borderTop: `1px solid ${BORDER}`,
+          borderBottom: `1px solid ${BORDER}`,
+          filter: isActive ? "none" : "grayscale(1)",
+          opacity: isActive ? 1 : 0.45,
+          transition: "filter .4s ease, opacity .4s ease",
+        }}>
+          {/* Group header */}
+          <div style={{
+            padding: `${pad}px ${pad}px 32px`,
+            display: "flex", flexDirection: "column", gap: 16,
+          }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+              {/* Black icon badge */}
+              <div style={{
+                width: 32, height: 32, borderRadius: 8,
+                background: "#100f0f",
+                display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0,
+              }}>
+                <ExploreIcon size={16} color="#fffdf6" />
+              </div>
+              <Tag text={group.tag} accent={accent} />
+            </div>
+            <h3 style={{
+              fontFamily: "'Outfit', sans-serif", fontWeight: 600, fontSize: 32,
+              color: "#100f0f", lineHeight: "38px", margin: 0,
+              letterSpacing: "-0.5px",
+            }}>{group.label}</h3>
+            <p style={{
+              fontFamily: "'Outfit', sans-serif", fontWeight: 400, fontSize: 16,
+              lineHeight: "24px", color: SUBTLE, margin: 0,
+            }}>{group.desc}</p>
+          </div>
+
+          {/* Rich media (video / photo) */}
+          {group.media && (
+            <div style={{ padding: `0 ${pad}px 32px` }}>
+              <GroupMedia media={group.media} accentHex={accent.bold} />
+            </div>
+          )}
+
+          {/* Grouped stops — use standard StopCard layout */}
+          <div style={{
+            display: "flex", flexDirection: "column", gap: 32,
+            padding: `0 ${pad}px`,
+          }}>
+            {group.stops.map((s, si) => (
+              <React.Fragment key={s.num}>
+                <div ref={el => stopRefCallback && stopRefCallback(s.num, el)}>
+                  <StopCard
+                    stop={s}
+                    isLast={si === group.stops.length - 1}
+                    isActive={isActive && s.num === activeStopNum}
+                    accent={accent}
+                  />
+                </div>
+                {si < group.stops.length - 1 && <DrivingSep from={s} to={group.stops[si + 1]} />}
+              </React.Fragment>
+            ))}
+          </div>
+
+          {/* End of group footer */}
+          <div style={{
+            padding: `32px ${pad}px ${pad}px`,
+            display: "flex", alignItems: "center", gap: 12,
+          }}>
+            <div style={{
+              width: 32, height: 32, borderRadius: 8, background: "#E6E4D9",
+              display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0,
+            }}>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                <path d="M7 12.5L10 15.5L17 8.5" stroke={SUBTLE} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke={SUBTLE} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </div>
+            <span style={{
+              fontFamily: "'Outfit', sans-serif", fontWeight: 600, fontSize: 14,
+              color: SUBTLE, lineHeight: "22px",
+              fontFeatureSettings: "'lnum' 1, 'tnum' 1",
+            }}>End of {group.label}</span>
+          </div>
+        </div>
+      );
+    }
+
+    // ─── Driving distance helpers ────────────────────────────────
+    const ROAD_FACTOR = 1.3; // straight-line → approx driving distance
+    const AVG_SPEED_KMH = 60; // average driving speed
+
+    function getDrivingInfo(from, to) {
+      if (!from || !to) return null;
+      const straight = getDistance(from, to);
+      const km = straight * ROAD_FACTOR;
+      const mins = Math.round((km / AVG_SPEED_KMH) * 60);
+      return { km, mins };
+    }
+
+    // Get the last stop coords of an item (stop, group, or message)
+    function lastStopOf(item) {
+      if (item.type === "group") return item.stops[item.stops.length - 1];
+      if (item.type === "message") return null; // no coords
+      return item;
+    }
+    // Get the first stop coords of an item
+    function firstStopOf(item) {
+      if (item.type === "group") return item.stops[0];
+      if (item.type === "message") return null;
+      return item;
+    }
+    // Find nearest real stop before/after an index in items array (skipping messages)
+    function nearestStopBefore(items, idx) {
+      for (let i = idx - 1; i >= 0; i--) {
+        const s = lastStopOf(items[i]);
+        if (s) return s;
+      }
+      return null;
+    }
+    function nearestStopAfter(items, idx) {
+      for (let i = idx + 1; i < items.length; i++) {
+        const s = firstStopOf(items[i]);
+        if (s) return s;
+      }
+      return null;
+    }
+
+    // ─── Driving separator ────────────────────────────────────
+    function DrivingSep({ from, to }) {
+      const info = getDrivingInfo(from, to);
+      let label = "Drive to next stop.";
+      if (info) {
+        const km = info.km < 1
+          ? `${(info.km * 1000).toFixed(0)} m`
+          : `${info.km.toFixed(1)} km`;
+        const time = info.mins < 1
+          ? "less than a minute"
+          : info.mins === 1
+            ? "1 minute"
+            : `${info.mins} minutes`;
+        label = `${km} (${time}) to next stop.`;
+      }
+      return (
+        <div style={{
+          display: "flex", alignItems: "center", gap: 8, padding: "0 0 0 0",
+        }}>
+          <div style={{
+            width: 32, height: 32, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0,
+          }}>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+              <path d="M8 10L16 10" stroke="#6F6E69" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M7 14L8 14" stroke="#6F6E69" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M16 14L17 14" stroke="#6F6E69" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M3 18V11.4105C3 11.1397 3.05502 10.8716 3.16171 10.6227L5.4805 5.21216C5.79566 4.47679 6.51874 4 7.31879 4H16.6812C17.4813 4 18.2043 4.47679 18.5195 5.21216L20.8383 10.6227C20.945 10.8716 21 11.1397 21 11.4105V18M3 18V20.4C3 20.7314 3.26863 21 3.6 21H6.4C6.73137 21 7 20.7314 7 20.4V18M3 18H7M21 18V20.4C21 20.7314 20.7314 21 20.4 21H17.6C17.2686 21 17 20.7314 17 20.4V18M21 18H17M7 18H17" stroke="#6F6E69" strokeWidth="2"/>
+            </svg>
+          </div>
+          <span style={{
+            fontFamily: "'Outfit', sans-serif", fontWeight: 500, fontSize: 14,
+            color: SUBTLE, lineHeight: "22px", flexShrink: 0,
+            fontFeatureSettings: "'lnum' 1, 'tnum' 1",
+          }}>{label}</span>
+          <div style={{ flex: 1, height: 0, borderTop: `1px dashed ${BORDER}` }} />
+        </div>
+      );
+    }
+
+    // ─── Hero section ─────────────────────────────────────────
+    function Hero({ accent, isMobile = false }) {
+      const pad = isMobile ? 32 : 40;
+      return (
+        <div style={{ display: "flex", flexDirection: "column", gap: 32 }}>
+          <img src={IMG_HERO} alt="The Sipping Tour" style={{
+            width: "100%", objectFit: "cover", aspectRatio: "613/437",
+          }} />
+          <div style={{ display: "flex", flexDirection: "column", gap: 32, padding: `0 ${pad}px` }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: 11 }}>
+              <span style={{
+                fontFamily: "'Outfit', sans-serif", fontWeight: 600, fontSize: 14,
+                color: accent.bold, lineHeight: "22px",
+                fontFeatureSettings: "'lnum' 1, 'tnum' 1",
+                transition: "color .3s ease",
+              }}>Explore Grande Prairie & Beyond</span>
+              <h1 style={{
+                fontFamily: "'Outfit', sans-serif", fontWeight: 600, fontSize: 36,
+                color: "#100f0f", lineHeight: "44px", letterSpacing: "-0.5px", margin: 0,
+              }}>The Sipping Tour</h1>
+              <div style={{ display: "flex", alignItems: "center", gap: 16, flexWrap: "wrap" }}>
+                <Tag text="Driving" accent={accent} />
+                <div style={{
+                  display: "flex", alignItems: "center", gap: 6,
+                  fontFamily: "'Outfit', sans-serif", fontWeight: 600, fontSize: 14,
+                  color: SUBTLE, lineHeight: "22px",
+                  fontFeatureSettings: "'lnum' 1, 'tnum' 1",
+                }}>
+                  <span>2 days</span>
+                  <span style={{ color: BORDER }}>|</span>
+                  <span>237 km</span>
+                  <span style={{ color: BORDER }}>|</span>
+                  <span>9 stops</span>
+                </div>
+              </div>
+            </div>
+            <p style={{
+              fontFamily: "'Outfit', sans-serif", fontWeight: 400, fontSize: 16,
+              lineHeight: "24px", color: SUBTLE, margin: 0,
+              fontFeatureSettings: "'lnum' 1, 'tnum' 1",
+            }}>
+              Book your own private driver, gather your friends, and explore Northern Alberta's meaderies, breweries, distilleries, and cocktail bars while savouring its rich, local flavours. From hands-on outdoor experiences like berry picking to vibrant city settings, discover the nature and agriculture that make these tastes truly one of a kind.
+            </p>
+          </div>
+        </div>
+      );
+    }
+
+    // ─── Mapbox GL Map ─────────────────────────────────────────
+    const MAPBOX_TOKEN = "pk.eyJ1Ijoib2NyZXVyZXIiLCJhIjoiY2thNWcydHd0MGVieTNncXlhbmx6ajJ2eSJ9.OEcyIWzbV9-kwdpRVqSmLg";
+
+    function getDistance(a, b) {
+      // Haversine distance in km between two stops
+      const R = 6371;
+      const dLat = (b.lat - a.lat) * Math.PI / 180;
+      const dLng = (b.lng - a.lng) * Math.PI / 180;
+      const x = Math.sin(dLat/2)**2 + Math.cos(a.lat*Math.PI/180)*Math.cos(b.lat*Math.PI/180)*Math.sin(dLng/2)**2;
+      return R * 2 * Math.atan2(Math.sqrt(x), Math.sqrt(1-x));
+    }
+
+    // Generate a badge image on canvas with baked-in drop shadow
+    function makeBadgeImage(num, bg, border, size) {
+      const dpr = 2;
+      const shadowBlur = 4 * dpr;
+      const pad = shadowBlur + 2 * dpr; // extra space for shadow
+      const s = size * dpr;
+      const totalW = s + pad * 2;
+      const totalH = s + pad * 2;
+      const r = (size * 0.25) * dpr;
+      const cv = document.createElement("canvas");
+      cv.width = totalW; cv.height = totalH;
+      const ctx = cv.getContext("2d");
+
+      // Helper: draw rounded rect path offset by (ox, oy)
+      function roundedRect(ox, oy, w, h, radius) {
+        ctx.beginPath();
+        ctx.moveTo(ox + radius, oy);
+        ctx.lineTo(ox + w - radius, oy); ctx.arcTo(ox + w, oy, ox + w, oy + radius, radius);
+        ctx.lineTo(ox + w, oy + h - radius); ctx.arcTo(ox + w, oy + h, ox + w - radius, oy + h, radius);
+        ctx.lineTo(ox + radius, oy + h); ctx.arcTo(ox, oy + h, ox, oy + h - radius, radius);
+        ctx.lineTo(ox, oy + radius); ctx.arcTo(ox, oy, ox + radius, oy, radius);
+        ctx.closePath();
+      }
+
+      // Drop shadow: box-shadow 0 0 4px 0 rgba(0,0,0,0.40)
+      ctx.save();
+      ctx.shadowColor = "rgba(0, 0, 0, 0.40)";
+      ctx.shadowBlur = shadowBlur;
+      ctx.shadowOffsetX = 0;
+      ctx.shadowOffsetY = 0;
+      roundedRect(pad, pad, s, s, r);
+      ctx.fillStyle = bg;
+      ctx.fill();
+      ctx.restore();
+
+      // Border
+      if (border) {
+        roundedRect(pad, pad, s, s, r);
+        ctx.fillStyle = border;
+        ctx.fill();
+        const bw = 2 * dpr;
+        roundedRect(pad + bw, pad + bw, s - bw * 2, s - bw * 2, Math.max(r - bw, 0));
+        ctx.fillStyle = bg;
+        ctx.fill();
+      } else {
+        roundedRect(pad, pad, s, s, r);
+        ctx.fillStyle = bg;
+        ctx.fill();
+      }
+
+      // Number text
+      ctx.fillStyle = "#fffdf6";
+      ctx.font = `600 ${14 * dpr}px Outfit, sans-serif`;
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillText(String(num), totalW / 2, totalH / 2 + 1 * dpr);
+
+      return cv;
+    }
+
+    function MapPanel({ activeStopNum, activeGroup, currentDay, pillVisible, accentBold, autoFollow }) {
+      const mapContainerRef = useRef(null);
+      const mapRef = useRef(null);
+      const prevActiveRef = useRef(null);
+      const prevPillRef = useRef(false);
+      const readyRef = useRef(false);
+      const pillVisibleRef = useRef(false);
+      const autoFollowRef = useRef(autoFollow);
+      const accentRef = useRef(accentBold);
+
+      const DAY_COLORS = ["#D38B5C", "#5B94B8"];
+      const BADGE_SIZE = 32;
+
+      useEffect(() => {
+        if (mapRef.current || !mapContainerRef.current) return;
+
+        mapboxgl.accessToken = MAPBOX_TOKEN;
+
+        const map = new mapboxgl.Map({
+          container: mapContainerRef.current,
+          style: "mapbox://styles/mapbox/light-v11",
+          center: [-118.80, 55.12],
+          zoom: 9,
+          pitch: 0,
+          bearing: 0,
+          attributionControl: true,
+        });
+
+        map.addControl(new mapboxgl.NavigationControl({ showCompass: false }), "bottom-right");
+
+        map.on("load", () => {
+          // Register badge images using current accent color
+          function registerBadges(accent) {
+            const states = [
+              { suffix: "default",   bg: accent, border: null },
+              { suffix: "inactive",  bg: "#b7b5ac", border: null },
+              { suffix: "active",    bg: accent, border: "#fffdf6" },
+            ];
+            ALL_STOPS.forEach((stop) => {
+              states.forEach(({ suffix, bg, border }) => {
+                const sz = suffix === "active" ? BADGE_SIZE + 6 : BADGE_SIZE;
+                const cv = makeBadgeImage(stop.num, bg, border, sz);
+                const id = `badge-${stop.num}-${suffix}`;
+                const imgData = { width: cv.width, height: cv.height, data: cv.getContext("2d").getImageData(0, 0, cv.width, cv.height).data };
+                if (map.hasImage(id)) { map.removeImage(id); }
+                map.addImage(id, imgData, { pixelRatio: 2 });
+              });
+            });
+            // Force symbol layer to re-render
+            const src = map.getSource("stops");
+            if (src) {
+              const data = src._data || src.serialize?.()?.data;
+              if (data) src.setData(data);
+            }
+          }
+          map._registerBadges = registerBadges;
+          registerBadges(accentRef.current);
+
+          // Draw route lines per day (flatten group stops)
+          ITINERARY.forEach((day, di) => {
+            const dayStops = day.items.flatMap(item =>
+              item.type === "group" ? item.stops :
+              item.type === "message" ? [] : [item]
+            );
+            const coords = dayStops.map(s => [s.lng, s.lat]);
+            map.addSource(`route-day-${di}`, {
+              type: "geojson",
+              data: { type: "Feature", geometry: { type: "LineString", coordinates: coords } },
+            });
+            map.addLayer({
+              id: `route-day-${di}`,
+              type: "line",
+              source: `route-day-${di}`,
+              paint: {
+                "line-color": DAY_COLORS[di] || "#888",
+                "line-width": 3,
+                "line-opacity": 0.5,
+                "line-dasharray": [3, 2],
+              },
+            });
+          });
+
+          // Add stops as a GeoJSON source
+          const features = ALL_STOPS.map(s => ({
+            type: "Feature",
+            geometry: { type: "Point", coordinates: [s.lng, s.lat] },
+            properties: { num: s.num, biz: s.biz, address: s.address, icon: `badge-${s.num}-default` },
+          }));
+
+          map.addSource("stops", {
+            type: "geojson",
+            data: { type: "FeatureCollection", features },
+          });
+
+          map.addLayer({
+            id: "stops-layer",
+            type: "symbol",
+            source: "stops",
+            layout: {
+              "icon-image": ["get", "icon"],
+              "icon-size": 1,
+              "icon-allow-overlap": true,
+              "icon-ignore-placement": true,
+            },
+          });
+
+          // Boundary polygon layer for stopGroups
+          map.addSource("group-boundary", {
+            type: "geojson",
+            data: { type: "FeatureCollection", features: [] },
+          });
+          // Fill layer — add BEFORE stops-layer so badges render on top
+          map.addLayer({
+            id: "group-boundary-fill",
+            type: "fill",
+            source: "group-boundary",
+            paint: {
+              "fill-color": accentRef.current,
+              "fill-opacity": 0.08,
+            },
+          }, "stops-layer");
+          map.addLayer({
+            id: "group-boundary-line",
+            type: "line",
+            source: "group-boundary",
+            paint: {
+              "line-color": accentRef.current,
+              "line-width": 2.5,
+              "line-opacity": 0.5,
+              "line-dasharray": [4, 3],
+            },
+          }, "stops-layer");
+
+          // Popup on click
+          map.on("click", "stops-layer", (e) => {
+            const f = e.features[0];
+            const coords = f.geometry.coordinates.slice();
+            new mapboxgl.Popup({ offset: 20 })
+              .setLngLat(coords)
+              .setHTML(`<b>${f.properties.biz}</b><br/>${f.properties.address}`)
+              .addTo(map);
+          });
+          map.on("mouseenter", "stops-layer", () => { map.getCanvas().style.cursor = "pointer"; });
+          map.on("mouseleave", "stops-layer", () => { map.getCanvas().style.cursor = ""; });
+
+          readyRef.current = true;
+        });
+
+        // Fit bounds to all stops on load
+        const allBounds = new mapboxgl.LngLatBounds();
+        ALL_STOPS.forEach(s => allBounds.extend([s.lng, s.lat]));
+        map.fitBounds(allBounds, { padding: 50, duration: 0 });
+
+        // Re-fit bounds when container resizes (and not tracking or auto-follow off)
+        const ro = new ResizeObserver(() => {
+          map.resize();
+          if (!pillVisibleRef.current || !autoFollowRef.current) {
+            const b = new mapboxgl.LngLatBounds();
+            ALL_STOPS.forEach(s => b.extend([s.lng, s.lat]));
+            map.fitBounds(b, { padding: 50, duration: 300 });
+          }
+        });
+        ro.observe(mapContainerRef.current);
+
+        mapRef.current = map;
+
+        return () => {
+          ro.disconnect();
+          map.remove();
+          mapRef.current = null;
+          readyRef.current = false;
+        };
+      }, []);
+
+      // Re-register badges and update boundary colors when accent changes
+      useEffect(() => {
+        accentRef.current = accentBold;
+        const map = mapRef.current;
+        if (map && readyRef.current) {
+          if (map._registerBadges) map._registerBadges(accentBold);
+          if (map.getLayer("group-boundary-fill")) {
+            map.setPaintProperty("group-boundary-fill", "fill-color", accentBold);
+            map.setPaintProperty("group-boundary-line", "line-color", accentBold);
+          }
+        }
+      }, [accentBold]);
+
+      // Track previous group for comparison
+      const prevGroupRef = useRef(null);
+
+      // Update marker icons, boundary polygon, and fly camera
+      useEffect(() => {
+        pillVisibleRef.current = pillVisible;
+        const map = mapRef.current;
+        if (!map || !readyRef.current) return;
+
+        // Determine which stop nums belong to the active group (if any)
+        const groupStopNums = activeGroup ? activeGroup.stops.map(s => s.num) : [];
+
+        // Compute new icon for each stop
+        const src = map.getSource("stops");
+        if (src) {
+          const features = ALL_STOPS.map(s => {
+            let state = "default";
+            if (pillVisible) {
+              if (s.num === activeStopNum) {
+                // The currently focused stop is always "active"
+                state = "active";
+              } else if (activeGroup && groupStopNums.includes(s.num)) {
+                // Other stops in the active group get "default" (green, no border)
+                state = "default";
+              } else {
+                state = "inactive";
+              }
+            }
+            return {
+              type: "Feature",
+              geometry: { type: "Point", coordinates: [s.lng, s.lat] },
+              properties: { num: s.num, biz: s.biz, address: s.address, icon: `badge-${s.num}-${state}` },
+            };
+          });
+          src.setData({ type: "FeatureCollection", features });
+        }
+
+        // Update boundary polygon
+        const boundarySrc = map.getSource("group-boundary");
+        if (boundarySrc) {
+          if (activeGroup && pillVisible) {
+            boundarySrc.setData({
+              type: "FeatureCollection",
+              features: [{
+                type: "Feature",
+                geometry: { type: "Polygon", coordinates: [activeGroup.boundary] },
+                properties: {},
+              }],
+            });
+            // Update boundary colors to match accent
+            map.setPaintProperty("group-boundary-fill", "fill-color", accentRef.current);
+            map.setPaintProperty("group-boundary-line", "line-color", accentRef.current);
+          } else {
+            boundarySrc.setData({ type: "FeatureCollection", features: [] });
+          }
+        }
+
+        // When pill disappears → zoom out, reset pitch/bearing
+        if (!pillVisible && prevPillRef.current) {
+          prevPillRef.current = false;
+          prevActiveRef.current = null;
+          prevGroupRef.current = null;
+          const bounds = new mapboxgl.LngLatBounds();
+          ALL_STOPS.forEach(s => bounds.extend([s.lng, s.lat]));
+          map.fitBounds(bounds, { padding: 50, duration: 1200, pitch: 0, bearing: 0 });
+          return;
+        }
+
+        // Skip camera movement when auto-follow is off
+        if (!autoFollowRef.current) {
+          prevPillRef.current = pillVisible;
+          return;
+        }
+
+        // When pill is visible → fly to active stop or group
+        if (pillVisible) {
+          const justAppeared = !prevPillRef.current;
+          prevPillRef.current = true;
+
+          const groupLabel = activeGroup ? activeGroup.label : null;
+          const changed = justAppeared || activeStopNum !== prevActiveRef.current || groupLabel !== prevGroupRef.current;
+          const groupChanged = groupLabel !== prevGroupRef.current;
+
+          if (changed) {
+            const prevStop = ALL_STOPS.find(s => s.num === prevActiveRef.current);
+            const activeStopObj = ALL_STOPS.find(s => s.num === activeStopNum);
+            prevActiveRef.current = activeStopNum;
+            prevGroupRef.current = groupLabel;
+
+            if (activeGroup && groupChanged) {
+              // Just entered a group — zoom out to fit the boundary first
+              const bounds = new mapboxgl.LngLatBounds();
+              activeGroup.boundary.forEach(coord => bounds.extend(coord));
+              activeGroup.stops.forEach(s => bounds.extend([s.lng, s.lat]));
+              map.fitBounds(bounds, {
+                padding: { top: 80, bottom: 80, left: 60, right: 60 },
+                duration: justAppeared ? 2000 : 2500,
+                pitch: 40,
+                bearing: 5,
+                maxZoom: 15,
+              });
+            } else if (activeStopObj) {
+              // Fly to individual stop (whether inside group or standalone)
+              let dist = 0;
+              if (prevStop) dist = getDistance(prevStop, activeStopObj);
+              let duration;
+              if (justAppeared) {
+                duration = 2000;
+              } else if (dist < 2) {
+                duration = 1500;
+              } else if (dist < 20) {
+                duration = 1500 + (dist / 20) * 1500;
+              } else {
+                duration = 3000 + Math.min(dist / 80, 1) * 1500;
+              }
+
+              const bearingOffset = ((activeStopObj.num % 5) - 2) * 12;
+              // Use a slightly lower zoom when inside a group so boundary stays visible
+              const zoom = activeGroup ? 13.8 : 14.5;
+              const pitch = activeGroup ? 40 : 55;
+
+              map.flyTo({
+                center: [activeStopObj.lng, activeStopObj.lat],
+                zoom,
+                pitch,
+                bearing: bearingOffset,
+                duration: duration,
+                essential: true,
+                curve: 1.4,
+              });
+            }
+          }
+        }
+      }, [activeStopNum, activeGroup, pillVisible]);
+
+      // React to autoFollow toggling
+      useEffect(() => {
+        autoFollowRef.current = autoFollow;
+        const map = mapRef.current;
+        if (!map || !readyRef.current) return;
+
+        if (!autoFollow) {
+          // Toggled OFF → zoom out to show all stops
+          const bounds = new mapboxgl.LngLatBounds();
+          ALL_STOPS.forEach(s => bounds.extend([s.lng, s.lat]));
+          map.fitBounds(bounds, { padding: 50, duration: 1200, pitch: 0, bearing: 0 });
+          prevActiveRef.current = null;
+          prevGroupRef.current = null;
+        } else if (pillVisibleRef.current) {
+          // Toggled ON → re-engage by flying to current active stop
+          prevActiveRef.current = null;
+          prevGroupRef.current = null;
+          const activeStopObj = ALL_STOPS.find(s => s.num === activeStopNum);
+          if (activeStopObj) {
+            const bearingOffset = ((activeStopObj.num % 5) - 2) * 12;
+            const inGroup = !!activeGroup;
+            map.flyTo({
+              center: [activeStopObj.lng, activeStopObj.lat],
+              zoom: inGroup ? 13.8 : 14.5,
+              pitch: inGroup ? 40 : 55,
+              bearing: bearingOffset,
+              duration: 2000,
+              essential: true,
+              curve: 1.4,
+            });
+          }
+        }
+      }, [autoFollow]);
+
+      return (
+        <div ref={mapContainerRef} style={{ width: "100%", height: "100%" }} />
+      );
+    }
+
+    // ─── Auto-follow toggle pill ────────────────────────────────
+    function AutoFollowToggle({ enabled, onToggle, accent }) {
+      return (
+        <div
+          onClick={() => onToggle(!enabled)}
+          style={{
+            position: "absolute", bottom: 24, left: "50%", transform: "translateX(-50%)", zIndex: 20,
+            display: "flex", alignItems: "center", gap: 10,
+            background: "#fff", borderRadius: 999,
+            padding: "8px 16px 8px 10px",
+            boxShadow: "0 2px 12px rgba(0,0,0,.12), 0 0 0 1px rgba(0,0,0,.06)",
+            cursor: "pointer",
+            transition: "box-shadow .2s ease",
+            userSelect: "none",
+          }}
+        >
+          {/* Toggle track */}
+          <div style={{
+            width: 40, height: 24, borderRadius: 12,
+            background: enabled ? accent.bold : "#b7b5ac",
+            position: "relative",
+            transition: "background .3s ease",
+            flexShrink: 0,
+          }}>
+            {/* Toggle knob */}
+            <div style={{
+              width: 20, height: 20, borderRadius: "50%",
+              background: "#fff",
+              position: "absolute", top: 2,
+              left: enabled ? 18 : 2,
+              transition: "left .3s ease",
+              boxShadow: "0 1px 3px rgba(0,0,0,.15)",
+            }} />
+          </div>
+          <span style={{
+            fontFamily: "'Outfit', sans-serif", fontWeight: 500, fontSize: 13,
+            color: PRIMARY, lineHeight: "20px", whiteSpace: "nowrap",
+          }}>Auto-follow</span>
+        </div>
+      );
+    }
+
+    // ─── Mobile view toggle button (coin-spin) ────────────────
+    function MobileViewToggle({ view, onToggle }) {
+      const [spinning, setSpinning] = useState(false);
+      const handleClick = () => {
+        setSpinning(true);
+        onToggle(view === "itinerary" ? "map" : "itinerary");
+        setTimeout(() => setSpinning(false), 600);
+      };
+      const isMap = view === "map";
+      return (
+        <div
+          onClick={handleClick}
+          style={{
+            width: 48, height: 48, borderRadius: "50%",
+            background: BG,
+            border: `2px solid ${BORDER}`,
+            display: "flex", alignItems: "center", justifyContent: "center",
+            cursor: "pointer", userSelect: "none", flexShrink: 0,
+            perspective: "600px",
+          }}
+        >
+          <div style={{
+            width: 24, height: 24,
+            transformStyle: "preserve-3d",
+            transform: spinning
+              ? `rotateY(${isMap ? 180 : 360}deg)`
+              : `rotateY(${isMap ? 180 : 0}deg)`,
+            transition: spinning ? "transform .6s cubic-bezier(.4,0,.2,1)" : "none",
+            position: "relative",
+          }}>
+            {/* Front face: map icon */}
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                 style={{ position: "absolute", backfaceVisibility: "hidden" }}>
+              <path d="M9 4L3 7V20L9 17M9 4L15 7M9 4V17M15 7L21 4V17L15 20M15 7V20M9 17L15 20" stroke={PRIMARY} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+            {/* Back face: list icon */}
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                 style={{ position: "absolute", backfaceVisibility: "hidden", transform: "rotateY(180deg)" }}>
+              <path d="M8 6H21M8 12H21M8 18H21M3 6H3.01M3 12H3.01M3 18H3.01" stroke={PRIMARY} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </div>
+        </div>
+      );
+    }
+
+    // ─── Mobile stop card (minimal) ──────────────────────────
+    function MobileStopCard({ stop, isActive, accent }) {
+      return (
+        <div style={{
+          width: 280, minWidth: 280, flexShrink: 0,
+          background: BG,
+          borderRadius: 16,
+          padding: 20,
+          border: `2px solid ${isActive ? accent.bold : BORDER}`,
+          display: "flex", flexDirection: "column", gap: 12,
+          transition: "box-shadow .3s ease, opacity .3s ease",
+          opacity: isActive ? 1 : 0.7,
+          scrollSnapAlign: "center",
+        }}>
+          <p style={{
+            fontFamily: "'Outfit', sans-serif", fontWeight: 600, fontSize: 16,
+            color: "#100f0f", lineHeight: "22px", margin: 0,
+            fontFeatureSettings: "'lnum' 1, 'tnum' 1",
+            whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis",
+          }}>{stop.biz}</p>
+          <p style={{
+            fontFamily: "'Outfit', sans-serif", fontWeight: 400, fontSize: 13,
+            color: SUBTLE, lineHeight: "18px", margin: 0,
+            fontFeatureSettings: "'lnum' 1, 'tnum' 1",
+            display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden",
+          }}>{stop.address}</p>
+          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+            <div style={{
+              width: 28, height: 28, borderRadius: 7,
+              background: isActive ? accent.bold : SUBTLEST,
+              display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0,
+              fontFamily: "'Outfit', sans-serif", fontWeight: 600, fontSize: 13,
+              color: BG, lineHeight: "20px",
+              fontFeatureSettings: "'lnum' 1, 'tnum' 1",
+              transition: "background .3s ease",
+            }}>{stop.num}</div>
+            <Tag text={stop.tag} accent={accent} />
+          </div>
+        </div>
+      );
+    }
+
+    // ─── Mobile stop card carousel ───────────────────────────
+    function MobileCardCarousel({ activeStopNum, activeGroup, accent, onScrollToStop }) {
+      const carouselRef = useRef(null);
+      const cardRefsMap = useRef({});
+      const isUserScrolling = useRef(false);
+      const scrollTimer = useRef(null);
+
+      // Auto-scroll to active stop card
+      useEffect(() => {
+        if (isUserScrolling.current) return;
+        const el = cardRefsMap.current[activeStopNum];
+        const container = carouselRef.current;
+        if (!el || !container) return;
+        const cardCenter = el.offsetLeft + el.offsetWidth / 2;
+        const containerCenter = container.clientWidth / 2;
+        container.scrollTo({
+          left: cardCenter - containerCenter,
+          behavior: "smooth",
+        });
+      }, [activeStopNum]);
+
+      // Detect user-initiated scrolls
+      const handleScroll = useCallback(() => {
+        isUserScrolling.current = true;
+        clearTimeout(scrollTimer.current);
+        scrollTimer.current = setTimeout(() => {
+          isUserScrolling.current = false;
+          // Find the card closest to the center
+          const container = carouselRef.current;
+          if (!container) return;
+          const center = container.scrollLeft + container.clientWidth / 2;
+          let bestNum = activeStopNum;
+          let bestDist = Infinity;
+          ALL_STOPS.forEach(s => {
+            const el = cardRefsMap.current[s.num];
+            if (!el) return;
+            const cardCenter = el.offsetLeft + el.offsetWidth / 2;
+            const dist = Math.abs(cardCenter - center);
+            if (dist < bestDist) { bestDist = dist; bestNum = s.num; }
+          });
+          if (onScrollToStop) onScrollToStop(bestNum);
+        }, 150);
+      }, [activeStopNum, onScrollToStop]);
+
+      // Group label above cards
+      const groupLabel = activeGroup ? activeGroup.label : null;
+      const [displayLabel, setDisplayLabel] = useState(null);
+      const [labelVisible, setLabelVisible] = useState(false);
+      useEffect(() => {
+        if (groupLabel) {
+          setDisplayLabel(groupLabel);
+          requestAnimationFrame(() => setLabelVisible(true));
+        } else {
+          setLabelVisible(false);
+          const t = setTimeout(() => setDisplayLabel(null), 300);
+          return () => clearTimeout(t);
+        }
+      }, [groupLabel]);
+
+      return (
+        <div style={{
+          position: "absolute", bottom: 0, left: 0, right: 0, zIndex: 15,
+          display: "flex", flexDirection: "column", gap: 8,
+          paddingBottom: 24,
+          pointerEvents: "auto",
+        }}>
+          {/* Group label */}
+          {displayLabel && (
+            <div style={{
+              padding: "0 24px",
+              display: "flex", justifyContent: "center",
+              opacity: labelVisible ? 1 : 0,
+              transform: labelVisible ? "translateY(0)" : "translateY(8px)",
+              transition: "opacity .35s ease, transform .35s ease",
+            }}>
+              <span style={{
+                display: "inline-block",
+                background: BG,
+                border: `2px solid ${BORDER}`,
+                borderRadius: 999,
+                padding: "6px 16px",
+                fontFamily: "'Outfit', sans-serif", fontWeight: 600, fontSize: 14,
+                color: "#100f0f", lineHeight: "20px",
+                fontFeatureSettings: "'lnum' 1, 'tnum' 1",
+              }}>{displayLabel}</span>
+            </div>
+          )}
+          {/* Scrollable card row */}
+          <div
+            ref={carouselRef}
+            onScroll={handleScroll}
+            style={{
+              display: "flex", gap: 12,
+              overflowX: "auto", overflowY: "visible",
+              padding: "8px 24px",
+              scrollSnapType: "x mandatory",
+              WebkitOverflowScrolling: "touch",
+              msOverflowStyle: "none",
+              scrollbarWidth: "none",
+            }}
+          >
+            {ALL_STOPS.map(s => (
+              <div key={s.num} ref={el => { if (el) cardRefsMap.current[s.num] = el; }}>
+                <MobileStopCard stop={s} isActive={s.num === activeStopNum} accent={accent} />
+              </div>
+            ))}
+            {/* End spacer */}
+            <div style={{ minWidth: 24, flexShrink: 0 }} />
+          </div>
+        </div>
+      );
+    }
+
+    // ─── Accent color picker pill ───────────────────────────────
+    function AccentPicker({ accentHex, onChange }) {
+      const inputRef = useRef(null);
+      const accent = useMemo(() => deriveAccent(accentHex), [accentHex]);
+      return (
+        <div style={{
+          position: "absolute", bottom: 24, right: 24, zIndex: 20,
+          display: "flex", alignItems: "center", gap: 10,
+          background: "#fff", borderRadius: 999,
+          padding: "8px 16px 8px 10px",
+          boxShadow: "0 2px 12px rgba(0,0,0,.12), 0 0 0 1px rgba(0,0,0,.06)",
+          cursor: "pointer",
+          transition: "box-shadow .2s ease",
+        }}
+        onClick={() => inputRef.current?.click()}
+        >
+          <div style={{
+            width: 24, height: 24, borderRadius: "50%",
+            background: accent.bold,
+            border: `2px solid ${accent.border}`,
+            flexShrink: 0,
+            transition: "background .3s ease, border-color .3s ease",
+          }} />
+          <span style={{
+            fontFamily: "'Outfit', sans-serif", fontWeight: 500, fontSize: 13,
+            color: PRIMARY, lineHeight: "20px", whiteSpace: "nowrap",
+            userSelect: "none",
+          }}>Accent color</span>
+          <input
+            ref={inputRef}
+            type="color"
+            value={accentHex}
+            onChange={(e) => onChange(e.target.value)}
+            style={{
+              position: "absolute", width: 0, height: 0, opacity: 0,
+              pointerEvents: "none",
+            }}
+          />
+        </div>
+      );
+    }
+
+    // ─── App ────────────────────────────────────────────────────
+    function App() {
+      const isMobile = useIsMobile();
+      const scrollRef    = useRef(null);
+      const sectionRefs  = useRef([]);
+      const stopRefs     = useRef({});   // keyed by stop num → DOM element (all stops, incl. inside groups)
+      const [currentDay, setCurrentDay] = useState(0);
+      const [progress,   setProgress]   = useState(0);
+      const [pillVisible, setPillVisible] = useState(false);
+      const [activeStop, setActiveStop] = useState(1);
+      const [activeGroup, setActiveGroup] = useState(null);
+      const [accentHex, setAccentHex] = useState(DEFAULT_ACCENT);
+      const [autoFollow, setAutoFollow] = useState(true);
+      const [mobileView, setMobileView] = useState("itinerary"); // "itinerary" | "map"
+      const accent = useMemo(() => deriveAccent(accentHex), [accentHex]);
+
+      // Padding: 32px on mobile, 40px on desktop
+      const PAD = isMobile ? 32 : 40;
+
+      // Build a lookup: stop num → group (or null)
+      const stopToGroup = useMemo(() => {
+        const map = {};
+        ITINERARY.forEach(d => {
+          d.items.forEach(item => {
+            if (item.type === "group") {
+              item.stops.forEach(s => { map[s.num] = item; });
+            }
+          });
+        });
+        return map;
+      }, []);
+
+      // Ref setter for any stop (standalone or inside group)
+      const setStopRef = useCallback((num, el) => {
+        if (el) stopRefs.current[num] = el;
+      }, []);
+
+      // Get an element's top offset relative to the scroll container,
+      // walking up the offsetParent chain (handles deeply nested elements)
+      const getOffsetTop = useCallback((el) => {
+        const container = scrollRef.current;
+        if (!el || !container) return 0;
+        let top = 0;
+        let node = el;
+        while (node && node !== container) {
+          top += node.offsetTop;
+          node = node.offsetParent;
+        }
+        return top;
+      }, []);
+
+      const handleScroll = useCallback(() => {
+        const c = scrollRef.current;
+        if (!c) return;
+        const st = c.scrollTop, ch = c.clientHeight;
+
+        // Show pill when scroll reaches near the first day section
+        const firstSection = sectionRefs.current[0];
+        if (firstSection) {
+          const trigger = getOffsetTop(firstSection) - ch * 0.5;
+          setPillVisible(st >= trigger);
+        }
+
+        // Determine which individual stop is most visible
+        let bestNum = 1;
+        let bestDist = Infinity;
+        const viewCenter = st + ch * 0.4;
+        ALL_STOPS.forEach(s => {
+          const el = stopRefs.current[s.num];
+          if (!el) return;
+          const elTop = getOffsetTop(el);
+          const stopCenter = elTop + el.offsetHeight / 2;
+          const dist = Math.abs(stopCenter - viewCenter);
+          if (dist < bestDist) {
+            bestDist = dist;
+            bestNum = s.num;
+          }
+        });
+        setActiveStop(bestNum);
+
+        // Set activeGroup if the best stop belongs to a group
+        const group = stopToGroup[bestNum] || null;
+        setActiveGroup(group);
+
+        for (let i = ITINERARY.length - 1; i >= 0; i--) {
+          const s = sectionRefs.current[i];
+          if (!s) continue;
+          const top = getOffsetTop(s);
+          if (st >= top - ch * 0.5) {
+            const range = s.offsetHeight - ch * 0.6;
+            const p = Math.min(Math.max((st - top) / Math.max(range, 1), 0), 1);
+            setCurrentDay(i);
+            setProgress(p);
+            return;
+          }
+        }
+        setCurrentDay(0);
+        setProgress(0);
+      }, [stopToGroup, getOffsetTop]);
+
+      useEffect(() => {
+        const c = scrollRef.current;
+        if (!c) return;
+        c.addEventListener("scroll", handleScroll, { passive: true });
+        handleScroll();
+        return () => c.removeEventListener("scroll", handleScroll);
+      }, [handleScroll]);
+
+      // Mobile carousel → update active stop + group (drives map fly-to)
+      const handleCarouselStop = useCallback((num) => {
+        setActiveStop(num);
+        const group = stopToGroup[num] || null;
+        setActiveGroup(group);
+      }, [stopToGroup]);
+
+      const day = ITINERARY[currentDay];
+      const isLastDay = currentDay === ITINERARY.length - 1;
+      const itineraryComplete = isLastDay && progress >= 0.95;
+
+      // No item index needed — stopRefs keyed by stop num
+
+      // ── Shared itinerary scroll content ──
+      const itineraryContent = (
+        <div ref={scrollRef} style={{ flex: 1, overflowY: "auto", position: "relative", display: "flex", flexDirection: "column" }}>
+          {/* Hero */}
+          <div style={{ paddingBottom: 32, flexShrink: 0 }}>
+            <Hero accent={accent} isMobile={isMobile} />
+          </div>
+
+          {/* Sections */}
+          <div style={{ display: "flex", flexDirection: "column", gap: 48, flexShrink: 0 }}>
+            {ITINERARY.map((d, di) => (
+              <section key={d.day} ref={el => sectionRefs.current[di] = el}
+                       style={{ minHeight: "105vh" }}>
+                {/* Day header */}
+                <div style={{
+                  background: GROUP_BG, padding: `32px ${PAD}px`,
+                  display: "flex", flexDirection: "column", gap: 5,
+                  borderTop: `1px solid ${BORDER}`,
+                  borderBottom: `1px solid ${BORDER}`,
+                }}>
+                  <h2 style={{
+                    fontFamily: "'Outfit', sans-serif", fontSize: 24, fontWeight: 600,
+                    color: "#100f0f", lineHeight: "32px", margin: 0,
+                  }}>Day {d.day}</h2>
+                  <span style={{
+                    fontFamily: "'JetBrains Mono', monospace", fontSize: 16, color: SUBTLE,
+                    lineHeight: "24px",
+                  }}>{d.distance}</span>
+                </div>
+
+                {/* Items: stops, stopGroups, and messages with driving separators */}
+                <div style={{ display: "flex", flexDirection: "column", gap: 32, padding: `32px ${PAD}px 0` }}>
+                  {d.items.map((item, si) => {
+                    const sepFrom = lastStopOf(item) || nearestStopBefore(d.items, si);
+                    const sepTo = si < d.items.length - 1
+                      ? (firstStopOf(d.items[si + 1]) || nearestStopAfter(d.items, si))
+                      : null;
+                    const showSep = si < d.items.length - 1;
+                    const nextIsMessage = si < d.items.length - 1 && d.items[si + 1].type === "message";
+
+                    if (item.type === "message") {
+                      return (
+                        <React.Fragment key={`msg-${si}`}>
+                          <InterstitialMessage message={item} isMobile={isMobile} />
+                        </React.Fragment>
+                      );
+                    }
+                    if (item.type === "group") {
+                      const isGroupActive = activeGroup && activeGroup.label === item.label;
+                      return (
+                        <React.Fragment key={`group-${item.label}`}>
+                          <StopGroupCard group={item} isActive={isGroupActive} accent={accent} activeStopNum={activeStop} stopRefCallback={setStopRef} isMobile={isMobile} />
+                          {showSep && <DrivingSep from={sepFrom} to={sepTo} />}
+                        </React.Fragment>
+                      );
+                    }
+                    return (
+                      <React.Fragment key={item.num}>
+                        <div ref={el => setStopRef(item.num, el)}>
+                          <StopCard stop={item} isLast={si === d.items.length - 1} isActive={item.num === activeStop && !activeGroup} accent={accent} />
+                        </div>
+                        {showSep && <DrivingSep from={sepFrom} to={sepTo} />}
+                      </React.Fragment>
+                    );
+                  })}
+                </div>
+              </section>
+            ))}
+          </div>
+
+          {/* Attribution footer — fills remaining space */}
+          <div style={{
+            flex: 1, minHeight: "50vh",
+            margin: "40px 0 0",
+            background: GROUP_BG,
+            borderTop: `1px solid ${BORDER}`,
+            padding: `32px ${PAD}px`,
+            display: "flex", flexDirection: "column", gap: 12,
+          }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+              <WaLogo size={24} />
+              <span style={{
+                fontFamily: "'Outfit', sans-serif", fontWeight: 400, fontSize: 14,
+                color: SUBTLE, lineHeight: "22px",
+                fontFeatureSettings: "'lnum' 1, 'tnum' 1",
+              }}>Powered by <span style={{ fontWeight: 600 }}>Whereabouts</span></span>
+            </div>
+            <p style={{
+              fontFamily: "'Outfit', sans-serif", fontWeight: 500, fontSize: 12,
+              lineHeight: "18px", color: SUBTLEST, margin: 0,
+              fontFeatureSettings: "'lnum' 1, 'tnum' 1",
+            }}>
+              Please note that while we endeavour to keep these itineraries up-to-date we cannot guarantee the reliability of all information. By using this website you agree to our <span style={{ textDecoration: "underline", cursor: "pointer" }}>terms and conditions</span>.
+            </p>
+          </div>
+        </div>
+      );
+
+      // ── Pill + toggle top bar (shared across mobile modes) ──
+      const pillBar = (
+        <div style={{
+          position: "absolute", top: 0, left: 0, right: 0, zIndex: isMobile ? 20 : 10,
+          display: "flex", alignItems: "flex-start",
+          justifyContent: "space-between",
+          padding: isMobile ? "28px 16px 20px 16px" : "28px 0 20px 32px",
+          background: (isMobile && mobileView === "map")
+            ? "transparent"
+            : (pillVisible ? BG : "transparent"),
+          opacity: (pillVisible || (isMobile && mobileView === "map")) ? 1 : 0,
+          transform: (pillVisible || (isMobile && mobileView === "map")) ? "translateY(0)" : "translateY(12px)",
+          transition: "opacity .4s ease, transform .4s ease, background .4s ease",
+          pointerEvents: (pillVisible || (isMobile && mobileView === "map")) ? "auto" : "none",
+        }}>
+          <ProgressPill dayNumber={day.day} distance={day.distance} progress={progress} isComplete={itineraryComplete} />
+          {isMobile && (
+            <MobileViewToggle view={mobileView} onToggle={setMobileView} />
+          )}
+          {/* Fade gradient below pill */}
+          <div style={{
+            position: "absolute", bottom: -48, left: 0, right: 0, height: 48,
+            background: `linear-gradient(${BG} 0%, ${BG}cc 30%, ${BG}66 60%, transparent 100%)`,
+            pointerEvents: "none",
+            opacity: (pillVisible && (!isMobile || mobileView === "itinerary")) ? 1 : 0,
+            transition: "opacity .4s ease",
+          }} />
+        </div>
+      );
+
+      // ════════════════ MOBILE LAYOUT ════════════════
+      if (isMobile) {
+        return (
+          <div style={{
+            width: "100%", height: "100vh",
+            overflow: "hidden", background: BG,
+            position: "relative",
+          }}>
+            {/* Itinerary view */}
+            <div style={{
+              position: "absolute", inset: 0,
+              display: "flex", flexDirection: "column",
+              opacity: mobileView === "itinerary" ? 1 : 0,
+              pointerEvents: mobileView === "itinerary" ? "auto" : "none",
+              transition: "opacity .4s ease",
+              zIndex: 1,
+            }}>
+              {itineraryContent}
+            </div>
+
+            {/* Map view */}
+            <div style={{
+              position: "absolute", inset: 0,
+              opacity: mobileView === "map" ? 1 : 0,
+              pointerEvents: mobileView === "map" ? "auto" : "none",
+              transition: "opacity .4s ease",
+              zIndex: mobileView === "map" ? 2 : 0,
+            }}>
+              <MapPanel activeStopNum={activeStop} activeGroup={activeGroup} currentDay={currentDay} pillVisible={pillVisible || mobileView === "map"} accentBold={accent.bold} autoFollow={true} />
+              {/* Stop card carousel at bottom */}
+              <MobileCardCarousel activeStopNum={activeStop} activeGroup={activeGroup} accent={accent} onScrollToStop={handleCarouselStop} />
+            </div>
+
+            {/* Single shared pill bar — always on top of both views */}
+            {pillBar}
+
+            {/* Accent picker — only in itinerary mode */}
+            {mobileView === "itinerary" && (
+              <AccentPicker accentHex={accentHex} onChange={setAccentHex} />
+            )}
+          </div>
+        );
+      }
+
+      // ════════════════ DESKTOP LAYOUT ════════════════
+      return (
+        <div style={{
+          width: "100%", height: "100vh",
+          display: "flex", overflow: "hidden", background: BG,
+        }}>
+          {/* Left: Map panel */}
+          <div style={{
+            flex: 1, height: "100%", position: "relative", minWidth: 0,
+            borderRight: `1px solid ${BORDER}`,
+          }}>
+            <MapPanel activeStopNum={activeStop} activeGroup={activeGroup} currentDay={currentDay} pillVisible={pillVisible} accentBold={accent.bold} autoFollow={autoFollow} />
+            <AutoFollowToggle enabled={autoFollow} onToggle={setAutoFollow} accent={accent} />
+          </div>
+
+          {/* Right: Itinerary panel */}
+          <div style={{
+            width: "50%", maxWidth: 600, height: "100%", flexShrink: 0,
+            display: "flex", flexDirection: "column", overflow: "hidden",
+            position: "relative",
+          }}>
+            {pillBar}
+            <AccentPicker accentHex={accentHex} onChange={setAccentHex} />
+            {itineraryContent}
+          </div>
+        </div>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+  </script>
+</body>
+</html>
