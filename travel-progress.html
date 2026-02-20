@@ -368,7 +368,8 @@
             // ─── Itinerary data (corrected addresses from Figma) ───────
             // Items can be a regular stop, a stopGroup, or a message.
             // stopGroup: { type: "group", label, area, desc, boundary: [[lng,lat]...], stops: [...] }
-            // message: { type: "message", icon, title, text }
+            // message: { type: "message", messageType: "warning"|"welcome_to"|"attention"|"fyi"|"scenery"|"custom", text, label? }
+            //   messageType drives the icon, badge color, and label. "custom" uses accent colors and a custom label.
             // Regular stop: { num, tag, title, desc, biz, address, phone, img, lat, lng }
             const ITINERARY = [
                 {
@@ -405,9 +406,8 @@
                         },
                         {
                             type: "message",
-                            icon: "tree",
-                            title: "Scenery",
-                            text: "This next stretch features some amazing nature spots, including Glastonbury Grove and Jack Rabbit\u2019s Palace \u2014 both of which might open up a portal to the Black Lodge if you\u2019re keen to have a freaky adventure on your way to the next stop.",
+                            messageType: "warning",
+                            text: "Heads up \u2014 the road between Joosed Moose and Broken Tine can be rough in spring. Check conditions before heading out and allow extra time.",
                         },
                         {
                             num: 3,
@@ -489,6 +489,11 @@
                             img: IMG_STOP[5],
                             lat: 55.026,
                             lng: -118.864,
+                        },
+                        {
+                            type: "message",
+                            messageType: "fyi",
+                            text: "Most downtown spots close their kitchens by 10pm, but the bars stay open later. Plan dinner earlier if you want the full menu experience.",
                         },
                         {
                             type: "group",
@@ -1371,6 +1376,325 @@
                 );
             }
 
+            // ─── IM icon: Warning (diamond alert) ──────────────────────────
+            function WarningIcon({ size = 20, color = "#100f0f" }) {
+                return (
+                    <svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+                        <mask
+                            id="warning-mask"
+                            style={{ maskType: "alpha" }}
+                            maskUnits="userSpaceOnUse"
+                            x="0"
+                            y="0"
+                            width="24"
+                            height="24"
+                        >
+                            <g clipPath="url(#warning-clip1)">
+                                <g clipPath="url(#warning-clip2)">
+                                    <path
+                                        d="M11.5757 1.42426C11.81 1.18995 12.1899 1.18995 12.4243 1.42426L22.5757 11.5757C22.81 11.81 22.8101 12.1899 22.5757 12.4243L12.4243 22.5757C12.19 22.81 11.8101 22.8101 11.5757 22.5757L1.42426 12.4243C1.18995 12.19 1.18995 11.8101 1.42426 11.5757L11.5757 1.42426Z"
+                                        stroke="black"
+                                        strokeWidth="2"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                    />
+                                    <path
+                                        d="M12 8L12 12"
+                                        stroke="black"
+                                        strokeWidth="2"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                    />
+                                    <path
+                                        d="M12 16.01L12.01 15.9989"
+                                        stroke="black"
+                                        strokeWidth="2"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                    />
+                                </g>
+                            </g>
+                        </mask>
+                        <g mask="url(#warning-mask)">
+                            <rect width="24" height="24" fill={color} />
+                        </g>
+                        <defs>
+                            <clipPath id="warning-clip1">
+                                <rect width="24" height="24" fill="white" />
+                            </clipPath>
+                            <clipPath id="warning-clip2">
+                                <rect width="24" height="24" fill="white" />
+                            </clipPath>
+                        </defs>
+                    </svg>
+                );
+            }
+
+            // ─── IM icon: Welcome To (map pin) ───────────────────────────
+            function WelcomeToIcon({ size = 20, color = "#100f0f" }) {
+                return (
+                    <svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+                        <mask
+                            id="welcome-mask"
+                            style={{ maskType: "alpha" }}
+                            maskUnits="userSpaceOnUse"
+                            x="0"
+                            y="0"
+                            width="24"
+                            height="24"
+                        >
+                            <g clipPath="url(#welcome-clip)">
+                                <path
+                                    d="M20 10C20 14.4183 12 22 12 22C12 22 4 14.4183 4 10C4 5.58172 7.58172 2 12 2C16.4183 2 20 5.58172 20 10Z"
+                                    stroke="black"
+                                    strokeWidth="2"
+                                />
+                                <path
+                                    d="M12 11C12.5523 11 13 10.5523 13 10C13 9.44772 12.5523 9 12 9C11.4477 9 11 9.44772 11 10C11 10.5523 11.4477 11 12 11Z"
+                                    fill="black"
+                                    stroke="black"
+                                    strokeWidth="2"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                />
+                            </g>
+                        </mask>
+                        <g mask="url(#welcome-mask)">
+                            <rect width="24" height="24" fill={color} />
+                        </g>
+                        <defs>
+                            <clipPath id="welcome-clip">
+                                <rect width="24" height="24" fill="white" />
+                            </clipPath>
+                        </defs>
+                    </svg>
+                );
+            }
+
+            // ─── IM icon: Attention (eye) ────────────────────────────────
+            function AttentionIcon({ size = 20, color = "#100f0f" }) {
+                return (
+                    <svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+                        <mask
+                            id="attention-mask"
+                            style={{ maskType: "alpha" }}
+                            maskUnits="userSpaceOnUse"
+                            x="0"
+                            y="0"
+                            width="24"
+                            height="24"
+                        >
+                            <g clipPath="url(#attention-clip)">
+                                <path
+                                    d="M3 13C6.6 5 17.4 5 21 13"
+                                    stroke="black"
+                                    strokeWidth="2"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                />
+                                <path
+                                    d="M12 17C10.3431 17 9 15.6569 9 14C9 12.3431 10.3431 11 12 11C13.6569 11 15 12.3431 15 14C15 15.6569 13.6569 17 12 17Z"
+                                    stroke="black"
+                                    strokeWidth="2"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                />
+                            </g>
+                        </mask>
+                        <g mask="url(#attention-mask)">
+                            <rect width="24" height="24" fill={color} />
+                        </g>
+                        <defs>
+                            <clipPath id="attention-clip">
+                                <rect width="24" height="24" fill="white" />
+                            </clipPath>
+                        </defs>
+                    </svg>
+                );
+            }
+
+            // ─── IM icon: FYI (info circle) ──────────────────────────────
+            function FyiIcon({ size = 20, color = "#100f0f" }) {
+                return (
+                    <svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+                        <mask
+                            id="fyi-mask"
+                            style={{ maskType: "alpha" }}
+                            maskUnits="userSpaceOnUse"
+                            x="0"
+                            y="0"
+                            width="24"
+                            height="24"
+                        >
+                            <g clipPath="url(#fyi-clip)">
+                                <path
+                                    d="M12 11.5V16.5"
+                                    stroke="black"
+                                    strokeWidth="2"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                />
+                                <path
+                                    d="M12 7.51L12.01 7.49889"
+                                    stroke="black"
+                                    strokeWidth="2"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                />
+                                <path
+                                    d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"
+                                    stroke="black"
+                                    strokeWidth="2"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                />
+                            </g>
+                        </mask>
+                        <g mask="url(#fyi-mask)">
+                            <rect width="24" height="24" fill={color} />
+                        </g>
+                        <defs>
+                            <clipPath id="fyi-clip">
+                                <rect width="24" height="24" fill="white" />
+                            </clipPath>
+                        </defs>
+                    </svg>
+                );
+            }
+
+            // ─── IM icon: Scenery (tree — reuses existing paths at 24px) ─
+            function SceneryIcon({ size = 20, color = "#100f0f" }) {
+                return (
+                    <svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+                        <mask
+                            id="scenery-mask"
+                            style={{ maskType: "alpha" }}
+                            maskUnits="userSpaceOnUse"
+                            x="0"
+                            y="0"
+                            width="24"
+                            height="24"
+                        >
+                            <g clipPath="url(#scenery-clip)">
+                                <path
+                                    d="M12 22L12 14M12 10L12 14M12 14L16 12"
+                                    stroke="black"
+                                    strokeWidth="2"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                />
+                                <path
+                                    d="M17 7C17 4.23858 14.7614 2 12 2C9.23858 2 7 4.23858 7 7"
+                                    stroke="black"
+                                    strokeWidth="2"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                />
+                                <path
+                                    d="M12 18H7.5C4.46243 18 2 15.5376 2 12.5C2 9.46243 4.46243 7 7.5 7H9"
+                                    stroke="black"
+                                    strokeWidth="2"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                />
+                                <path
+                                    d="M12 18H16.5C19.5376 18 22 15.5376 22 12.5C22 9.63102 19.8033 7.27508 17 7.02246"
+                                    stroke="black"
+                                    strokeWidth="2"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                />
+                            </g>
+                        </mask>
+                        <g mask="url(#scenery-mask)">
+                            <rect width="24" height="24" fill={color} />
+                        </g>
+                        <defs>
+                            <clipPath id="scenery-clip">
+                                <rect width="24" height="24" fill="white" />
+                            </clipPath>
+                        </defs>
+                    </svg>
+                );
+            }
+
+            // ─── IM icon: Custom (chat bubble) ───────────────────────────
+            function CustomIMIcon({ size = 20, color = "#100f0f" }) {
+                return (
+                    <svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+                        <mask
+                            id="custom-im-mask"
+                            style={{ maskType: "alpha" }}
+                            maskUnits="userSpaceOnUse"
+                            x="0"
+                            y="0"
+                            width="24"
+                            height="24"
+                        >
+                            <g clipPath="url(#custom-im-clip)">
+                                <path
+                                    d="M7 12L17 12"
+                                    stroke="black"
+                                    strokeWidth="2"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                />
+                                <path
+                                    d="M7 8L13 8"
+                                    stroke="black"
+                                    strokeWidth="2"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                />
+                                <path
+                                    d="M3 20.2895V5C3 3.89543 3.89543 3 5 3H19C20.1046 3 21 3.89543 21 5V15C21 16.1046 20.1046 17 19 17H7.96125C7.35368 17 6.77906 17.2762 6.39951 17.7506L4.06852 20.6643C3.71421 21.1072 3 20.8567 3 20.2895Z"
+                                    stroke="black"
+                                    strokeWidth="2"
+                                />
+                            </g>
+                        </mask>
+                        <g mask="url(#custom-im-mask)">
+                            <rect width="24" height="24" fill={color} />
+                        </g>
+                        <defs>
+                            <clipPath id="custom-im-clip">
+                                <rect width="24" height="24" fill="white" />
+                            </clipPath>
+                        </defs>
+                    </svg>
+                );
+            }
+
+            // ─── IM type definitions ─────────────────────────────────────
+            const IM_TYPES = {
+                scenery: {
+                    label: "Scenery",
+                    badgeBg: "#dde2b2",
+                    iconColor: "#66800B",
+                    Icon: SceneryIcon,
+                },
+                attention: {
+                    label: "Attention",
+                    badgeBg: "#f6e2a0",
+                    iconColor: "#AD8301",
+                    Icon: AttentionIcon,
+                },
+                fyi: { label: "FYI", badgeBg: "#c6dde8", iconColor: "#205EA6", Icon: FyiIcon },
+                warning: {
+                    label: "Warning",
+                    badgeBg: "#fed3af",
+                    iconColor: "#BC5215",
+                    Icon: WarningIcon,
+                },
+                welcome_to: {
+                    label: "Welcome to",
+                    badgeBg: "#e2d9e9",
+                    iconColor: "#5E409D",
+                    Icon: WelcomeToIcon,
+                },
+                custom: { label: null, badgeBg: null, iconColor: null, Icon: CustomIMIcon },
+            };
+
             // ─── Whereabouts logo ──────────────────────────────────────────
             function WaLogo({ size = 24 }) {
                 return (
@@ -1412,13 +1736,19 @@
             }
 
             // ─── Interstitial message ─────────────────────────────────────
-            function InterstitialMessage({ message, isMobile = false }) {
+            // message shape: { type: "message", messageType, title, text, label? }
+            // messageType: "warning" | "welcome_to" | "attention" | "fyi" | "scenery" | "custom"
+            // For "custom", label comes from message.label; badge uses accent color.
+            function InterstitialMessage({ message, isMobile = false, accent }) {
                 const pad = isMobile ? 32 : 40;
-                // Icon lookup — extensible with more icons
-                const icons = {
-                    tree: <TreeIcon size={20} color="#6F6E69" />,
-                    explore: <ExploreIcon size={16} color="#fffdf6" />,
-                };
+                const mt = message.messageType || "scenery";
+                const imType = IM_TYPES[mt] || IM_TYPES.scenery;
+                const Icon = imType.Icon;
+                const isCustom = mt === "custom";
+                const badgeBg = isCustom ? (accent ? accent.bg : "#E6E4D9") : imType.badgeBg;
+                const iconColor = isCustom ? (accent ? accent.bold : "#100f0f") : imType.iconColor;
+                const label = isCustom ? message.label || message.title : imType.label;
+
                 return (
                     <div
                         style={{
@@ -1438,14 +1768,14 @@
                                     width: 32,
                                     height: 32,
                                     borderRadius: 8,
-                                    background: "#E6E4D9",
+                                    background: badgeBg,
                                     display: "flex",
                                     alignItems: "center",
                                     justifyContent: "center",
                                     flexShrink: 0,
                                 }}
                             >
-                                {icons[message.icon] || icons.tree}
+                                <Icon size={20} color={iconColor} />
                             </div>
                             <span
                                 style={{
@@ -1457,7 +1787,7 @@
                                     fontFeatureSettings: "'lnum' 1, 'tnum' 1",
                                 }}
                             >
-                                {message.title}
+                                {label}
                             </span>
                         </div>
                         <p
@@ -3054,7 +3384,8 @@
                             display: "flex",
                             flexDirection: "column",
                             gap: 12,
-                            transition: "box-shadow .3s ease, opacity .3s ease",
+                            transition:
+                                "box-shadow .3s ease, opacity .3s ease, border-color .15s ease",
                             scrollSnapAlign: "center",
                             cursor: "pointer",
                         }}
@@ -3145,6 +3476,29 @@
                 const cardRefsMap = useRef({});
                 const isUserScrolling = useRef(false);
                 const scrollTimer = useRef(null);
+                const rafRef = useRef(null);
+                const [cardScales, setCardScales] = useState({});
+
+                // Compute per-card scale based on distance from carousel center
+                const updateScales = useCallback(() => {
+                    const container = carouselRef.current;
+                    if (!container) return;
+                    const center = container.scrollLeft + container.clientWidth / 2;
+                    const CARD_W = 280;
+                    const scales = {};
+                    ALL_STOPS.forEach((s) => {
+                        const el = cardRefsMap.current[s.num];
+                        if (!el) {
+                            scales[s.num] = 0.9;
+                            return;
+                        }
+                        const cardCenter = el.offsetLeft + el.offsetWidth / 2;
+                        const dist = Math.abs(cardCenter - center);
+                        const t = Math.min(dist / CARD_W, 1);
+                        scales[s.num] = 1 - t * 0.1; // 1.0 at center, 0.9 at 1 card away
+                    });
+                    setCardScales(scales);
+                }, []);
 
                 // Auto-scroll to active stop card
                 useEffect(() => {
@@ -3160,9 +3514,18 @@
                     });
                 }, [activeStopNum]);
 
-                // Detect user-initiated scrolls
+                // Update scales on mount and when active stop changes
+                useEffect(() => {
+                    updateScales();
+                }, [activeStopNum, updateScales]);
+
+                // Detect user-initiated scrolls + update scales continuously
                 const handleScroll = useCallback(() => {
                     isUserScrolling.current = true;
+                    // Update scales on every scroll frame
+                    if (rafRef.current) cancelAnimationFrame(rafRef.current);
+                    rafRef.current = requestAnimationFrame(updateScales);
+
                     clearTimeout(scrollTimer.current);
                     scrollTimer.current = setTimeout(() => {
                         isUserScrolling.current = false;
@@ -3184,7 +3547,7 @@
                         });
                         if (onScrollToStop) onScrollToStop(bestNum);
                     }, 150);
-                }, [activeStopNum, onScrollToStop]);
+                }, [activeStopNum, onScrollToStop, updateScales]);
 
                 // Group label above cards
                 const groupLabel = activeGroup ? activeGroup.label : null;
@@ -3193,7 +3556,10 @@
                 useEffect(() => {
                     if (groupLabel) {
                         setDisplayLabel(groupLabel);
-                        requestAnimationFrame(() => setLabelVisible(true));
+                        setLabelVisible(false);
+                        // Delay fade-in so chip arrives as the map camera settles
+                        const t = setTimeout(() => setLabelVisible(true), 1800);
+                        return () => clearTimeout(t);
                     } else {
                         setLabelVisible(false);
                         const t = setTimeout(() => setDisplayLabel(null), 300);
@@ -3254,7 +3620,8 @@
                             onScroll={handleScroll}
                             style={{
                                 display: "flex",
-                                gap: 12,
+                                gap: 4,
+                                alignItems: "center",
                                 overflowX: "auto",
                                 overflowY: "visible",
                                 padding: "8px 24px",
@@ -3269,6 +3636,10 @@
                                     key={s.num}
                                     ref={(el) => {
                                         if (el) cardRefsMap.current[s.num] = el;
+                                    }}
+                                    style={{
+                                        transform: `scale(${cardScales[s.num] || 0.9})`,
+                                        transformOrigin: "center center",
                                     }}
                                 >
                                     <MobileStopCard
@@ -3824,6 +4195,7 @@
                                                         <InterstitialMessage
                                                             message={item}
                                                             isMobile={isMobile}
+                                                            accent={accent}
                                                         />
                                                     </React.Fragment>
                                                 );
