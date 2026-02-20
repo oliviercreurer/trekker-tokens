@@ -2490,10 +2490,12 @@
                         attributionControl: true,
                     });
 
-                    map.addControl(
-                        new mapboxgl.NavigationControl({ showCompass: false }),
-                        "bottom-right",
-                    );
+                    if (window.innerWidth > 640) {
+                        map.addControl(
+                            new mapboxgl.NavigationControl({ showCompass: false }),
+                            "bottom-right",
+                        );
+                    }
 
                     map.on("load", () => {
                         // Register badge images using current accent color
@@ -3381,6 +3383,7 @@
                             borderRadius: 16,
                             padding: 20,
                             border: `2px solid ${isActive ? accent.bold : BORDER}`,
+                            boxShadow: "0 2px 12px rgba(0,0,0,.12), 0 0 0 1px rgba(0,0,0,.06)",
                             display: "flex",
                             flexDirection: "column",
                             gap: 12,
@@ -3572,17 +3575,30 @@
                         ref={measureRef}
                         style={{
                             position: "absolute",
-                            bottom: 20,
+                            bottom: 0,
                             left: 0,
                             right: 0,
                             zIndex: 15,
                             display: "flex",
                             flexDirection: "column",
                             gap: 8,
-                            paddingBottom: 24,
-                            pointerEvents: "auto",
+                            paddingBottom: 44,
+                            pointerEvents: "none",
                         }}
                     >
+                        {/* Bottom edge fade */}
+                        <div
+                            style={{
+                                position: "absolute",
+                                bottom: 0,
+                                left: 0,
+                                right: 0,
+                                height: "100%",
+                                background:
+                                    "linear-gradient(to top, rgba(111,110,105,0.4), rgba(111,110,105,0))",
+                                pointerEvents: "none",
+                            }}
+                        />
                         {/* Group label */}
                         {displayLabel && (
                             <div
@@ -3625,6 +3641,7 @@
                                 overflowX: "auto",
                                 overflowY: "visible",
                                 padding: "8px 24px",
+                                pointerEvents: "auto",
                                 scrollSnapType: "x mandatory",
                                 WebkitOverflowScrolling: "touch",
                                 msOverflowStyle: "none",
