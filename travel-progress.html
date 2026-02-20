@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" style="--body-font: &quot;Outfit&quot;">
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -7,7 +7,7 @@
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         <link
-            href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600&family=JetBrains+Mono:wght@400&display=swap"
+            href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600&family=Platypi:wght@400;500;600&family=Lato:wght@400;700;900&family=JetBrains+Mono:wght@400&display=swap"
             rel="stylesheet"
         />
         <link href="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.css" rel="stylesheet" />
@@ -112,6 +112,22 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
         <script src="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.js"></script>
+        <script>
+            window.onerror = function (msg, url, line, col, err) {
+                var d = document.createElement("div");
+                d.style.cssText =
+                    "position:fixed;top:0;left:0;right:0;z-index:99999;background:#fee;color:#900;padding:16px;font:14px monospace;white-space:pre-wrap;max-height:40vh;overflow:auto";
+                d.textContent =
+                    "ERROR: " +
+                    msg +
+                    "\nLine: " +
+                    line +
+                    ", Col: " +
+                    col +
+                    (err && err.stack ? "\n\nStack:\n" + err.stack : "");
+                document.body.prepend(d);
+            };
+        </script>
         <script type="text/babel" data-type="module">
             const { useState, useEffect, useLayoutEffect, useRef, useCallback, useMemo } = React;
 
@@ -296,6 +312,29 @@
             const LINK = "#24837b";
             const SUBTLEST = "#b7b5ac";
 
+            // ─── Font options ─────────────────────────────────────────
+            const FONT_OPTIONS = [
+                { label: "Outfit", family: "'Outfit', sans-serif" },
+                { label: "Platypi", family: "'Platypi', serif" },
+                { label: "Lato", family: "'Lato', sans-serif" },
+            ];
+
+            // ─── Motion tokens ───────────────────────────────────────
+            const EASE = {
+                standard: {
+                    productive: "cubic-bezier(0.2, 0, 0.38, 0.9)",
+                    expressive: "cubic-bezier(0.4, 0.14, 0.3, 1)",
+                },
+                entrance: {
+                    productive: "cubic-bezier(0, 0, 0.38, 0.9)",
+                    expressive: "cubic-bezier(0, 0, 0.3, 1)",
+                },
+                exit: {
+                    productive: "cubic-bezier(0.2, 0, 1, 0.9)",
+                    expressive: "cubic-bezier(0.4, 0.14, 1, 1)",
+                },
+            };
+
             // ─── Responsive hook ──────────────────────────────────────
             const MOBILE_BP = 768;
             function useIsMobile() {
@@ -344,6 +383,8 @@
                             biz: "Executive Chauffeur Driving",
                             address: "9804 100 Avenue, Grande Prairie, AB",
                             phone: "(780) 228-2400",
+                            email: "info@execchauffeur.ca",
+                            website: "https://execchauffeur.ca",
                             img: IMG_STOP[0],
                             lat: 55.17058,
                             lng: -118.7952,
@@ -356,6 +397,8 @@
                             biz: "Joosed Moose Winery",
                             address: "Grande Prairie, AB T8X 4K1",
                             phone: "(780) 228-2400",
+                            email: "info@joosedmoose.ca",
+                            website: "https://joosedmoose.ca",
                             img: IMG_STOP[1],
                             lat: 55.1552,
                             lng: -118.7688,
@@ -374,6 +417,8 @@
                             biz: "Broken Tine Orchard",
                             address: "705016 Range Road 125, Elmworth, AB",
                             phone: "(780) 228-2400",
+                            email: "info@brokentine.ca",
+                            website: "https://brokentine.ca",
                             img: IMG_STOP[2],
                             lat: 55.051,
                             lng: -119.617,
@@ -402,7 +447,9 @@
                                     desc: "Latitude 55 is Grande Prairie\u2019s cask-to-glass destination for locally crafted northern spirits, tapas-style bites, cocktails, mocktails, wine, and beer. Located in the historic Firehall, enjoy tastings, tours, live music, and a retail shop filled with unique take-home souvenirs. All ages welcome until 9pm.",
                                     biz: "Latitude 55 Distillery & Lounge",
                                     address: "10030 102 Avenue, Grande Prairie, AB",
-                                    phone: "(780) 228-2400",
+                                    phone: "780-532-9591",
+                                    email: "info@latitude55.ca",
+                                    website: "https://latitude55.ca",
                                     img: IMG_STOP[3],
                                     lat: 55.17142,
                                     lng: -118.8052,
@@ -415,6 +462,8 @@
                                     biz: "Pomeroy Hotel and Conference Centre Grande Prairie",
                                     address: "11633 100 Street, Grande Prairie, AB",
                                     phone: "(780) 228-2400",
+                                    email: "info@pomeroyhotel.com",
+                                    website: "https://pomeroyhotel.com",
                                     img: IMG_STOP[4],
                                     lat: 55.1753,
                                     lng: -118.7945,
@@ -435,6 +484,8 @@
                             biz: "Stolen Harvest",
                             address: "69156 Range Road 63, Grovedale, AB",
                             phone: "(780) 380-7776",
+                            email: "info@stolenharvest.com",
+                            website: "https://stolenharvest.com",
                             img: IMG_STOP[5],
                             lat: 55.026,
                             lng: -118.864,
@@ -445,6 +496,17 @@
                             tag: "Nightlife",
                             area: "Downtown Grande Prairie",
                             desc: "A curated crawl through downtown Grande Prairie\u2019s best spots for craft beer, cocktails, and live entertainment\u2014all within a few blocks of each other.",
+                            media: {
+                                type: "gallery",
+                                images: [
+                                    "https://images.unsplash.com/photo-1555992336-fb0d29498b13?w=400&h=400&fit=crop",
+                                    "https://images.unsplash.com/photo-1551024709-8f23befc6f87?w=400&h=400&fit=crop",
+                                    "https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?w=400&h=400&fit=crop",
+                                    "https://images.unsplash.com/photo-1470337458703-46ad1756a187?w=400&h=400&fit=crop",
+                                    "https://images.unsplash.com/photo-1574126154517-d1e0d89ef734?w=400&h=400&fit=crop",
+                                    "https://images.unsplash.com/photo-1560512823-829485b8bf24?w=400&h=400&fit=crop",
+                                ],
+                            },
                             boundary: [
                                 [-118.814, 55.1785],
                                 [-118.814, 55.169],
@@ -462,6 +524,8 @@
                                     biz: "Grain Bin Brewing Company",
                                     address: "#101 - 11707 97 Avenue, Grande Prairie, AB",
                                     phone: "(780) 380-7776",
+                                    email: "info@grainbinbrewing.com",
+                                    website: "https://grainbinbrewing.com",
                                     img: IMG_STOP[6],
                                     lat: 55.1764,
                                     lng: -118.7815,
@@ -474,6 +538,8 @@
                                     biz: "92 Bev Co.",
                                     address: "10017 100 Avenue, Grande Prairie, AB",
                                     phone: "(780) 380-7776",
+                                    email: "info@92bevco.ca",
+                                    website: "https://92bevco.ca",
                                     img: IMG_STOP[7],
                                     lat: 55.17095,
                                     lng: -118.801,
@@ -486,6 +552,8 @@
                                     biz: "Grande Prairie Live Theatre",
                                     address: "10130 98 Avenue, Grande Prairie, AB",
                                     phone: "(780) 380-7776",
+                                    email: "info@gplt.ca",
+                                    website: "https://gplt.ca",
                                     img: IMG_STOP[8],
                                     lat: 55.1702,
                                     lng: -118.8088,
@@ -876,7 +944,7 @@
                                 {displayComplete ? (
                                     <span
                                         style={{
-                                            fontFamily: "'Outfit', sans-serif",
+                                            fontFamily: "var(--body-font, 'Outfit'), sans-serif",
                                             fontWeight: 600,
                                             fontSize: 16,
                                             color: labelColor,
@@ -889,7 +957,8 @@
                                     <>
                                         <span
                                             style={{
-                                                fontFamily: "'Outfit', sans-serif",
+                                                fontFamily:
+                                                    "var(--body-font, 'Outfit'), sans-serif",
                                                 fontWeight: 600,
                                                 fontSize: 16,
                                                 color: labelColor,
@@ -946,7 +1015,7 @@
                             borderRadius: 999,
                             background: accent.bg,
                             border: `1px solid ${accent.border}`,
-                            fontFamily: "'Outfit', sans-serif",
+                            fontFamily: "var(--body-font, 'Outfit'), sans-serif",
                             fontWeight: 600,
                             fontSize: small ? 12 : 14,
                             color: accent.text,
@@ -961,8 +1030,32 @@
                 );
             }
 
+            // ─── Animated arrow icon for clickable stop names ─────────
+            function AnimatedArrow({ visible, color = LINK }) {
+                return (
+                    <svg
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke={color}
+                        strokeWidth="2.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        style={{
+                            opacity: visible ? 1 : 0,
+                            transform: visible ? "translateX(0)" : "translateX(-6px)",
+                            transition: "opacity .3s ease, transform .3s ease",
+                            flexShrink: 0,
+                        }}
+                    >
+                        <path d="M5 12h14M12 5l7 7-7 7" />
+                    </svg>
+                );
+            }
+
             // ─── Stop card ──────────────────────────────────────────────
-            function StopCard({ stop, isLast, isActive, accent }) {
+            function StopCard({ stop, isLast, isActive, accent, onNameClick }) {
                 return (
                     <div
                         style={{
@@ -985,7 +1078,7 @@
                                     alignItems: "center",
                                     justifyContent: "center",
                                     flexShrink: 0,
-                                    fontFamily: "'Outfit', sans-serif",
+                                    fontFamily: "var(--body-font, 'Outfit'), sans-serif",
                                     fontWeight: 600,
                                     fontSize: 14,
                                     color: BG,
@@ -1030,7 +1123,7 @@
                                 <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
                                     <p
                                         style={{
-                                            fontFamily: "'Outfit', sans-serif",
+                                            fontFamily: "var(--body-font, 'Outfit'), sans-serif",
                                             fontWeight: 600,
                                             fontSize: 18,
                                             lineHeight: "24px",
@@ -1043,7 +1136,7 @@
                                     </p>
                                     <p
                                         style={{
-                                            fontFamily: "'Outfit', sans-serif",
+                                            fontFamily: "var(--body-font, 'Outfit'), sans-serif",
                                             fontWeight: 400,
                                             fontSize: 16,
                                             lineHeight: "24px",
@@ -1076,20 +1169,33 @@
                                         }}
                                     >
                                         <span
+                                            onClick={
+                                                onNameClick ? () => onNameClick(stop) : undefined
+                                            }
                                             style={{
-                                                fontFamily: "'Outfit', sans-serif",
+                                                fontFamily:
+                                                    "var(--body-font, 'Outfit'), sans-serif",
                                                 fontWeight: 600,
                                                 fontSize: 14,
                                                 color: LINK,
                                                 lineHeight: "22px",
                                                 fontFeatureSettings: "'lnum' 1, 'tnum' 1",
+                                                cursor: onNameClick ? "pointer" : "default",
+                                                display: "inline-flex",
+                                                alignItems: "center",
+                                                gap: 4,
                                             }}
                                         >
                                             {stop.biz}
+                                            <AnimatedArrow
+                                                visible={isActive && !!onNameClick}
+                                                color={LINK}
+                                            />
                                         </span>
                                         <span
                                             style={{
-                                                fontFamily: "'Outfit', sans-serif",
+                                                fontFamily:
+                                                    "var(--body-font, 'Outfit'), sans-serif",
                                                 fontWeight: 500,
                                                 fontSize: 14,
                                                 color: SUBTLEST,
@@ -1104,7 +1210,8 @@
                                                 display: "flex",
                                                 flexDirection: "column",
                                                 gap: 2,
-                                                fontFamily: "'Outfit', sans-serif",
+                                                fontFamily:
+                                                    "var(--body-font, 'Outfit'), sans-serif",
                                                 fontWeight: 400,
                                                 fontSize: 14,
                                                 color: "#100f0f",
@@ -1342,7 +1449,7 @@
                             </div>
                             <span
                                 style={{
-                                    fontFamily: "'Outfit', sans-serif",
+                                    fontFamily: "var(--body-font, 'Outfit'), sans-serif",
                                     fontWeight: 600,
                                     fontSize: 16,
                                     color: "#100f0f",
@@ -1355,7 +1462,7 @@
                         </div>
                         <p
                             style={{
-                                fontFamily: "'Outfit', sans-serif",
+                                fontFamily: "var(--body-font, 'Outfit'), sans-serif",
                                 fontWeight: 400,
                                 fontSize: 16,
                                 lineHeight: "24px",
@@ -1400,11 +1507,123 @@
                 return <div ref={containerRef} style={{ borderRadius: 12, overflow: "hidden" }} />;
             }
 
+            // ─── Image gallery carousel ────────────────────────────────────
+            function ImageGallery({ images, onImageClick }) {
+                var containerRef = useRef(null);
+                var _a = useState(0),
+                    activeIndex = _a[0],
+                    setActiveIndex = _a[1];
+
+                var handleScroll = useCallback(
+                    function () {
+                        var c = containerRef.current;
+                        if (!c) return;
+                        var scrollLeft = c.scrollLeft;
+                        // Each image is 140px + 8px gap
+                        var idx = Math.round(scrollLeft / 148);
+                        setActiveIndex(Math.min(idx, images.length - 1));
+                    },
+                    [images.length],
+                );
+
+                var scrollToIndex = useCallback(function (idx) {
+                    var c = containerRef.current;
+                    if (!c) return;
+                    c.scrollTo({ left: idx * 148, behavior: "smooth" });
+                }, []);
+
+                return (
+                    <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+                        {/* Scroll container */}
+                        <div style={{ position: "relative", overflow: "hidden" }}>
+                            <div
+                                ref={containerRef}
+                                onScroll={handleScroll}
+                                style={{
+                                    display: "flex",
+                                    gap: 8,
+                                    overflowX: "auto",
+                                    overflowY: "hidden",
+                                    scrollSnapType: "x mandatory",
+                                    WebkitOverflowScrolling: "touch",
+                                    msOverflowStyle: "none",
+                                    scrollbarWidth: "none",
+                                }}
+                            >
+                                {images.map(function (src, i) {
+                                    return (
+                                        <img
+                                            key={i}
+                                            src={src}
+                                            alt=""
+                                            onClick={function () {
+                                                if (onImageClick) onImageClick(src);
+                                            }}
+                                            style={{
+                                                width: 140,
+                                                height: 140,
+                                                flexShrink: 0,
+                                                borderRadius: 12,
+                                                objectFit: "cover",
+                                                cursor: "pointer",
+                                                scrollSnapAlign: "start",
+                                            }}
+                                        />
+                                    );
+                                })}
+                                {/* End spacer so last image can scroll fully left */}
+                                <div style={{ minWidth: 1, flexShrink: 0 }} />
+                            </div>
+                            {/* Right fade overlay */}
+                            <div
+                                style={{
+                                    position: "absolute",
+                                    top: 0,
+                                    right: 0,
+                                    width: 80,
+                                    height: 140,
+                                    background:
+                                        "linear-gradient(to right, rgba(247,246,237,0) 0%, " +
+                                        GROUP_BG +
+                                        " 100%)",
+                                    pointerEvents: "none",
+                                }}
+                            />
+                        </div>
+                        {/* Dot indicators */}
+                        <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+                            {images.map(function (_, i) {
+                                var isActive = i === activeIndex;
+                                return (
+                                    <div
+                                        key={i}
+                                        onClick={function () {
+                                            scrollToIndex(i);
+                                        }}
+                                        style={{
+                                            width: 8,
+                                            height: 8,
+                                            borderRadius: 4,
+                                            background: isActive ? PRIMARY : "transparent",
+                                            border: isActive ? "none" : "1.5px solid " + SUBTLEST,
+                                            cursor: "pointer",
+                                            transition: "background .2s ease, border .2s ease",
+                                        }}
+                                    />
+                                );
+                            })}
+                        </div>
+                    </div>
+                );
+            }
+
             // ─── Group media renderer ─────────────────────────────────────
-            function GroupMedia({ media, accentHex }) {
+            function GroupMedia({ media, accentHex, onImageClick }) {
                 if (!media) return null;
                 if (media.type === "wistia")
                     return <WistiaEmbed mediaId={media.mediaId} accentHex={accentHex} />;
+                if (media.type === "gallery")
+                    return <ImageGallery images={media.images} onImageClick={onImageClick} />;
                 if (media.type === "image")
                     return (
                         <img
@@ -1430,6 +1649,8 @@
                 activeStopNum,
                 stopRefCallback,
                 isMobile = false,
+                onStopNameClick,
+                onImageClick,
             }) {
                 const pad = isMobile ? 32 : 40;
                 return (
@@ -1474,7 +1695,7 @@
                             </div>
                             <h3
                                 style={{
-                                    fontFamily: "'Outfit', sans-serif",
+                                    fontFamily: "var(--body-font, 'Outfit'), sans-serif",
                                     fontWeight: 600,
                                     fontSize: 32,
                                     color: "#100f0f",
@@ -1487,7 +1708,7 @@
                             </h3>
                             <p
                                 style={{
-                                    fontFamily: "'Outfit', sans-serif",
+                                    fontFamily: "var(--body-font, 'Outfit'), sans-serif",
                                     fontWeight: 400,
                                     fontSize: 16,
                                     lineHeight: "24px",
@@ -1502,7 +1723,11 @@
                         {/* Rich media (video / photo) */}
                         {group.media && (
                             <div style={{ padding: `0 ${pad}px 32px` }}>
-                                <GroupMedia media={group.media} accentHex={accent.bold} />
+                                <GroupMedia
+                                    media={group.media}
+                                    accentHex={accent.bold}
+                                    onImageClick={onImageClick}
+                                />
                             </div>
                         )}
 
@@ -1525,6 +1750,7 @@
                                             isLast={si === group.stops.length - 1}
                                             isActive={isActive && s.num === activeStopNum}
                                             accent={accent}
+                                            onNameClick={onStopNameClick}
                                         />
                                     </div>
                                     {si < group.stops.length - 1 && (
@@ -1574,7 +1800,7 @@
                             </div>
                             <span
                                 style={{
-                                    fontFamily: "'Outfit', sans-serif",
+                                    fontFamily: "var(--body-font, 'Outfit'), sans-serif",
                                     fontWeight: 600,
                                     fontSize: 14,
                                     color: SUBTLE,
@@ -1696,7 +1922,7 @@
                         </div>
                         <span
                             style={{
-                                fontFamily: "'Outfit', sans-serif",
+                                fontFamily: "var(--body-font, 'Outfit'), sans-serif",
                                 fontWeight: 500,
                                 fontSize: 14,
                                 color: SUBTLE,
@@ -1737,7 +1963,7 @@
                             <div style={{ display: "flex", flexDirection: "column", gap: 11 }}>
                                 <span
                                     style={{
-                                        fontFamily: "'Outfit', sans-serif",
+                                        fontFamily: "var(--body-font, 'Outfit'), sans-serif",
                                         fontWeight: 600,
                                         fontSize: 14,
                                         color: accent.bold,
@@ -1750,7 +1976,7 @@
                                 </span>
                                 <h1
                                     style={{
-                                        fontFamily: "'Outfit', sans-serif",
+                                        fontFamily: "var(--body-font, 'Outfit'), sans-serif",
                                         fontWeight: 600,
                                         fontSize: 36,
                                         color: "#100f0f",
@@ -1775,7 +2001,7 @@
                                             display: "flex",
                                             alignItems: "center",
                                             gap: 6,
-                                            fontFamily: "'Outfit', sans-serif",
+                                            fontFamily: "var(--body-font, 'Outfit'), sans-serif",
                                             fontWeight: 600,
                                             fontSize: 14,
                                             color: SUBTLE,
@@ -1793,7 +2019,7 @@
                             </div>
                             <p
                                 style={{
-                                    fontFamily: "'Outfit', sans-serif",
+                                    fontFamily: "var(--body-font, 'Outfit'), sans-serif",
                                     fontWeight: 400,
                                     fontSize: 16,
                                     lineHeight: "24px",
@@ -2389,7 +2615,7 @@
                         </div>
                         <span
                             style={{
-                                fontFamily: "'Outfit', sans-serif",
+                                fontFamily: "var(--body-font, 'Outfit'), sans-serif",
                                 fontWeight: 500,
                                 fontSize: 13,
                                 color: PRIMARY,
@@ -2486,10 +2712,336 @@
                 );
             }
 
-            // ─── Mobile stop card (minimal) ──────────────────────────
-            function MobileStopCard({ stop, isActive, accent }) {
+            // ─── Stop info slideout panel ─────────────────────────────
+            // Always rendered in DOM so the image is pre-decoded. Driven by `isOpen` prop.
+            const INFO_MS = 300;
+            const INFO_DIM_MS = 200;
+            const INFO_DELAY_MS = 120;
+
+            function StopInfoPanel({ stop, isOpen, onClose, accent, isMobile }) {
+                if (!stop) return null;
+                const pad = isMobile ? 32 : 40;
+
                 return (
                     <div
+                        style={{
+                            position: "absolute",
+                            inset: 0,
+                            zIndex: 50,
+                            background: BG,
+                            overflowY: isOpen ? "auto" : "hidden",
+                            WebkitOverflowScrolling: "touch",
+                            transform: isOpen ? "scale(1)" : "scale(0.96)",
+                            opacity: isOpen ? 1 : 0,
+                            filter: isOpen ? "blur(0)" : "blur(6px)",
+                            transformOrigin: "center bottom",
+                            transition:
+                                "transform " +
+                                INFO_MS +
+                                "ms " +
+                                (isOpen ? EASE.entrance.expressive : EASE.exit.expressive) +
+                                " " +
+                                (isOpen ? INFO_DELAY_MS : 0) +
+                                "ms, opacity " +
+                                INFO_MS +
+                                "ms " +
+                                (isOpen ? EASE.entrance.expressive : EASE.exit.expressive) +
+                                " " +
+                                (isOpen ? INFO_DELAY_MS : 0) +
+                                "ms, filter " +
+                                INFO_MS +
+                                "ms " +
+                                (isOpen ? EASE.entrance.expressive : EASE.exit.expressive) +
+                                " " +
+                                (isOpen ? INFO_DELAY_MS : 0) +
+                                "ms",
+                            willChange: "transform, opacity, filter",
+                            pointerEvents: isOpen ? "auto" : "none",
+                        }}
+                    >
+                        {/* Hero image + back button */}
+                        <div
+                            style={{
+                                position: "relative",
+                                width: "100%",
+                                height: stop.img ? "40vh" : 0,
+                                minHeight: stop.img ? 220 : 0,
+                                overflow: "hidden",
+                            }}
+                        >
+                            {stop.img && (
+                                <img
+                                    src={stop.img}
+                                    alt=""
+                                    style={{
+                                        width: "100%",
+                                        height: "100%",
+                                        objectFit: "cover",
+                                        display: "block",
+                                    }}
+                                />
+                            )}
+                            <div
+                                onClick={onClose}
+                                style={{
+                                    position: "absolute",
+                                    top: pad,
+                                    left: pad,
+                                    display: "inline-flex",
+                                    alignItems: "center",
+                                    gap: 4,
+                                    height: 32,
+                                    padding: "0 12px",
+                                    borderRadius: 8,
+                                    background: "rgba(255,253,246,0.55)",
+                                    backdropFilter: "blur(12px)",
+                                    WebkitBackdropFilter: "blur(12px)",
+                                    boxShadow:
+                                        "0 2px 12px rgba(0,0,0,.12), 0 0 0 1px rgba(0,0,0,.06)",
+                                    cursor: "pointer",
+                                    fontFamily: "var(--body-font, 'Outfit'), sans-serif",
+                                    fontWeight: 500,
+                                    fontSize: 14,
+                                    color: PRIMARY,
+                                    lineHeight: "22px",
+                                    fontFeatureSettings: "'lnum' 1, 'tnum' 1",
+                                }}
+                            >
+                                <svg
+                                    width="16"
+                                    height="16"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke={PRIMARY}
+                                    strokeWidth="2"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                >
+                                    <path d="M19 12H5M12 19l-7-7 7-7" />
+                                </svg>
+                                Back
+                            </div>
+                        </div>
+
+                        {/* Back button fallback when no image */}
+                        {!stop.img && (
+                            <div style={{ padding: pad + "px " + pad + "px 0" }}>
+                                <div
+                                    onClick={onClose}
+                                    style={{
+                                        display: "inline-flex",
+                                        alignItems: "center",
+                                        gap: 4,
+                                        height: 32,
+                                        padding: "0 12px",
+                                        borderRadius: 8,
+                                        background: "rgba(255,253,246,0.55)",
+                                        backdropFilter: "blur(12px)",
+                                        WebkitBackdropFilter: "blur(12px)",
+                                        boxShadow:
+                                            "0 2px 12px rgba(0,0,0,.12), 0 0 0 1px rgba(0,0,0,.06)",
+                                        cursor: "pointer",
+                                        fontFamily: "var(--body-font, 'Outfit'), sans-serif",
+                                        fontWeight: 500,
+                                        fontSize: 14,
+                                        color: PRIMARY,
+                                        lineHeight: "22px",
+                                        fontFeatureSettings: "'lnum' 1, 'tnum' 1",
+                                    }}
+                                >
+                                    <svg
+                                        width="16"
+                                        height="16"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke={PRIMARY}
+                                        strokeWidth="2"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                    >
+                                        <path d="M19 12H5M12 19l-7-7 7-7" />
+                                    </svg>
+                                    Back
+                                </div>
+                            </div>
+                        )}
+
+                        {/* Content area */}
+                        <div
+                            style={{
+                                padding: pad + "px " + pad + "px 48px",
+                                display: "flex",
+                                flexDirection: "column",
+                                gap: 32,
+                            }}
+                        >
+                            {/* Badge row: number + tag on left, website button on right */}
+                            <div
+                                style={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "space-between",
+                                }}
+                            >
+                                <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
+                                    <div
+                                        style={{
+                                            width: 32,
+                                            height: 32,
+                                            borderRadius: 8,
+                                            background: accent.bold,
+                                            display: "flex",
+                                            alignItems: "center",
+                                            justifyContent: "center",
+                                            flexShrink: 0,
+                                            fontFamily: "var(--body-font, 'Outfit'), sans-serif",
+                                            fontWeight: 600,
+                                            fontSize: 14,
+                                            color: BG,
+                                            lineHeight: "22px",
+                                            fontFeatureSettings: "'lnum' 1, 'tnum' 1",
+                                        }}
+                                    >
+                                        {stop.num}
+                                    </div>
+                                    <Tag text={stop.tag} accent={accent} />
+                                </div>
+                                {stop.website && (
+                                    <a
+                                        href={stop.website}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        style={{
+                                            flexShrink: 0,
+                                            textDecoration: "none",
+                                            display: "inline-flex",
+                                            alignItems: "center",
+                                            justifyContent: "center",
+                                            height: 32,
+                                            padding: "0 12px",
+                                            borderRadius: 8,
+                                            background: GROUP_BG,
+                                            border: "1px solid " + BORDER,
+                                            fontFamily: "var(--body-font, 'Outfit'), sans-serif",
+                                            fontWeight: 500,
+                                            fontSize: 14,
+                                            color: PRIMARY,
+                                            lineHeight: "22px",
+                                            fontFeatureSettings: "'lnum' 1, 'tnum' 1",
+                                        }}
+                                    >
+                                        Visit website
+                                    </a>
+                                )}
+                            </div>
+
+                            {/* Title + address + contact group */}
+                            <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                                <h2
+                                    style={{
+                                        margin: 0,
+                                        fontFamily: "var(--body-font, 'Outfit'), sans-serif",
+                                        fontWeight: 600,
+                                        fontSize: 24,
+                                        color: PRIMARY,
+                                        lineHeight: "32px",
+                                        fontFeatureSettings: "'lnum' 1, 'tnum' 1",
+                                    }}
+                                >
+                                    {stop.biz}
+                                </h2>
+
+                                {stop.address && (
+                                    <p
+                                        style={{
+                                            margin: 0,
+                                            fontFamily: "var(--body-font, 'Outfit'), sans-serif",
+                                            fontWeight: 500,
+                                            fontSize: 14,
+                                            color: SUBTLEST,
+                                            lineHeight: "22px",
+                                            fontFeatureSettings: "'lnum' 1, 'tnum' 1",
+                                        }}
+                                    >
+                                        {stop.address}
+                                    </p>
+                                )}
+
+                                {(stop.phone || stop.email) && (
+                                    <div
+                                        style={{ display: "flex", flexDirection: "column", gap: 2 }}
+                                    >
+                                        {stop.phone && (
+                                            <p
+                                                style={{
+                                                    margin: 0,
+                                                    fontFamily:
+                                                        "var(--body-font, 'Outfit'), sans-serif",
+                                                    fontWeight: 400,
+                                                    fontSize: 14,
+                                                    color: PRIMARY,
+                                                    lineHeight: "22px",
+                                                    textDecoration: "underline",
+                                                    fontFeatureSettings: "'lnum' 1, 'tnum' 1",
+                                                }}
+                                            >
+                                                {stop.phone}
+                                            </p>
+                                        )}
+                                        {stop.email && (
+                                            <p
+                                                style={{
+                                                    margin: 0,
+                                                    fontFamily:
+                                                        "var(--body-font, 'Outfit'), sans-serif",
+                                                    fontWeight: 400,
+                                                    fontSize: 14,
+                                                    color: PRIMARY,
+                                                    lineHeight: "22px",
+                                                    textDecoration: "underline",
+                                                    fontFeatureSettings: "'lnum' 1, 'tnum' 1",
+                                                }}
+                                            >
+                                                {stop.email}
+                                            </p>
+                                        )}
+                                    </div>
+                                )}
+                            </div>
+
+                            {/* Description */}
+                            {stop.desc &&
+                                stop.desc.split("\n\n").map(function (para, i) {
+                                    return (
+                                        <p
+                                            key={i}
+                                            style={{
+                                                fontFamily:
+                                                    "var(--body-font, 'Outfit'), sans-serif",
+                                                fontWeight: 400,
+                                                fontSize: 16,
+                                                color: SUBTLE,
+                                                lineHeight: "24px",
+                                                margin: 0,
+                                                fontFeatureSettings: "'lnum' 1, 'tnum' 1",
+                                            }}
+                                        >
+                                            {para}
+                                        </p>
+                                    );
+                                })}
+                        </div>
+                    </div>
+                );
+            }
+
+            // ─── Mobile stop card (minimal) ──────────────────────────
+            function MobileStopCard({ stop, isActive, accent, onClick }) {
+                return (
+                    <div
+                        onClick={() => {
+                            if (onClick) onClick(stop);
+                        }}
                         style={{
                             width: 280,
                             minWidth: 280,
@@ -2504,12 +3056,13 @@
                             gap: 12,
                             transition: "box-shadow .3s ease, opacity .3s ease",
                             scrollSnapAlign: "center",
+                            cursor: "pointer",
                         }}
                     >
                         <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
                             <p
                                 style={{
-                                    fontFamily: "'Outfit', sans-serif",
+                                    fontFamily: "var(--body-font, 'Outfit'), sans-serif",
                                     fontWeight: 600,
                                     fontSize: 14,
                                     color: "#100f0f",
@@ -2527,7 +3080,7 @@
                             </p>
                             <p
                                 style={{
-                                    fontFamily: "'Outfit', sans-serif",
+                                    fontFamily: "var(--body-font, 'Outfit'), sans-serif",
                                     fontWeight: 400,
                                     fontSize: 12,
                                     color: SUBTLE,
@@ -2562,7 +3115,7 @@
                                     alignItems: "center",
                                     justifyContent: "center",
                                     flexShrink: 0,
-                                    fontFamily: "'Outfit', sans-serif",
+                                    fontFamily: "var(--body-font, 'Outfit'), sans-serif",
                                     fontWeight: 600,
                                     fontSize: 12,
                                     color: BG,
@@ -2585,6 +3138,7 @@
                 activeGroup,
                 accent,
                 onScrollToStop,
+                onStopClick,
                 measureRef,
             }) {
                 const carouselRef = useRef(null);
@@ -2682,7 +3236,7 @@
                                         border: `2px solid ${BORDER}`,
                                         borderRadius: 999,
                                         padding: "6px 16px",
-                                        fontFamily: "'Outfit', sans-serif",
+                                        fontFamily: "var(--body-font, 'Outfit'), sans-serif",
                                         fontWeight: 600,
                                         fontSize: 14,
                                         color: "#100f0f",
@@ -2721,6 +3275,7 @@
                                         stop={s}
                                         isActive={s.num === activeStopNum}
                                         accent={accent}
+                                        onClick={onStopClick}
                                     />
                                 </div>
                             ))}
@@ -2738,10 +3293,6 @@
                 return (
                     <div
                         style={{
-                            position: "absolute",
-                            bottom: 24,
-                            right: 24,
-                            zIndex: 20,
                             display: "flex",
                             alignItems: "center",
                             gap: 10,
@@ -2767,7 +3318,7 @@
                         />
                         <span
                             style={{
-                                fontFamily: "'Outfit', sans-serif",
+                                fontFamily: "var(--body-font, 'Outfit'), sans-serif",
                                 fontWeight: 500,
                                 fontSize: 13,
                                 color: PRIMARY,
@@ -2795,6 +3346,168 @@
                 );
             }
 
+            // ─── Font picker pill ─────────────────────────────────────
+            function FontPicker({ fontIndex, onChange }) {
+                var label = FONT_OPTIONS[fontIndex].label;
+                return (
+                    <div
+                        style={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 10,
+                            background: "#fff",
+                            borderRadius: 999,
+                            padding: "8px 16px",
+                            boxShadow: "0 2px 12px rgba(0,0,0,.12), 0 0 0 1px rgba(0,0,0,.06)",
+                            cursor: "pointer",
+                            transition: "box-shadow .2s ease",
+                            userSelect: "none",
+                        }}
+                        onClick={function () {
+                            onChange((fontIndex + 1) % FONT_OPTIONS.length);
+                        }}
+                    >
+                        <span
+                            style={{
+                                fontFamily: FONT_OPTIONS[fontIndex].family,
+                                fontWeight: 500,
+                                fontSize: 13,
+                                color: PRIMARY,
+                                lineHeight: "20px",
+                                whiteSpace: "nowrap",
+                            }}
+                        >
+                            {label}
+                        </span>
+                    </div>
+                );
+            }
+
+            // ─── Lightbox overlay ──────────────────────────────────────
+            var LIGHTBOX_DIM_MS = 200;
+            var LIGHTBOX_MS = 300;
+            var LIGHTBOX_DELAY_MS = 120;
+
+            function Lightbox({ src, onClose }) {
+                var _a = useState(false),
+                    isOpen = _a[0],
+                    setIsOpen = _a[1];
+                var _b = useState(src),
+                    displaySrc = _b[0],
+                    setDisplaySrc = _b[1];
+
+                // When src changes, trigger entrance or exit
+                useEffect(
+                    function () {
+                        if (src) {
+                            setDisplaySrc(src);
+                            // Double rAF ensures the browser paints the closed state before animating open
+                            requestAnimationFrame(function () {
+                                requestAnimationFrame(function () {
+                                    setIsOpen(true);
+                                });
+                            });
+                        } else {
+                            setIsOpen(false);
+                        }
+                    },
+                    [src],
+                );
+
+                // Clear displaySrc after exit animation
+                var handleTransitionEnd = useCallback(
+                    function () {
+                        if (!isOpen) setDisplaySrc(null);
+                    },
+                    [isOpen],
+                );
+
+                // ESC key to close
+                useEffect(
+                    function () {
+                        if (!src) return;
+                        function handleKey(e) {
+                            if (e.key === "Escape") onClose();
+                        }
+                        window.addEventListener("keydown", handleKey);
+                        return function () {
+                            window.removeEventListener("keydown", handleKey);
+                        };
+                    },
+                    [src, onClose],
+                );
+
+                if (!displaySrc) return null;
+
+                return (
+                    <div style={{ position: "fixed", inset: 0, zIndex: 10000 }}>
+                        {/* Scrim */}
+                        <div
+                            onClick={onClose}
+                            style={{
+                                position: "absolute",
+                                inset: 0,
+                                background: "rgba(255,253,246,0.7)",
+                                opacity: isOpen ? 1 : 0,
+                                transition:
+                                    "opacity " + LIGHTBOX_DIM_MS + "ms " + EASE.standard.expressive,
+                            }}
+                        />
+                        {/* Image */}
+                        <div
+                            onClick={onClose}
+                            onTransitionEnd={handleTransitionEnd}
+                            style={{
+                                position: "absolute",
+                                inset: 0,
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                padding: 24,
+                                cursor: "pointer",
+                                transform: isOpen ? "scale(1)" : "scale(0.96)",
+                                opacity: isOpen ? 1 : 0,
+                                filter: isOpen ? "blur(0)" : "blur(6px)",
+                                transformOrigin: "center center",
+                                transition:
+                                    "transform " +
+                                    LIGHTBOX_MS +
+                                    "ms " +
+                                    (isOpen ? EASE.entrance.expressive : EASE.exit.expressive) +
+                                    " " +
+                                    (isOpen ? LIGHTBOX_DELAY_MS : 0) +
+                                    "ms, opacity " +
+                                    LIGHTBOX_MS +
+                                    "ms " +
+                                    (isOpen ? EASE.entrance.expressive : EASE.exit.expressive) +
+                                    " " +
+                                    (isOpen ? LIGHTBOX_DELAY_MS : 0) +
+                                    "ms, filter " +
+                                    LIGHTBOX_MS +
+                                    "ms " +
+                                    (isOpen ? EASE.entrance.expressive : EASE.exit.expressive) +
+                                    " " +
+                                    (isOpen ? LIGHTBOX_DELAY_MS : 0) +
+                                    "ms",
+                                willChange: "transform, opacity, filter",
+                            }}
+                        >
+                            <img
+                                src={displaySrc}
+                                alt=""
+                                style={{
+                                    maxWidth: "90vw",
+                                    maxHeight: "90vh",
+                                    borderRadius: 16,
+                                    objectFit: "contain",
+                                    boxShadow: "0 8px 32px rgba(0,0,0,0.15)",
+                                }}
+                            />
+                        </div>
+                    </div>
+                );
+            }
+
             // ─── App ────────────────────────────────────────────────────
             function App() {
                 const isMobile = useIsMobile();
@@ -2810,9 +3523,21 @@
                 const [activeStop, setActiveStop] = useState(1);
                 const [activeGroup, setActiveGroup] = useState(null);
                 const [accentHex, setAccentHex] = useState(DEFAULT_ACCENT);
+                const [fontIndex, setFontIndex] = useState(0);
+                const fontFamily = FONT_OPTIONS[fontIndex].family;
                 const [autoFollow, setAutoFollow] = useState(true);
                 const [mobileView, setMobileView] = useState("itinerary"); // "itinerary" | "map"
+                const [openInfoStop, setOpenInfoStop] = useState(null);
+                const [lightboxSrc, setLightboxSrc] = useState(null);
                 const accent = useMemo(() => deriveAccent(accentHex), [accentHex]);
+
+                // Sync font CSS variable to document root
+                useEffect(
+                    function () {
+                        document.documentElement.style.setProperty("--body-font", fontFamily);
+                    },
+                    [fontFamily],
+                );
 
                 // Padding: 32px on mobile, 40px on desktop
                 const PAD = isMobile ? 32 : 40;
@@ -2965,6 +3690,10 @@
                     [stopToGroup, stopToDayProgress],
                 );
 
+                const handleStopNameClick = useCallback((stop) => {
+                    setOpenInfoStop(stop);
+                }, []);
+
                 // Toggle mobile view — pre-scroll itinerary to active stop while hidden
                 const handleViewToggle = useCallback(
                     (nextView) => {
@@ -2985,6 +3714,16 @@
                 const day = ITINERARY[currentDay];
                 const isLastDay = currentDay === ITINERARY.length - 1;
                 const itineraryComplete = isLastDay && progress >= 0.95;
+
+                // Preload the active stop's image so the info panel opens instantly
+                const activeStopObj = useMemo(
+                    function () {
+                        return ALL_STOPS.find(function (s) {
+                            return s.num === activeStop;
+                        });
+                    },
+                    [activeStop],
+                );
 
                 // No item index needed — stopRefs keyed by stop num
 
@@ -3034,7 +3773,8 @@
                                     >
                                         <h2
                                             style={{
-                                                fontFamily: "'Outfit', sans-serif",
+                                                fontFamily:
+                                                    "var(--body-font, 'Outfit'), sans-serif",
                                                 fontSize: 24,
                                                 fontWeight: 600,
                                                 color: "#100f0f",
@@ -3100,6 +3840,8 @@
                                                             activeStopNum={activeStop}
                                                             stopRefCallback={setStopRef}
                                                             isMobile={isMobile}
+                                                            onStopNameClick={handleStopNameClick}
+                                                            onImageClick={setLightboxSrc}
                                                         />
                                                         {showSep && (
                                                             <DrivingSep from={sepFrom} to={sepTo} />
@@ -3118,6 +3860,7 @@
                                                                 !activeGroup
                                                             }
                                                             accent={accent}
+                                                            onNameClick={handleStopNameClick}
                                                         />
                                                     </div>
                                                     {showSep && (
@@ -3149,7 +3892,7 @@
                                 <WaLogo size={24} />
                                 <span
                                     style={{
-                                        fontFamily: "'Outfit', sans-serif",
+                                        fontFamily: "var(--body-font, 'Outfit'), sans-serif",
                                         fontWeight: 400,
                                         fontSize: 14,
                                         color: SUBTLE,
@@ -3162,7 +3905,7 @@
                             </div>
                             <p
                                 style={{
-                                    fontFamily: "'Outfit', sans-serif",
+                                    fontFamily: "var(--body-font, 'Outfit'), sans-serif",
                                     fontWeight: 500,
                                     fontSize: 12,
                                     lineHeight: "18px",
@@ -3246,123 +3989,197 @@
                 // ════════════════ MOBILE LAYOUT ════════════════
                 if (isMobile) {
                     return (
+                        <React.Fragment>
+                            <div
+                                style={{
+                                    width: "100%",
+                                    height: "100vh",
+                                    overflow: "hidden",
+                                    background: BG,
+                                    position: "relative",
+                                }}
+                            >
+                                {/* Itinerary view */}
+                                <div
+                                    style={{
+                                        position: "absolute",
+                                        inset: 0,
+                                        display: "flex",
+                                        flexDirection: "column",
+                                        opacity: mobileView === "itinerary" ? 1 : 0,
+                                        pointerEvents: mobileView === "itinerary" ? "auto" : "none",
+                                        transition: "opacity .4s ease",
+                                        zIndex: 1,
+                                    }}
+                                >
+                                    {itineraryContent}
+                                </div>
+
+                                {/* Map view */}
+                                <div
+                                    style={{
+                                        position: "absolute",
+                                        inset: 0,
+                                        opacity: mobileView === "map" ? 1 : 0,
+                                        pointerEvents: mobileView === "map" ? "auto" : "none",
+                                        transition: "opacity .4s ease",
+                                        zIndex: mobileView === "map" ? 2 : 0,
+                                    }}
+                                >
+                                    <MapPanel
+                                        activeStopNum={activeStop}
+                                        activeGroup={activeGroup}
+                                        currentDay={currentDay}
+                                        pillVisible={pillVisible || mobileView === "map"}
+                                        accentBold={accent.bold}
+                                        autoFollow={true}
+                                        mapPadding={mapPadding}
+                                    />
+                                    {/* Stop card carousel at bottom */}
+                                    <MobileCardCarousel
+                                        activeStopNum={activeStop}
+                                        activeGroup={activeGroup}
+                                        accent={accent}
+                                        onScrollToStop={handleCarouselStop}
+                                        onStopClick={handleStopNameClick}
+                                        measureRef={carouselRef}
+                                    />
+                                </div>
+
+                                {/* Single shared pill bar — always on top of both views */}
+                                {pillBar}
+
+                                {/* Accent picker — hidden on mobile */}
+
+                                {/* Dim scrim behind stop info panel */}
+                                <div
+                                    onClick={() => setOpenInfoStop(null)}
+                                    style={{
+                                        position: "absolute",
+                                        inset: 0,
+                                        zIndex: 49,
+                                        background: "rgba(255,253,246,0.7)",
+                                        opacity: openInfoStop ? 1 : 0,
+                                        pointerEvents: openInfoStop ? "auto" : "none",
+                                        transition:
+                                            "opacity " +
+                                            INFO_DIM_MS +
+                                            "ms " +
+                                            EASE.standard.expressive,
+                                    }}
+                                />
+
+                                {/* Stop info panel overlay — always rendered for image preload */}
+                                <StopInfoPanel
+                                    stop={openInfoStop || activeStopObj}
+                                    isOpen={!!openInfoStop}
+                                    onClose={() => setOpenInfoStop(null)}
+                                    accent={accent}
+                                    isMobile={isMobile}
+                                />
+                            </div>
+                            <Lightbox src={lightboxSrc} onClose={() => setLightboxSrc(null)} />
+                        </React.Fragment>
+                    );
+                }
+
+                // ════════════════ DESKTOP LAYOUT ════════════════
+                return (
+                    <React.Fragment>
                         <div
                             style={{
                                 width: "100%",
                                 height: "100vh",
+                                display: "flex",
                                 overflow: "hidden",
                                 background: BG,
-                                position: "relative",
                             }}
                         >
-                            {/* Itinerary view */}
+                            {/* Left: Map panel */}
                             <div
                                 style={{
-                                    position: "absolute",
-                                    inset: 0,
-                                    display: "flex",
-                                    flexDirection: "column",
-                                    opacity: mobileView === "itinerary" ? 1 : 0,
-                                    pointerEvents: mobileView === "itinerary" ? "auto" : "none",
-                                    transition: "opacity .4s ease",
-                                    zIndex: 1,
-                                }}
-                            >
-                                {itineraryContent}
-                            </div>
-
-                            {/* Map view */}
-                            <div
-                                style={{
-                                    position: "absolute",
-                                    inset: 0,
-                                    opacity: mobileView === "map" ? 1 : 0,
-                                    pointerEvents: mobileView === "map" ? "auto" : "none",
-                                    transition: "opacity .4s ease",
-                                    zIndex: mobileView === "map" ? 2 : 0,
+                                    flex: 1,
+                                    height: "100%",
+                                    position: "relative",
+                                    minWidth: 0,
+                                    borderRight: `1px solid ${BORDER}`,
                                 }}
                             >
                                 <MapPanel
                                     activeStopNum={activeStop}
                                     activeGroup={activeGroup}
                                     currentDay={currentDay}
-                                    pillVisible={pillVisible || mobileView === "map"}
+                                    pillVisible={pillVisible}
                                     accentBold={accent.bold}
-                                    autoFollow={true}
-                                    mapPadding={mapPadding}
+                                    autoFollow={autoFollow}
                                 />
-                                {/* Stop card carousel at bottom */}
-                                <MobileCardCarousel
-                                    activeStopNum={activeStop}
-                                    activeGroup={activeGroup}
+                                <AutoFollowToggle
+                                    enabled={autoFollow}
+                                    onToggle={setAutoFollow}
                                     accent={accent}
-                                    onScrollToStop={handleCarouselStop}
-                                    measureRef={carouselRef}
                                 />
                             </div>
 
-                            {/* Single shared pill bar — always on top of both views */}
-                            {pillBar}
+                            {/* Right: Itinerary panel */}
+                            <div
+                                style={{
+                                    width: "50%",
+                                    maxWidth: 600,
+                                    height: "100%",
+                                    flexShrink: 0,
+                                    display: "flex",
+                                    flexDirection: "column",
+                                    overflow: "hidden",
+                                    position: "relative",
+                                }}
+                            >
+                                {pillBar}
+                                <div
+                                    style={{
+                                        position: "absolute",
+                                        bottom: 24,
+                                        right: 24,
+                                        zIndex: 20,
+                                        display: "flex",
+                                        gap: 12,
+                                        alignItems: "center",
+                                    }}
+                                >
+                                    <AccentPicker accentHex={accentHex} onChange={setAccentHex} />
+                                    <FontPicker fontIndex={fontIndex} onChange={setFontIndex} />
+                                </div>
+                                {itineraryContent}
 
-                            {/* Accent picker — hidden on mobile */}
-                        </div>
-                    );
-                }
+                                {/* Dim scrim behind stop info panel */}
+                                <div
+                                    onClick={() => setOpenInfoStop(null)}
+                                    style={{
+                                        position: "absolute",
+                                        inset: 0,
+                                        zIndex: 49,
+                                        background: "rgba(255,253,246,0.7)",
+                                        opacity: openInfoStop ? 1 : 0,
+                                        pointerEvents: openInfoStop ? "auto" : "none",
+                                        transition:
+                                            "opacity " +
+                                            INFO_DIM_MS +
+                                            "ms " +
+                                            EASE.standard.expressive,
+                                    }}
+                                />
 
-                // ════════════════ DESKTOP LAYOUT ════════════════
-                return (
-                    <div
-                        style={{
-                            width: "100%",
-                            height: "100vh",
-                            display: "flex",
-                            overflow: "hidden",
-                            background: BG,
-                        }}
-                    >
-                        {/* Left: Map panel */}
-                        <div
-                            style={{
-                                flex: 1,
-                                height: "100%",
-                                position: "relative",
-                                minWidth: 0,
-                                borderRight: `1px solid ${BORDER}`,
-                            }}
-                        >
-                            <MapPanel
-                                activeStopNum={activeStop}
-                                activeGroup={activeGroup}
-                                currentDay={currentDay}
-                                pillVisible={pillVisible}
-                                accentBold={accent.bold}
-                                autoFollow={autoFollow}
-                            />
-                            <AutoFollowToggle
-                                enabled={autoFollow}
-                                onToggle={setAutoFollow}
-                                accent={accent}
-                            />
+                                {/* Stop info panel overlay — always rendered for image preload */}
+                                <StopInfoPanel
+                                    stop={openInfoStop || activeStopObj}
+                                    isOpen={!!openInfoStop}
+                                    onClose={() => setOpenInfoStop(null)}
+                                    accent={accent}
+                                    isMobile={isMobile}
+                                />
+                            </div>
                         </div>
-
-                        {/* Right: Itinerary panel */}
-                        <div
-                            style={{
-                                width: "50%",
-                                maxWidth: 600,
-                                height: "100%",
-                                flexShrink: 0,
-                                display: "flex",
-                                flexDirection: "column",
-                                overflow: "hidden",
-                                position: "relative",
-                            }}
-                        >
-                            {pillBar}
-                            <AccentPicker accentHex={accentHex} onChange={setAccentHex} />
-                            {itineraryContent}
-                        </div>
-                    </div>
+                        <Lightbox src={lightboxSrc} onClose={() => setLightboxSrc(null)} />
+                    </React.Fragment>
                 );
             }
 
