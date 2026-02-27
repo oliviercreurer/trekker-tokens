@@ -9,7 +9,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -26,6 +26,22 @@
     --bg-inverted: #100F0F;
     --brand: #205EA6;
     --brand-subtle: #E1ECEB;
+    --border-accent-blue: #205EA6;
+    --border-accent-green: #66800B;
+    --border-accent-magenta: #A02F6F;
+    --border-accent-yellow: #AD8301;
+    --badge-changed-bg: #faeec6;
+    --badge-changed-border: #eccb60;
+    --badge-changed-text: #1c1b1a;
+    --badge-changed-dot: #d0a215;
+    --badge-added-bg: #edeecf;
+    --badge-added-border: #bec97e;
+    --badge-added-text: #536907;
+    --badge-added-dot: #879a39;
+    --badge-removed-bg: #ffe1d5;
+    --badge-removed-border: #f89a8a;
+    --badge-removed-text: #942822;
+    --badge-removed-dot: #d14d41;
   }
 
   .dark {
@@ -41,6 +57,22 @@
     --bg-inverted: #FFFDF6;
     --brand: #4385BE;
     --brand-subtle: #12253B;
+    --border-accent-blue: #4385BE;
+    --border-accent-green: #879A39;
+    --border-accent-magenta: #CE5D97;
+    --border-accent-yellow: #D0A215;
+    --badge-changed-bg: #241e08;
+    --badge-changed-border: #664d01;
+    --badge-changed-text: #eccb60;
+    --badge-changed-dot: #d0a215;
+    --badge-added-bg: #1a1e0c;
+    --badge-added-border: #3d4c07;
+    --badge-added-text: #bec97e;
+    --badge-added-dot: #879a39;
+    --badge-removed-bg: #261312;
+    --badge-removed-border: #6c201c;
+    --badge-removed-text: #f89a8a;
+    --badge-removed-dot: #d14d41;
   }
 
   body {
@@ -75,7 +107,7 @@
 <div id="root"></div>
 <script id="token-data" type="application/json">
 {
-  "exportedAt": "2026-02-27T18:57:31.292Z",
+  "exportedAt": "2026-02-27T20:45:56.376Z",
   "collections": {
     "color": {
       "name": "Color",
@@ -3649,7 +3681,7 @@ function ColorRow({ token, mode }) {
       <td style={{ padding:'10px 16px', verticalAlign:'middle' }}>
         <Swatch hex={token.dark.hex} alias={token.dark.alias} />
       </td>
-      <td style={{ padding:'10px 16px', fontSize:12, color:'var(--text-subtle)', verticalAlign:'middle', fontFamily:"'Outfit', sans-serif" }}>
+      <td style={{ padding:'10px 16px', fontSize:10, lineHeight:'16px', color:'var(--text-subtle)', verticalAlign:'middle', fontFamily:"'JetBrains Mono', monospace" }}>
         {token.description}
       </td>
     </tr>
@@ -3667,7 +3699,7 @@ function GenericRow({ token, unit }) {
       <td style={{ padding:'10px 24px 10px 16px', verticalAlign:'middle', fontFamily:"'JetBrains Mono', monospace", fontSize:12 }}>
         {val}
       </td>
-      <td style={{ padding:'10px 16px', fontSize:12, color:'var(--text-subtle)', verticalAlign:'middle', maxWidth:480, fontFamily:"'Outfit', sans-serif" }}>
+      <td style={{ padding:'10px 16px', fontSize:10, lineHeight:'16px', color:'var(--text-subtle)', verticalAlign:'middle', maxWidth:480, fontFamily:"'JetBrains Mono', monospace" }}>
         {token.description}
       </td>
     </tr>
@@ -3821,19 +3853,23 @@ function SectionTable({ group, type, mode }) {
 
 /* ── Changelog ── */
 function ChangeTypeBadge({ type }) {
-  const colors = {
-    added: { bg: '#DDFBE8', text: '#1A7F37', darkBg: '#1A3D2B', darkText: '#56D364' },
-    changed: { bg: '#FFF2D5', text: '#9A6700', darkBg: '#3D2E00', darkText: '#E3B341' },
-    removed: { bg: '#FFE2E0', text: '#CF222E', darkBg: '#3D1418', darkText: '#F47067' },
-  };
-  const c = colors[type] || colors.changed;
   return (
     <span style={{
-      fontSize: 11, fontWeight: 600, fontFamily: "'JetBrains Mono', monospace",
-      padding: '2px 8px', borderRadius: 4, textTransform: 'uppercase', letterSpacing: 0.5,
-      background: `var(--changelog-badge-bg-${type}, ${c.bg})`,
-      color: `var(--changelog-badge-text-${type}, ${c.text})`,
-    }}>{type}</span>
+      display: 'inline-flex', alignItems: 'center', gap: 6,
+      fontSize: 12, fontWeight: 500, fontFamily: "'JetBrains Mono', monospace",
+      lineHeight: '18px',
+      padding: '1px 12px', borderRadius: 999, textTransform: 'capitalize', letterSpacing: 0,
+      background: `var(--badge-${type}-bg)`,
+      color: `var(--badge-${type}-text)`,
+      border: `1px solid var(--badge-${type}-border)`,
+    }}>
+      <span style={{
+        width: 6, height: 6, borderRadius: '50%',
+        background: `var(--badge-${type}-dot)`,
+        flexShrink: 0,
+      }} />
+      {type}
+    </span>
   );
 }
 
@@ -4021,18 +4057,64 @@ function Changelog({ changelog, onBack }) {
   );
 }
 
+/* ── Tab icons ── */
+const TAB_ICONS = {
+  color: (color) => (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10Z"/>
+      <path d="M12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8Z"/>
+      <path d="M12 2v6M12 16v6M2 12h6M16 12h6M4.93 4.93l4.24 4.24M14.83 14.83l4.24 4.24M4.93 19.07l4.24-4.24M14.83 9.17l4.24-4.24"/>
+    </svg>
+  ),
+  typography: (color) => (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M21 3.6V20.4c0 .331-.269.6-.6.6H3.6a.6.6 0 0 1-.6-.6V3.6c0-.331.269-.6.6-.6h16.8c.331 0 .6.269.6.6Z"/>
+      <path d="M7 9V7h10v2M12 7v10m0 0h-2m2 0h2"/>
+    </svg>
+  ),
+  size: (color) => (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M3 21V3h6v12h12v6H3Z"/>
+      <path d="M13 19v2M9 19v2M3 7h2M3 11h2M3 15h2M17 19v2"/>
+    </svg>
+  ),
+  styles: (color) => (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2">
+      <path d="M20.51 9.54a1.77 1.77 0 0 1-.39.646 1.77 1.77 0 0 1-.61.444c-1.23.55-2.275 1.444-3.01 2.574a6.63 6.63 0 0 0-1.13 3.796c0 .47.047.939.14 1.4.06.282.064.573.011.856a2.01 2.01 0 0 1-.32.794 2.01 2.01 0 0 1-.52.528 2.01 2.01 0 0 1-.69.272c-.534.1-1.077.15-1.62.15a8.98 8.98 0 0 1-3.51-.711 8.98 8.98 0 0 1-2.955-1.977 8.98 8.98 0 0 1-1.932-2.918A8.98 8.98 0 0 1 3.37 11.72c.077-2.247.989-4.385 2.556-5.997A8.68 8.68 0 0 1 11.85 3h.51a8.98 8.98 0 0 1 4.742 1.352 8.98 8.98 0 0 1 3.318 3.648c.229.475.261 1.021.093 1.52v.02Z"/>
+      <path d="M8 16.01l.01-.011M6 12.01l.01-.011M8 8.01l.01-.011M12 6.01l.01-.011M16 8.01l.01-.011" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+  ),
+};
+
+const TAB_ACCENTS = {
+  color:      'var(--border-accent-blue)',
+  typography: 'var(--border-accent-green)',
+  size:       'var(--border-accent-magenta)',
+  styles:     'var(--border-accent-yellow)',
+};
+
 /* ── Nav pill ── */
-function NavPill({ label, active, onClick, isLast }) {
+function NavPill({ id, label, count, active, onClick }) {
+  const accent = TAB_ACCENTS[id];
+  const textColor = active ? accent : 'var(--text-subtlest)';
+  const IconComponent = TAB_ICONS[id];
+
   return (
     <button onClick={onClick} style={{
-      all:'unset', cursor:'pointer', padding:'7px 16px',
-      fontSize:13, fontWeight:500, fontFamily:"'Outfit', sans-serif",
-      background: active ? 'var(--bg-primary)' : 'var(--bg-secondary)',
-      color: active ? 'var(--text-default)' : 'var(--text-subtlest)',
-      borderRight: isLast ? 'none' : '1px solid var(--border-default)',
-      transition: 'all .15s',
+      all: 'unset', cursor: 'pointer',
+      display: 'flex', alignItems: 'center', gap: 6,
+      transition: 'color .15s',
     }}>
-      {label}
+      {IconComponent && IconComponent(textColor)}
+      <span style={{
+        fontSize: 14, fontWeight: active ? 600 : 500, fontFamily: "'Outfit', sans-serif",
+        color: textColor, whiteSpace: 'nowrap',
+      }}>{label}</span>
+      <span style={{
+        fontSize: 13, fontWeight: 500,
+        fontFamily: "'JetBrains Mono', monospace",
+        color: textColor, opacity: 0.7,
+      }}>{count}</span>
     </button>
   );
 }
@@ -4094,8 +4176,8 @@ function App() {
 
   const countItems = (col) => Object.values(col.groups).reduce((n,g) => n + (g.tokens || g.styles || []).length, 0);
   const tabs = [
-    { id: 'color', label: 'Color', count: countItems(DATA.collections.color) },
-    { id: 'typography', label: 'Typography', count: countItems(DATA.collections.typography) },
+    { id: 'color', label: 'Colors', count: countItems(DATA.collections.color) },
+    { id: 'typography', label: 'Text', count: countItems(DATA.collections.typography) },
     { id: 'size', label: 'Size', count: countItems(DATA.collections.size) },
     { id: 'styles', label: 'Styles', count: countItems(DATA.collections.styles) },
   ];
@@ -4103,10 +4185,9 @@ function App() {
   return (
     <div style={{ maxWidth:1080, margin:'0 auto', padding:'40px 32px 80px' }}>
       {/* Header */}
-      <div style={{ marginBottom:32 }}>
+      <div style={{ marginBottom:32, display:'flex', justifyContent:'space-between', alignItems:'center', gap:0 }}>
         <div style={{ display:'flex', alignItems:'baseline', gap:12, marginBottom:4 }}>
-          <h1 style={{ fontSize:24, fontWeight:700, letterSpacing:-.5 }}>Trekker</h1>
-          <span style={{ fontSize:12, color:'var(--text-subtlest)', fontFamily:"'JetBrains Mono', monospace" }}>Design Tokens</span>
+          <h1 style={{ fontSize:24, fontWeight:800, letterSpacing:-.5, fontFamily:'Outfit' }}>Trekker Tokens</h1>
         </div>
         <p style={{ fontSize:12, fontWeight:500, color:'var(--text-subtle)', marginTop:4, fontFamily:"'JetBrains Mono', monospace" }}>
           Last export:{' '}
@@ -4123,9 +4204,9 @@ function App() {
 
       {/* Controls */}
       {!isChangelog && <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', flexWrap:'wrap', gap:12, marginBottom:24 }}>
-        <div style={{ display:'flex', border:'1px solid var(--border-default)', borderRadius:6, overflow:'hidden' }}>
-          {tabs.map((t, i) => (
-            <NavPill key={t.id} label={`${t.label} (${t.count})`} active={tab === t.id} isLast={i === tabs.length - 1} onClick={() => { setTab(t.id); setSearch(''); }} />
+        <div style={{ display:'flex', gap:20, alignItems:'center' }}>
+          {tabs.map((t) => (
+            <NavPill key={t.id} id={t.id} label={t.label} count={t.count} active={tab === t.id} onClick={() => { setTab(t.id); setSearch(''); }} />
           ))}
         </div>
 
@@ -4179,12 +4260,6 @@ function App() {
       )}
 
       {/* Visuals (type specimen, spacing scale, radius preview) */}
-      {!isChangelog && tab === 'typography' && !search && (
-        <div style={{ background:'var(--bg-secondary)', borderRadius:8, padding:'20px 24px', marginBottom:24, border:'1px solid var(--border-default)' }}>
-          <div style={{ fontSize:11, fontWeight:500, color:'var(--text-subtlest)', letterSpacing:0, marginBottom:4 }}>Type Scale Preview</div>
-          <TypeSpecimen tokens={Object.values(groups).flatMap(g => g.tokens)} />
-        </div>
-      )}
       {/* Sections */}
       {!isChangelog && Object.entries(filteredGroups).length === 0 && (
         <div style={{ textAlign:'center', padding:'48px 0', color:'var(--text-subtlest)', fontSize:14 }}>
@@ -4200,16 +4275,6 @@ function App() {
           <div style={{ overflowX:'auto' }}>
             {isStyles ? <StylesTable group={group} /> : <SectionTable group={group} type={tab} mode={mode} />}
           </div>
-          {tab === 'size' && key === 'spacing' && !search && (
-            <div style={{ background:'var(--bg-secondary)', borderRadius:8, padding:'20px 24px', border:'1px solid var(--border-default)', marginTop:16 }}>
-              <SpacingScale tokens={group.tokens} />
-            </div>
-          )}
-          {tab === 'size' && key === 'radius' && !search && (
-            <div style={{ background:'var(--bg-secondary)', borderRadius:8, padding:'20px 24px', border:'1px solid var(--border-default)', marginTop:16 }}>
-              <RadiusPreview tokens={group.tokens} />
-            </div>
-          )}
         </div>
       ))}
 

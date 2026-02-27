@@ -41,6 +41,24 @@ def find_collection(collections: List[Dict], name: str) -> Optional[Dict]:
             return col
     return None
 
+def get_collection_meta(collection: Dict) -> Dict:
+    """Extract _meta block with collection ID and mode IDs for restore."""
+    return {
+        "collectionId": collection.get("id", ""),
+        "modes": {m["name"]: m["id"] for m in collection.get("modes", [])},
+    }
+
+def get_figma_ids(var: Dict) -> Dict:
+    """Extract _figmaId and _aliasIds from a variable for restore."""
+    ids = {"_figmaId": var.get("id", "")}
+    alias_ids = {}
+    for mode_name, mode_data in var.get("values", {}).items():
+        if "aliasId" in mode_data:
+            alias_ids[mode_name] = mode_data["aliasId"]
+    if alias_ids:
+        ids["_aliasIds"] = alias_ids
+    return ids
+
 def get_mode_id_by_name(collection: Dict, mode_name: str) -> Optional[str]:
     """Get mode ID by mode name."""
     for mode in collection.get("modes", []):
@@ -53,6 +71,8 @@ def build_color_collection(figma_data: List[Dict]) -> Dict:
     color_col = find_collection(figma_data, "Color")
     if not color_col:
         return {"name": "Color", "modes": ["Light", "Dark"], "groups": {}}
+
+    meta = get_collection_meta(color_col)
 
     modes_list = [m["name"] for m in color_col.get("modes", [])]
     groups = {
@@ -76,8 +96,10 @@ def build_color_collection(figma_data: List[Dict]) -> Dict:
         if first_segment not in groups:
             continue
 
+        figma_ids = get_figma_ids(var)
+
         if var_type == "COLOR":
-            token = {"name": var_name, "description": description}
+            token = {"name": var_name, "description": description, **figma_ids}
 
             # Get Light and Dark values (use mode names, not IDs)
             if "Light" in var.get("values", {}):
@@ -111,7 +133,7 @@ def build_color_collection(figma_data: List[Dict]) -> Dict:
             groups[first_segment]["tokens"].append(token)
 
         elif var_type == "FLOAT":
-            token = {"name": var_name, "description": description}
+            token = {"name": var_name, "description": description, **figma_ids}
 
             if "Light" in var.get("values", {}):
                 light_resolved = var["values"]["Light"].get("resolved")
@@ -129,6 +151,7 @@ def build_color_collection(figma_data: List[Dict]) -> Dict:
     return {
         "name": "Color",
         "modes": ["Light", "Dark"],
+        "_meta": meta,
         "groups": groups
     }
 
@@ -138,6 +161,7 @@ def build_typography_collection(figma_data: List[Dict]) -> Dict:
     if not typo_col:
         return {"name": "Typography", "groups": {}}
 
+    meta = get_collection_meta(typo_col)
     groups = {
         "family": {"label": "Family", "tokens": []},
         "weight": {"label": "Weight", "tokens": []},
@@ -150,6 +174,7 @@ def build_typography_collection(figma_data: List[Dict]) -> Dict:
         var_name = var["name"]
         var_type = var["type"]
         description = var.get("description", "")
+        figma_ids = get_figma_ids(var)
 
         # Get second segment for grouping (after "font/")
         parts = var_name.split("/")
@@ -167,6 +192,7 @@ def build_typography_collection(figma_data: List[Dict]) -> Dict:
             token = {
                 "name": var_name,
                 "description": description,
+                **figma_ids,
             }
             if var_type == "STRING":
                 token["value"] = resolved
@@ -180,6 +206,7 @@ def build_typography_collection(figma_data: List[Dict]) -> Dict:
 
     return {
         "name": "Typography",
+        "_meta": meta,
         "groups": groups
     }
 
@@ -189,6 +216,7 @@ def build_size_collection(figma_data: List[Dict]) -> Dict:
     if not size_col:
         return {"name": "Size", "groups": {}}
 
+    meta = get_collection_meta(size_col)
     groups = {
         "spacing": {"label": "Spacing", "tokens": []},
         "radius": {"label": "Radius", "tokens": []},
@@ -198,6 +226,7 @@ def build_size_collection(figma_data: List[Dict]) -> Dict:
     for var in size_col.get("variables", []):
         var_name = var["name"]
         description = var.get("description", "")
+        figma_ids = get_figma_ids(var)
 
         first_segment = var_name.split("/")[0] if "/" in var_name else var_name
 
@@ -211,6 +240,7 @@ def build_size_collection(figma_data: List[Dict]) -> Dict:
                 "name": var_name,
                 "value": resolved,
                 "description": description,
+                **figma_ids,
             }
             groups[first_segment]["tokens"].append(token)
 
@@ -221,6 +251,7 @@ def build_size_collection(figma_data: List[Dict]) -> Dict:
             var_name = var["name"]
             if var_name.startswith("stroke/"):
                 description = var.get("description", "")
+                figma_ids = get_figma_ids(var)
                 # Use Color collection's Light mode for stroke values
                 if "Light" in var.get("values", {}):
                     resolved = var["values"]["Light"].get("resolved")
@@ -228,6 +259,7 @@ def build_size_collection(figma_data: List[Dict]) -> Dict:
                         "name": var_name,
                         "value": resolved,
                         "description": description,
+                        **figma_ids,
                     }
                     groups["stroke"]["tokens"].append(token)
 
@@ -236,6 +268,7 @@ def build_size_collection(figma_data: List[Dict]) -> Dict:
 
     return {
         "name": "Size",
+        "_meta": meta,
         "groups": groups
     }
 
@@ -359,6 +392,7 @@ def build_state_collection(figma_data: List[Dict]) -> Dict:
     if not state_col:
         return {"name": "State", "modes": ["default"], "groups": {"interaction": {"label": "Interaction", "tokens": []}}}
 
+    meta = get_collection_meta(state_col)
     groups = {
         "interaction": {"label": "Interaction", "tokens": []},
     }
@@ -367,6 +401,7 @@ def build_state_collection(figma_data: List[Dict]) -> Dict:
         var_name = var["name"]
         var_type = var["type"]
         description = var.get("description", "")
+        figma_ids = get_figma_ids(var)
 
         # Use "Mode 1" mode name to look up values (not ID)
         if "Mode 1" in var.get("values", {}):
@@ -376,12 +411,14 @@ def build_state_collection(figma_data: List[Dict]) -> Dict:
                 "type": var_type,
                 "value": resolved,
                 "description": description,
+                **figma_ids,
             }
             groups["interaction"]["tokens"].append(token)
 
     return {
         "name": "State",
         "modes": ["default"],
+        "_meta": meta,
         "groups": groups
     }
 
@@ -430,6 +467,13 @@ def main():
         backup_path = backup_dir / f"tokens-{stamp}.json"
         shutil.copy2(output_path, backup_path)
         print(f"Backed up previous tokens to {backup_path}")
+
+        # Keep only the 10 most recent backups
+        backups = sorted(backup_dir.glob("tokens-*.json"), key=lambda p: p.stat().st_mtime)
+        if len(backups) > 10:
+            for old_backup in backups[:-10]:
+                old_backup.unlink()
+            print(f"Pruned {len(backups) - 10} old backup(s)")
 
     # Preserve existing changelog from previous tokens.json
     if output_path.exists():

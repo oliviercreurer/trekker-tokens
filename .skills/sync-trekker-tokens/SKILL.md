@@ -53,14 +53,14 @@ for (const coll of collections) {
           const nc = await figma.variables.getVariableCollectionByIdAsync(next.variableCollectionId);
           finalVal = next.valuesByMode[nc.defaultModeId];
         }
-        modeValues[mode.name] = { alias: alias.name, resolved: finalVal };
+        modeValues[mode.name] = { alias: alias.name, aliasId: raw.id, resolved: finalVal };
       } else {
         modeValues[mode.name] = { resolved: raw };
       }
     }
 
     collData.variables.push({
-      name: v.name, type: v.resolvedType,
+      id: varId, name: v.name, type: v.resolvedType,
       description: v.description || '', values: modeValues
     });
   }
@@ -132,9 +132,20 @@ Spot-check a few tokens by comparing the generated JSON against plugin runtime v
 
 Read `references/token-schema.md` for the full output format specification.
 
+## Figma ID metadata (for restore)
+
+Each collection includes a `_meta` block and each token includes a `_figmaId` field. These are invisible to the site UI but critical for restoring variables back into Figma from a backup.
+
+- **`_meta`** on each collection: `{ collectionId, modes: { modeName: modeId } }`
+- **`_figmaId`** on each token: the Figma `VariableID:x:y` string
+- **`_aliasIds`** on tokens with aliases: `{ modeName: aliasVariableId }` — the raw alias target IDs
+
+These fields are populated by the extraction script (Step 2) which includes `id` on each variable and `aliasId` on alias references. The build script (Step 4) passes them through to `tokens.json`. Backups in `.backups/` therefore contain everything needed to write values back via `figma_execute`.
+
 ## Important rules
 
 1. **Always use figma_execute** — never rely on figma_get_variables or cached data
 2. **Resolve aliases fully** — chase VARIABLE_ALIAS chains to the primitive value
 3. **Preserve all 5 collections** — color, typography, size, styles, state
 4. **Don't clobber** — if only syncing one collection, merge it into the existing tokens.json rather than overwriting
+5. **Preserve Figma IDs** — always include variable IDs and alias IDs in extraction for restore capability
