@@ -10,6 +10,7 @@ Arguments:
     output_json     Path to write the final tokens.json
 """
 import json
+import shutil
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
@@ -420,8 +421,28 @@ def main():
         "collections": collections,
     }
 
-    # Write output
+    # Back up existing tokens.json before overwriting
     output_path = Path(output_file)
+    if output_path.exists():
+        backup_dir = output_path.parent / ".backups"
+        backup_dir.mkdir(exist_ok=True)
+        stamp = datetime.now(timezone.utc).strftime("%Y%m%d-%H%M%S")
+        backup_path = backup_dir / f"tokens-{stamp}.json"
+        shutil.copy2(output_path, backup_path)
+        print(f"Backed up previous tokens to {backup_path}")
+
+    # Preserve existing changelog from previous tokens.json
+    if output_path.exists():
+        try:
+            with open(output_path, 'r') as f:
+                existing = json.load(f)
+            if "changelog" in existing:
+                output["changelog"] = existing["changelog"]
+                print(f"Preserved {len(output['changelog'])} changelog entries")
+        except (json.JSONDecodeError, KeyError):
+            pass
+
+    # Write output
     output_path.parent.mkdir(parents=True, exist_ok=True)
 
     print(f"Writing output to {output_file}...")

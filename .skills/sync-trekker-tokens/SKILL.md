@@ -99,6 +99,21 @@ python3 <workspace>/.skills/sync-trekker-tokens/scripts/build_tokens.py \
 
 The script takes three positional arguments: variables input, styles input, and output path. It produces `tokens.json` following the schema documented in `references/token-schema.md`.
 
+### Step 4b: Update changelog
+
+Before stamping into HTML, compare the newly built `tokens.json` against the previous version (saved before Step 4) and append a changelog entry:
+
+1. Back up the existing `tokens.json` to a temp file **before** running `build_tokens.py`
+2. After building, diff old vs new: detect added, changed, and removed tokens across all collections
+3. Build a changelog entry with:
+   - `date`: the current `exportedAt` timestamp
+   - `changes`: array of `{type, collection, group, name, before?, after?, value?}` objects
+   - `summary`: counts of `{added, changed, removed}`
+   - `notes`: optional freeform description (the sync skill should generate a brief summary)
+4. Append the entry to `tokens.json`'s `changelog` array (the build script preserves existing entries)
+
+The changelog feeds the Changelog tab on the site, which shows a timeline of all syncs with expandable diff details.
+
 ### Step 5: Stamp into HTML
 
 Run the export pipeline to inject the updated tokens into `index.html`:
