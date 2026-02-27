@@ -101,18 +101,25 @@ The script takes three positional arguments: variables input, styles input, and 
 
 ### Step 4b: Update changelog
 
-Before stamping into HTML, compare the newly built `tokens.json` against the previous version (saved before Step 4) and append a changelog entry:
+Before stamping into HTML, compare the newly built `tokens.json` against the previous version and append a changelog entry using the dedicated diff script:
 
-1. Back up the existing `tokens.json` to a temp file **before** running `build_tokens.py`
-2. After building, diff old vs new: detect added, changed, and removed tokens across all collections
-3. Build a changelog entry with:
-   - `date`: the current `exportedAt` timestamp
-   - `changes`: array of `{type, collection, group, name, before?, after?, value?}` objects
-   - `summary`: counts of `{added, changed, removed}`
-   - `notes`: optional freeform description (the sync skill should generate a brief summary)
-4. Append the entry to `tokens.json`'s `changelog` array (the build script preserves existing entries)
+1. Back up the existing `tokens.json` to a temp file **before** running `build_tokens.py` (e.g. `cp tokens.json /tmp/tokens_old.json`)
+2. After building, run the diff script:
 
-The changelog feeds the Changelog tab on the site, which shows a timeline of all syncs with expandable diff details.
+```bash
+python3 <workspace>/.skills/sync-trekker-tokens/scripts/diff_tokens.py \
+  /tmp/tokens_old.json \
+  <workspace>/tokens.json \
+  --notes "Optional freeform description"
+```
+
+The diff script:
+- Detects added, changed, and removed tokens across all collections
+- Flattens `before`/`after` values to simple `{light: hex, dark: hex}` dicts (not full token objects) so the React UI can render them without errors
+- Appends a changelog entry with `date`, `changes`, `summary`, and `notes` to `tokens.json` in-place
+- Preserves existing changelog entries
+
+The changelog feeds the Changelog view on the site, which shows a timeline of all syncs with expandable diff details.
 
 ### Step 5: Stamp into HTML
 
