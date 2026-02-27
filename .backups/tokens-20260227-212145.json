@@ -1,5 +1,5 @@
 {
-  "exportedAt": "2026-02-27T21:21:45.365842+00:00",
+  "exportedAt": "2026-02-27T18:36:11.699972+00:00",
   "collections": {
     "color": {
       "name": "Color",
@@ -7,13 +7,6 @@
         "Light",
         "Dark"
       ],
-      "_meta": {
-        "collectionId": "VariableCollectionId:25:904",
-        "modes": {
-          "Light": "25:9",
-          "Dark": "25:10"
-        }
-      },
       "groups": {
         "background": {
           "label": "Background",
@@ -21,11 +14,6 @@
             {
               "name": "background/base/primary",
               "description": "Use for primary and large surface areas",
-              "_figmaId": "VariableID:25:1075",
-              "_aliasIds": {
-                "Light": "VariableID:11:76",
-                "Dark": "VariableID:11:62"
-              },
               "light": {
                 "hex": "FFFDF6",
                 "alias": "base-00"
@@ -38,11 +26,6 @@
             {
               "name": "background/base/secondary",
               "description": "Use for secondary app surfaces",
-              "_figmaId": "VariableID:25:1076",
-              "_aliasIds": {
-                "Light": "VariableID:11:75",
-                "Dark": "VariableID:11:63"
-              },
               "light": {
                 "hex": "F7F6ED",
                 "alias": "base-50"
@@ -55,11 +38,6 @@
             {
               "name": "background/base/inverted",
               "description": "Use for backgrounds of elements on a bold background.",
-              "_figmaId": "VariableID:121:3165",
-              "_aliasIds": {
-                "Light": "VariableID:11:62",
-                "Dark": "VariableID:11:76"
-              },
               "light": {
                 "hex": "100F0F",
                 "alias": "base-1000"
@@ -72,11 +50,6 @@
             {
               "name": "background/base/inverted/hovered",
               "description": "Use for backgrounds of elements on a bold background",
-              "_figmaId": "VariableID:181:1802",
-              "_aliasIds": {
-                "Light": "VariableID:11:64",
-                "Dark": "VariableID:11:75"
-              },
               "light": {
                 "hex": "282726",
                 "alias": "base-900"
@@ -89,11 +62,6 @@
             {
               "name": "background/base/inverted/pressed",
               "description": "Use for backgrounds of elements on a bold background.",
-              "_figmaId": "VariableID:181:1803",
-              "_aliasIds": {
-                "Light": "VariableID:11:62",
-                "Dark": "VariableID:11:76"
-              },
               "light": {
                 "hex": "100F0F",
                 "alias": "base-1000"
@@ -104,50 +72,11 @@
               }
             },
             {
-              "name": "background/neutral/subtlest",
+              "name": "background/neutral/default",
               "description": "",
-              "_figmaId": "VariableID:344:6352",
-              "_aliasIds": {
-                "Light": "VariableID:11:76",
-                "Dark": "VariableID:11:62"
-              },
-              "light": {
-                "hex": "FFFDF6",
-                "alias": "base-00"
-              },
-              "dark": {
-                "hex": "100F0F",
-                "alias": "base-1000"
-              }
-            },
-            {
-              "name": "background/neutral/subtler",
-              "description": "",
-              "_figmaId": "VariableID:25:956",
-              "_aliasIds": {
-                "Light": "VariableID:11:75",
-                "Dark": "VariableID:11:64"
-              },
               "light": {
                 "hex": "F7F6ED",
                 "alias": "base-50"
-              },
-              "dark": {
-                "hex": "282726",
-                "alias": "base-900"
-              }
-            },
-            {
-              "name": "background/neutral/subtle",
-              "description": "",
-              "_figmaId": "VariableID:25:955",
-              "_aliasIds": {
-                "Light": "VariableID:11:74",
-                "Dark": "VariableID:11:63"
-              },
-              "light": {
-                "hex": "E6E4D9",
-                "alias": "base-100"
               },
               "dark": {
                 "hex": "1C1B1A",
@@ -157,11 +86,6 @@
             {
               "name": "background/neutral/bold",
               "description": "",
-              "_figmaId": "VariableID:25:957",
-              "_aliasIds": {
-                "Light": "VariableID:11:68",
-                "Dark": "VariableID:11:71"
-              },
               "light": {
                 "hex": "6F6E69",
                 "alias": "base-600"
@@ -174,11 +98,6 @@
             {
               "name": "background/neutral/default/hovered",
               "description": "Use for background of form UI elements, such as text fields, checkboxes, and radio buttons.",
-              "_figmaId": "VariableID:181:1744",
-              "_aliasIds": {
-                "Light": "VariableID:11:74",
-                "Dark": "VariableID:11:65"
-              },
               "light": {
                 "hex": "E6E4D9",
                 "alias": "base-100"
@@ -191,11 +110,6 @@
             {
               "name": "background/neutral/default/pressed",
               "description": "Use for background of form UI elements, such as text fields, checkboxes, and radio buttons.",
-              "_figmaId": "VariableID:181:1745",
-              "_aliasIds": {
-                "Light": "VariableID:11:72",
-                "Dark": "VariableID:11:66"
-              },
               "light": {
                 "hex": "CECDC3",
                 "alias": "base-200"
@@ -206,13 +120,32 @@
               }
             },
             {
+              "name": "background/neutral/subtler",
+              "description": "",
+              "light": {
+                "hex": "E6E4D9",
+                "alias": "base-100"
+              },
+              "dark": {
+                "hex": "282726",
+                "alias": "base-900"
+              }
+            },
+            {
+              "name": "background/neutral/subtlest",
+              "description": "",
+              "light": {
+                "hex": "E6E4D9",
+                "alias": "base-100"
+              },
+              "dark": {
+                "hex": "100F0F",
+                "alias": "base-1000"
+              }
+            },
+            {
               "name": "background/neutral/bold/hovered",
               "description": "",
-              "_figmaId": "VariableID:181:1748",
-              "_aliasIds": {
-                "Light": "VariableID:11:67",
-                "Dark": "VariableID:11:72"
-              },
               "light": {
                 "hex": "575653",
                 "alias": "base-700"
@@ -225,11 +158,6 @@
             {
               "name": "background/neutral/bold/pressed",
               "description": "",
-              "_figmaId": "VariableID:181:1749",
-              "_aliasIds": {
-                "Light": "VariableID:11:66",
-                "Dark": "VariableID:11:73"
-              },
               "light": {
                 "hex": "403E3C",
                 "alias": "base-800"
@@ -242,11 +170,6 @@
             {
               "name": "background/neutral/subtler/hovered",
               "description": "",
-              "_figmaId": "VariableID:181:1750",
-              "_aliasIds": {
-                "Light": "VariableID:11:73",
-                "Dark": "VariableID:11:64"
-              },
               "light": {
                 "hex": "DAD8CE",
                 "alias": "base-150"
@@ -259,11 +182,6 @@
             {
               "name": "background/neutral/subtler/pressed",
               "description": "",
-              "_figmaId": "VariableID:181:1751",
-              "_aliasIds": {
-                "Light": "VariableID:11:72",
-                "Dark": "VariableID:11:65"
-              },
               "light": {
                 "hex": "CECDC3",
                 "alias": "base-200"
@@ -276,11 +194,6 @@
             {
               "name": "background/base/disabled",
               "description": "",
-              "_figmaId": "VariableID:25:954",
-              "_aliasIds": {
-                "Light": "VariableID:11:74",
-                "Dark": "VariableID:11:65"
-              },
               "light": {
                 "hex": "E6E4D9",
                 "alias": "base-100"
@@ -293,11 +206,6 @@
             {
               "name": "background/input/default",
               "description": "Use for background of form UI elements, such as text fields, checkboxes, and radio buttons.",
-              "_figmaId": "VariableID:25:953",
-              "_aliasIds": {
-                "Light": "VariableID:11:75",
-                "Dark": "VariableID:11:63"
-              },
               "light": {
                 "hex": "F7F6ED",
                 "alias": "base-50"
@@ -310,11 +218,6 @@
             {
               "name": "background/input/hovered",
               "description": "",
-              "_figmaId": "VariableID:181:1800",
-              "_aliasIds": {
-                "Light": "VariableID:11:74",
-                "Dark": "VariableID:11:64"
-              },
               "light": {
                 "hex": "E6E4D9",
                 "alias": "base-100"
@@ -327,11 +230,6 @@
             {
               "name": "background/input/pressed",
               "description": "",
-              "_figmaId": "VariableID:181:1801",
-              "_aliasIds": {
-                "Light": "VariableID:11:75",
-                "Dark": "VariableID:11:65"
-              },
               "light": {
                 "hex": "F7F6ED",
                 "alias": "base-50"
@@ -344,11 +242,6 @@
             {
               "name": "background/selected/default",
               "description": "Use for the background of elements in a selected state, such as in opened dropdown buttons.",
-              "_figmaId": "VariableID:25:961",
-              "_aliasIds": {
-                "Light": "VariableID:11:142",
-                "Dark": "VariableID:11:153"
-              },
               "light": {
                 "hex": "E1ECEB",
                 "alias": "blue-50"
@@ -361,11 +254,6 @@
             {
               "name": "background/selected/default/hovered",
               "description": "Use for the background of elements in a selected state, such as in opened dropdown buttons.",
-              "_figmaId": "VariableID:181:1804",
-              "_aliasIds": {
-                "Light": "VariableID:11:143",
-                "Dark": "VariableID:11:152"
-              },
               "light": {
                 "hex": "C6DDE8",
                 "alias": "blue-100"
@@ -378,11 +266,6 @@
             {
               "name": "background/selected/default/pressed",
               "description": "Use for the background of elements in a selected state, such as in opened dropdown buttons.",
-              "_figmaId": "VariableID:181:1805",
-              "_aliasIds": {
-                "Light": "VariableID:11:144",
-                "Dark": "VariableID:11:151"
-              },
               "light": {
                 "hex": "ABCFE2",
                 "alias": "blue-150"
@@ -395,11 +278,6 @@
             {
               "name": "background/selected/bold",
               "description": "Use for the backgrounds of elements in a selected state, such as checkboxes and radio buttons.",
-              "_figmaId": "VariableID:25:962",
-              "_aliasIds": {
-                "Light": "VariableID:11:149",
-                "Dark": "VariableID:11:147"
-              },
               "light": {
                 "hex": "205EA6",
                 "alias": "blue-600"
@@ -412,11 +290,6 @@
             {
               "name": "background/selected/bold/hovered",
               "description": "Use for the backgrounds of elements in a selected state, such as checkboxes and radio buttons.",
-              "_figmaId": "VariableID:181:1806",
-              "_aliasIds": {
-                "Light": "VariableID:11:150",
-                "Dark": "VariableID:11:145"
-              },
               "light": {
                 "hex": "1A4F8C",
                 "alias": "blue-700"
@@ -429,11 +302,6 @@
             {
               "name": "background/selected/bold/pressed",
               "description": "Use for the backgrounds of elements in a selected state, such as checkboxes and radio buttons.",
-              "_figmaId": "VariableID:181:1807",
-              "_aliasIds": {
-                "Light": "VariableID:11:151",
-                "Dark": "VariableID:11:144"
-              },
               "light": {
                 "hex": "163B66",
                 "alias": "blue-800"
@@ -446,11 +314,6 @@
             {
               "name": "background/danger/default",
               "description": "Use for backgrounds communicating critical information, such in error section messages.",
-              "_figmaId": "VariableID:25:963",
-              "_aliasIds": {
-                "Light": "VariableID:11:77",
-                "Dark": "VariableID:11:88"
-              },
               "light": {
                 "hex": "FFE1D5",
                 "alias": "red-50"
@@ -463,11 +326,6 @@
             {
               "name": "background/danger/default/hovered",
               "description": "Use for backgrounds communicating critical information, such in error section messages.",
-              "_figmaId": "VariableID:181:1720",
-              "_aliasIds": {
-                "Light": "VariableID:11:78",
-                "Dark": "VariableID:11:87"
-              },
               "light": {
                 "hex": "FFCABB",
                 "alias": "red-100"
@@ -480,11 +338,6 @@
             {
               "name": "background/danger/default/pressed",
               "description": "Use for backgrounds communicating critical information, such in error section messages.",
-              "_figmaId": "VariableID:181:1721",
-              "_aliasIds": {
-                "Light": "VariableID:11:79",
-                "Dark": "VariableID:11:86"
-              },
               "light": {
                 "hex": "FDB2A2",
                 "alias": "red-150"
@@ -497,11 +350,6 @@
             {
               "name": "background/danger/bold",
               "description": "A vibrant background option for communicating critical information, such as in danger buttons and error banners.",
-              "_figmaId": "VariableID:25:964",
-              "_aliasIds": {
-                "Light": "VariableID:11:84",
-                "Dark": "VariableID:11:81"
-              },
               "light": {
                 "hex": "AF3029",
                 "alias": "red-600"
@@ -514,11 +362,6 @@
             {
               "name": "background/danger/bold/hovered",
               "description": "A vibrant background option for communicating critical information, such as in danger buttons and error banners.",
-              "_figmaId": "VariableID:181:1722",
-              "_aliasIds": {
-                "Light": "VariableID:11:85",
-                "Dark": "VariableID:11:80"
-              },
               "light": {
                 "hex": "942822",
                 "alias": "red-700"
@@ -531,11 +374,6 @@
             {
               "name": "background/danger/bold/pressed",
               "description": "A vibrant background option for communicating critical information, such as in danger buttons and error banners.",
-              "_figmaId": "VariableID:181:1723",
-              "_aliasIds": {
-                "Light": "VariableID:11:86",
-                "Dark": "VariableID:11:79"
-              },
               "light": {
                 "hex": "6C201C",
                 "alias": "red-800"
@@ -548,11 +386,6 @@
             {
               "name": "background/danger/subtler",
               "description": "Use for backgrounds of danger lozenges and badges to ensure accessibility and desired visual appearance.",
-              "_figmaId": "VariableID:25:965",
-              "_aliasIds": {
-                "Light": "VariableID:11:78",
-                "Dark": "VariableID:11:89"
-              },
               "light": {
                 "hex": "FFCABB",
                 "alias": "red-100"
@@ -565,11 +398,6 @@
             {
               "name": "background/danger/subtler/hovered",
               "description": "Use for backgrounds of danger lozenges and badges to ensure accessibility and desired visual appearance.",
-              "_figmaId": "VariableID:181:1724",
-              "_aliasIds": {
-                "Light": "VariableID:11:79",
-                "Dark": "VariableID:11:88"
-              },
               "light": {
                 "hex": "FDB2A2",
                 "alias": "red-150"
@@ -582,11 +410,6 @@
             {
               "name": "background/danger/subtler/pressed",
               "description": "Use for backgrounds of danger lozenges and badges to ensure accessibility and desired visual appearance.",
-              "_figmaId": "VariableID:181:1725",
-              "_aliasIds": {
-                "Light": "VariableID:11:80",
-                "Dark": "VariableID:11:87"
-              },
               "light": {
                 "hex": "F89A8A",
                 "alias": "red-200"
@@ -599,11 +422,6 @@
             {
               "name": "background/warning/default",
               "description": "Use for backgrounds communicating caution, such as in warning section messages.",
-              "_figmaId": "VariableID:25:966",
-              "_aliasIds": {
-                "Light": "VariableID:11:103",
-                "Dark": "VariableID:11:114"
-              },
               "light": {
                 "hex": "FAEEC6",
                 "alias": "yellow-50"
@@ -616,11 +434,6 @@
             {
               "name": "background/warning/default/hovered",
               "description": "Use for backgrounds communicating caution, such as in warning section messages.",
-              "_figmaId": "VariableID:181:1726",
-              "_aliasIds": {
-                "Light": "VariableID:11:104",
-                "Dark": "VariableID:11:113"
-              },
               "light": {
                 "hex": "F6E2A0",
                 "alias": "yellow-100"
@@ -633,11 +446,6 @@
             {
               "name": "background/warning/default/pressed",
               "description": "Use for backgrounds communicating caution, such as in warning section messages.",
-              "_figmaId": "VariableID:181:1727",
-              "_aliasIds": {
-                "Light": "VariableID:11:105",
-                "Dark": "VariableID:11:112"
-              },
               "light": {
                 "hex": "F1D67E",
                 "alias": "yellow-150"
@@ -650,11 +458,6 @@
             {
               "name": "background/warning/bold",
               "description": "A vibrant background option for communicating caution, such as in warning buttons and warning banners.",
-              "_figmaId": "VariableID:25:967",
-              "_aliasIds": {
-                "Light": "VariableID:11:110",
-                "Dark": "VariableID:11:107"
-              },
               "light": {
                 "hex": "AD8301",
                 "alias": "yellow-600"
@@ -667,11 +470,6 @@
             {
               "name": "background/warning/bold/hovered",
               "description": "A vibrant background option for communicating caution, such as in warning buttons and warning banners.",
-              "_figmaId": "VariableID:181:1728",
-              "_aliasIds": {
-                "Light": "VariableID:11:111",
-                "Dark": "VariableID:11:106"
-              },
               "light": {
                 "hex": "8E6B01",
                 "alias": "yellow-700"
@@ -684,11 +482,6 @@
             {
               "name": "background/warning/bold/pressed",
               "description": "A vibrant background option for communicating caution, such as in warning buttons and warning banners.",
-              "_figmaId": "VariableID:181:1729",
-              "_aliasIds": {
-                "Light": "VariableID:11:112",
-                "Dark": "VariableID:11:105"
-              },
               "light": {
                 "hex": "664D01",
                 "alias": "yellow-800"
@@ -701,11 +494,6 @@
             {
               "name": "background/warning/subtler",
               "description": "Use for backgrounds of warning lozenges and badges to ensure accessibility and desired visual appearance.",
-              "_figmaId": "VariableID:25:968",
-              "_aliasIds": {
-                "Light": "VariableID:11:104",
-                "Dark": "VariableID:11:115"
-              },
               "light": {
                 "hex": "F6E2A0",
                 "alias": "yellow-100"
@@ -718,11 +506,6 @@
             {
               "name": "background/warning/subtler/hovered",
               "description": "Use for backgrounds of warning lozenges and badges to ensure accessibility and desired visual appearance.",
-              "_figmaId": "VariableID:181:1730",
-              "_aliasIds": {
-                "Light": "VariableID:11:105",
-                "Dark": "VariableID:11:114"
-              },
               "light": {
                 "hex": "F1D67E",
                 "alias": "yellow-150"
@@ -735,11 +518,6 @@
             {
               "name": "background/warning/subtler/pressed",
               "description": "Use for backgrounds of warning lozenges and badges to ensure accessibility and desired visual appearance.",
-              "_figmaId": "VariableID:181:1731",
-              "_aliasIds": {
-                "Light": "VariableID:11:106",
-                "Dark": "VariableID:11:113"
-              },
               "light": {
                 "hex": "ECCB60",
                 "alias": "yellow-200"
@@ -752,11 +530,6 @@
             {
               "name": "background/success/default",
               "description": "Use for backgrounds communicating a favorable outcome, such as in success section messages.",
-              "_figmaId": "VariableID:25:969",
-              "_aliasIds": {
-                "Light": "VariableID:11:116",
-                "Dark": "VariableID:11:127"
-              },
               "light": {
                 "hex": "EDEECF",
                 "alias": "green-50"
@@ -769,11 +542,6 @@
             {
               "name": "background/success/default/hovered",
               "description": "Use for backgrounds communicating a favorable outcome, such as in success section messages.",
-              "_figmaId": "VariableID:180:1662",
-              "_aliasIds": {
-                "Light": "VariableID:11:117",
-                "Dark": "VariableID:11:126"
-              },
               "light": {
                 "hex": "DDE2B2",
                 "alias": "green-100"
@@ -786,11 +554,6 @@
             {
               "name": "background/success/default/pressed",
               "description": "Use for backgrounds communicating a favorable outcome, such as in success section messages.",
-              "_figmaId": "VariableID:180:1663",
-              "_aliasIds": {
-                "Light": "VariableID:11:118",
-                "Dark": "VariableID:11:125"
-              },
               "light": {
                 "hex": "CDD597",
                 "alias": "green-150"
@@ -803,11 +566,6 @@
             {
               "name": "background/success/bold",
               "description": "A vibrant background option for communicating a favorable outcome, such as in checked toggles.",
-              "_figmaId": "VariableID:25:970",
-              "_aliasIds": {
-                "Light": "VariableID:11:123",
-                "Dark": "VariableID:11:120"
-              },
               "light": {
                 "hex": "66800B",
                 "alias": "green-600"
@@ -820,11 +578,6 @@
             {
               "name": "background/success/bold/hovered",
               "description": "A vibrant background option for communicating a favorable outcome, such as in checked toggles.",
-              "_figmaId": "VariableID:181:1716",
-              "_aliasIds": {
-                "Light": "VariableID:11:124",
-                "Dark": "VariableID:11:119"
-              },
               "light": {
                 "hex": "536907",
                 "alias": "green-700"
@@ -837,11 +590,6 @@
             {
               "name": "background/success/bold/pressed",
               "description": "A vibrant background option for communicating a favorable outcome, such as in checked toggles.",
-              "_figmaId": "VariableID:181:1717",
-              "_aliasIds": {
-                "Light": "VariableID:11:125",
-                "Dark": "VariableID:11:118"
-              },
               "light": {
                 "hex": "3D4C07",
                 "alias": "green-800"
@@ -854,11 +602,6 @@
             {
               "name": "background/success/subtler",
               "description": "Use for backgrounds of success lozenges and badges to ensure accessibility and desired visual appearance.",
-              "_figmaId": "VariableID:25:971",
-              "_aliasIds": {
-                "Light": "VariableID:11:117",
-                "Dark": "VariableID:11:128"
-              },
               "light": {
                 "hex": "DDE2B2",
                 "alias": "green-100"
@@ -871,11 +614,6 @@
             {
               "name": "background/success/subtler/hovered",
               "description": "Use for backgrounds of success lozenges and badges to ensure accessibility and desired visual appearance.",
-              "_figmaId": "VariableID:181:1718",
-              "_aliasIds": {
-                "Light": "VariableID:11:118",
-                "Dark": "VariableID:11:127"
-              },
               "light": {
                 "hex": "CDD597",
                 "alias": "green-150"
@@ -888,11 +626,6 @@
             {
               "name": "background/success/subtler/pressed",
               "description": "Use for backgrounds of success lozenges and badges to ensure accessibility and desired visual appearance.",
-              "_figmaId": "VariableID:181:1719",
-              "_aliasIds": {
-                "Light": "VariableID:11:119",
-                "Dark": "VariableID:11:126"
-              },
               "light": {
                 "hex": "BEC97E",
                 "alias": "green-200"
@@ -905,11 +638,6 @@
             {
               "name": "background/discovery/default",
               "description": "Use for backgrounds communicating change or something new, such as in discovery section messages.",
-              "_figmaId": "VariableID:25:972",
-              "_aliasIds": {
-                "Light": "VariableID:11:155",
-                "Dark": "VariableID:11:166"
-              },
               "light": {
                 "hex": "F0EAEC",
                 "alias": "purple-50"
@@ -922,11 +650,6 @@
             {
               "name": "background/discovery/default/hovered",
               "description": "Use for backgrounds communicating change or something new, such as in discovery section messages.",
-              "_figmaId": "VariableID:181:1732",
-              "_aliasIds": {
-                "Light": "VariableID:11:156",
-                "Dark": "VariableID:11:165"
-              },
               "light": {
                 "hex": "E2D9E9",
                 "alias": "purple-100"
@@ -939,11 +662,6 @@
             {
               "name": "background/discovery/default/pressed",
               "description": "Use for backgrounds communicating change or something new, such as in discovery section messages.",
-              "_figmaId": "VariableID:181:1733",
-              "_aliasIds": {
-                "Light": "VariableID:11:157",
-                "Dark": "VariableID:11:164"
-              },
               "light": {
                 "hex": "D3CAE6",
                 "alias": "purple-150"
@@ -956,11 +674,6 @@
             {
               "name": "background/discovery/bold",
               "description": "A vibrant background option communicating change or something new, such as in onboarding spotlights.",
-              "_figmaId": "VariableID:25:973",
-              "_aliasIds": {
-                "Light": "VariableID:11:162",
-                "Dark": "VariableID:11:159"
-              },
               "light": {
                 "hex": "5E409D",
                 "alias": "purple-600"
@@ -973,11 +686,6 @@
             {
               "name": "background/discovery/bold/hovered",
               "description": "A vibrant background option communicating change or something new, such as in onboarding spotlights.",
-              "_figmaId": "VariableID:181:1734",
-              "_aliasIds": {
-                "Light": "VariableID:11:163",
-                "Dark": "VariableID:11:158"
-              },
               "light": {
                 "hex": "4F3685",
                 "alias": "purple-700"
@@ -990,11 +698,6 @@
             {
               "name": "background/discovery/bold/pressed",
               "description": "A vibrant background option communicating change or something new, such as in onboarding spotlights.",
-              "_figmaId": "VariableID:181:1735",
-              "_aliasIds": {
-                "Light": "VariableID:11:164",
-                "Dark": "VariableID:11:157"
-              },
               "light": {
                 "hex": "3C2A62",
                 "alias": "purple-800"
@@ -1007,11 +710,6 @@
             {
               "name": "background/discovery/subtler",
               "description": "Use for backgrounds of discovery lozenges and badges to ensure accessibility and desired visual appearance.",
-              "_figmaId": "VariableID:25:974",
-              "_aliasIds": {
-                "Light": "VariableID:11:156",
-                "Dark": "VariableID:11:167"
-              },
               "light": {
                 "hex": "E2D9E9",
                 "alias": "purple-100"
@@ -1024,11 +722,6 @@
             {
               "name": "background/discovery/subtler/hovered",
               "description": "Use for backgrounds of discovery lozenges and badges to ensure accessibility and desired visual appearance.",
-              "_figmaId": "VariableID:181:1736",
-              "_aliasIds": {
-                "Light": "VariableID:11:157",
-                "Dark": "VariableID:11:166"
-              },
               "light": {
                 "hex": "D3CAE6",
                 "alias": "purple-150"
@@ -1041,11 +734,6 @@
             {
               "name": "background/discovery/subtler/pressed",
               "description": "Use for backgrounds of discovery lozenges and badges to ensure accessibility and desired visual appearance.",
-              "_figmaId": "VariableID:181:1737",
-              "_aliasIds": {
-                "Light": "VariableID:11:158",
-                "Dark": "VariableID:11:165"
-              },
               "light": {
                 "hex": "C4B9E0",
                 "alias": "purple-200"
@@ -1058,11 +746,6 @@
             {
               "name": "background/information/default",
               "description": "Use for backgrounds communicating information or something in-progress, such as in information section messages.",
-              "_figmaId": "VariableID:25:975",
-              "_aliasIds": {
-                "Light": "VariableID:11:142",
-                "Dark": "VariableID:11:153"
-              },
               "light": {
                 "hex": "E1ECEB",
                 "alias": "blue-50"
@@ -1075,11 +758,6 @@
             {
               "name": "background/information/default/hovered",
               "description": "Use for backgrounds communicating information or something in-progress, such as in information section messages.",
-              "_figmaId": "VariableID:181:1738",
-              "_aliasIds": {
-                "Light": "VariableID:11:143",
-                "Dark": "VariableID:11:152"
-              },
               "light": {
                 "hex": "C6DDE8",
                 "alias": "blue-100"
@@ -1092,11 +770,6 @@
             {
               "name": "background/information/default/pressed",
               "description": "Use for backgrounds communicating information or something in-progress, such as in information section messages.",
-              "_figmaId": "VariableID:181:1739",
-              "_aliasIds": {
-                "Light": "VariableID:11:144",
-                "Dark": "VariableID:11:151"
-              },
               "light": {
                 "hex": "ABCFE2",
                 "alias": "blue-150"
@@ -1109,11 +782,6 @@
             {
               "name": "background/information/bold",
               "description": "A vibrant background option for communicating information or something in-progress.",
-              "_figmaId": "VariableID:25:976",
-              "_aliasIds": {
-                "Light": "VariableID:11:149",
-                "Dark": "VariableID:11:146"
-              },
               "light": {
                 "hex": "205EA6",
                 "alias": "blue-600"
@@ -1126,11 +794,6 @@
             {
               "name": "background/information/bold/hovered",
               "description": "A vibrant background option for communicating information or something in-progress.",
-              "_figmaId": "VariableID:181:1740",
-              "_aliasIds": {
-                "Light": "VariableID:11:150",
-                "Dark": "VariableID:11:145"
-              },
               "light": {
                 "hex": "1A4F8C",
                 "alias": "blue-700"
@@ -1143,11 +806,6 @@
             {
               "name": "background/information/bold/pressed",
               "description": "A vibrant background option for communicating information or something in-progress.",
-              "_figmaId": "VariableID:181:1741",
-              "_aliasIds": {
-                "Light": "VariableID:11:151",
-                "Dark": "VariableID:11:144"
-              },
               "light": {
                 "hex": "163B66",
                 "alias": "blue-800"
@@ -1160,11 +818,6 @@
             {
               "name": "background/information/subtler",
               "description": "Use for backgrounds of information lozenges and badges to ensure accessibility and desired visual appearance.",
-              "_figmaId": "VariableID:25:977",
-              "_aliasIds": {
-                "Light": "VariableID:11:143",
-                "Dark": "VariableID:11:154"
-              },
               "light": {
                 "hex": "C6DDE8",
                 "alias": "blue-100"
@@ -1177,11 +830,6 @@
             {
               "name": "background/information/subtler/hovered",
               "description": "Use for backgrounds of information lozenges and badges to ensure accessibility and desired visual appearance.",
-              "_figmaId": "VariableID:181:1742",
-              "_aliasIds": {
-                "Light": "VariableID:11:144",
-                "Dark": "VariableID:11:153"
-              },
               "light": {
                 "hex": "ABCFE2",
                 "alias": "blue-150"
@@ -1194,11 +842,6 @@
             {
               "name": "background/information/subtler/pressed",
               "description": "Use for backgrounds of information lozenges and badges to ensure accessibility and desired visual appearance.",
-              "_figmaId": "VariableID:181:1743",
-              "_aliasIds": {
-                "Light": "VariableID:11:145",
-                "Dark": "VariableID:11:152"
-              },
               "light": {
                 "hex": "92BFDB",
                 "alias": "blue-200"
@@ -1211,11 +854,6 @@
             {
               "name": "background/accent/red/subtlest",
               "description": "Use for red backgrounds when there is no meaning tied to the color. Reserved for when you only want a hint of color.",
-              "_figmaId": "VariableID:25:978",
-              "_aliasIds": {
-                "Light": "VariableID:11:77",
-                "Dark": "VariableID:11:89"
-              },
               "light": {
                 "hex": "FFE1D5",
                 "alias": "red-50"
@@ -1228,11 +866,6 @@
             {
               "name": "background/accent/red/subtler",
               "description": "Use for red backgrounds when there is no meaning tied to the color, such as colored tags.",
-              "_figmaId": "VariableID:25:979",
-              "_aliasIds": {
-                "Light": "VariableID:11:78",
-                "Dark": "VariableID:11:88"
-              },
               "light": {
                 "hex": "FFCABB",
                 "alias": "red-100"
@@ -1245,11 +878,6 @@
             {
               "name": "background/accent/red/subtle",
               "description": "Use for vibrant red backgrounds when there is no meaning tied to the color, such as colored tags.",
-              "_figmaId": "VariableID:25:980",
-              "_aliasIds": {
-                "Light": "VariableID:11:80",
-                "Dark": "VariableID:11:86"
-              },
               "light": {
                 "hex": "F89A8A",
                 "alias": "red-200"
@@ -1262,11 +890,6 @@
             {
               "name": "background/accent/red/bolder",
               "description": "Use for red backgrounds when there is no meaning tied to the color, and the background needs to pass min 3:1 contrast requirements.",
-              "_figmaId": "VariableID:25:981",
-              "_aliasIds": {
-                "Light": "VariableID:11:84",
-                "Dark": "VariableID:11:81"
-              },
               "light": {
                 "hex": "AF3029",
                 "alias": "red-600"
@@ -1279,11 +902,6 @@
             {
               "name": "background/accent/orange/subtlest",
               "description": "Use for orange backgrounds when there is no meaning tied to the color. Reserved for when you only want a hint of color.",
-              "_figmaId": "VariableID:25:986",
-              "_aliasIds": {
-                "Light": "VariableID:11:90",
-                "Dark": "VariableID:11:102"
-              },
               "light": {
                 "hex": "FFE7CE",
                 "alias": "orange-50"
@@ -1296,11 +914,6 @@
             {
               "name": "background/accent/orange/subtler",
               "description": "Use for orange backgrounds when there is no meaning tied to the color, such as colored tags.",
-              "_figmaId": "VariableID:25:987",
-              "_aliasIds": {
-                "Light": "VariableID:11:91",
-                "Dark": "VariableID:11:101"
-              },
               "light": {
                 "hex": "FED3AF",
                 "alias": "orange-100"
@@ -1313,11 +926,6 @@
             {
               "name": "background/accent/orange/subtle",
               "description": "Use for vibrant orange backgrounds when there is no meaning tied to the color, such as colored tags.",
-              "_figmaId": "VariableID:25:988",
-              "_aliasIds": {
-                "Light": "VariableID:11:93",
-                "Dark": "VariableID:11:99"
-              },
               "light": {
                 "hex": "F9AE77",
                 "alias": "orange-200"
@@ -1330,11 +938,6 @@
             {
               "name": "background/accent/orange/bolder",
               "description": "Use for orange backgrounds when there is no meaning tied to the color, and the background needs to pass min 3:1 contrast requirements.",
-              "_figmaId": "VariableID:25:989",
-              "_aliasIds": {
-                "Light": "VariableID:11:97",
-                "Dark": "VariableID:11:94"
-              },
               "light": {
                 "hex": "BC5215",
                 "alias": "orange-600"
@@ -1347,11 +950,6 @@
             {
               "name": "background/accent/yellow/subtlest",
               "description": "Use for yellow backgrounds when there is no meaning tied to the color. Reserved for when you only want a hint of color.",
-              "_figmaId": "VariableID:25:994",
-              "_aliasIds": {
-                "Light": "VariableID:11:103",
-                "Dark": "VariableID:11:115"
-              },
               "light": {
                 "hex": "FAEEC6",
                 "alias": "yellow-50"
@@ -1364,11 +962,6 @@
             {
               "name": "background/accent/yellow/subtler",
               "description": "Use for yellow backgrounds when there is no meaning tied to the color, such as colored tags.",
-              "_figmaId": "VariableID:25:995",
-              "_aliasIds": {
-                "Light": "VariableID:11:104",
-                "Dark": "VariableID:11:114"
-              },
               "light": {
                 "hex": "F6E2A0",
                 "alias": "yellow-100"
@@ -1381,11 +974,6 @@
             {
               "name": "background/accent/yellow/subtle",
               "description": "Use for vibrant yellow backgrounds when there is no meaning tied to the color, such as colored tags.",
-              "_figmaId": "VariableID:25:996",
-              "_aliasIds": {
-                "Light": "VariableID:11:106",
-                "Dark": "VariableID:11:112"
-              },
               "light": {
                 "hex": "ECCB60",
                 "alias": "yellow-200"
@@ -1398,11 +986,6 @@
             {
               "name": "background/accent/yellow/bolder",
               "description": "Use for yellow backgrounds when there is no meaning tied to the color, and the background needs to pass min 3:1 contrast requirements.",
-              "_figmaId": "VariableID:25:997",
-              "_aliasIds": {
-                "Light": "VariableID:11:110",
-                "Dark": "VariableID:11:107"
-              },
               "light": {
                 "hex": "AD8301",
                 "alias": "yellow-600"
@@ -1415,11 +998,6 @@
             {
               "name": "background/accent/green/subtlest",
               "description": "Use for green backgrounds when there is no meaning tied to the color. Reserved for when you only want a hint of color.",
-              "_figmaId": "VariableID:25:1002",
-              "_aliasIds": {
-                "Light": "VariableID:11:116",
-                "Dark": "VariableID:11:128"
-              },
               "light": {
                 "hex": "EDEECF",
                 "alias": "green-50"
@@ -1432,11 +1010,6 @@
             {
               "name": "background/accent/green/subtler",
               "description": "Use for green backgrounds when there is no meaning tied to the color, such as colored tags.",
-              "_figmaId": "VariableID:25:1003",
-              "_aliasIds": {
-                "Light": "VariableID:11:117",
-                "Dark": "VariableID:11:127"
-              },
               "light": {
                 "hex": "DDE2B2",
                 "alias": "green-100"
@@ -1449,11 +1022,6 @@
             {
               "name": "background/accent/green/subtle",
               "description": "Use for vibrant green backgrounds when there is no meaning tied to the color, such as colored tags.",
-              "_figmaId": "VariableID:25:1004",
-              "_aliasIds": {
-                "Light": "VariableID:11:119",
-                "Dark": "VariableID:11:125"
-              },
               "light": {
                 "hex": "BEC97E",
                 "alias": "green-200"
@@ -1466,11 +1034,6 @@
             {
               "name": "background/accent/green/bolder",
               "description": "Use for green backgrounds when there is no meaning tied to the color, and the background needs to pass min 3:1 contrast requirements.",
-              "_figmaId": "VariableID:25:1005",
-              "_aliasIds": {
-                "Light": "VariableID:11:123",
-                "Dark": "VariableID:11:120"
-              },
               "light": {
                 "hex": "66800B",
                 "alias": "green-600"
@@ -1483,11 +1046,6 @@
             {
               "name": "background/accent/cyan/subtlest",
               "description": "Use for cyan backgrounds when there is no meaning tied to the color. Reserved for when you only want a hint of color.",
-              "_figmaId": "VariableID:25:1010",
-              "_aliasIds": {
-                "Light": "VariableID:11:129",
-                "Dark": "VariableID:11:141"
-              },
               "light": {
                 "hex": "DDF1E4",
                 "alias": "cyan-50"
@@ -1500,11 +1058,6 @@
             {
               "name": "background/accent/cyan/subtler",
               "description": "Use for cyan backgrounds when there is no meaning tied to the color, such as colored tags.",
-              "_figmaId": "VariableID:25:1011",
-              "_aliasIds": {
-                "Light": "VariableID:11:130",
-                "Dark": "VariableID:11:140"
-              },
               "light": {
                 "hex": "BFE8D9",
                 "alias": "cyan-100"
@@ -1517,11 +1070,6 @@
             {
               "name": "background/accent/cyan/subtle",
               "description": "Use for vibrant cyan backgrounds when there is no meaning tied to the color, such as colored tags.",
-              "_figmaId": "VariableID:25:1012",
-              "_aliasIds": {
-                "Light": "VariableID:11:132",
-                "Dark": "VariableID:11:138"
-              },
               "light": {
                 "hex": "87D3C3",
                 "alias": "cyan-200"
@@ -1534,11 +1082,6 @@
             {
               "name": "background/accent/cyan/bolder",
               "description": "Use for cyan backgrounds when there is no meaning tied to the color, and the background needs to pass min 3:1 contrast requirements.",
-              "_figmaId": "VariableID:25:1013",
-              "_aliasIds": {
-                "Light": "VariableID:11:136",
-                "Dark": "VariableID:11:133"
-              },
               "light": {
                 "hex": "24837B",
                 "alias": "cyan-600"
@@ -1551,11 +1094,6 @@
             {
               "name": "background/accent/blue/subtlest",
               "description": "Use for blue backgrounds when there is no meaning tied to the color. Reserved for when you only want a hint of color.",
-              "_figmaId": "VariableID:25:1018",
-              "_aliasIds": {
-                "Light": "VariableID:11:142",
-                "Dark": "VariableID:11:154"
-              },
               "light": {
                 "hex": "E1ECEB",
                 "alias": "blue-50"
@@ -1568,11 +1106,6 @@
             {
               "name": "background/accent/blue/subtler",
               "description": "Use for blue backgrounds when there is no meaning tied to the color, such as colored tags.",
-              "_figmaId": "VariableID:25:1019",
-              "_aliasIds": {
-                "Light": "VariableID:11:143",
-                "Dark": "VariableID:11:153"
-              },
               "light": {
                 "hex": "C6DDE8",
                 "alias": "blue-100"
@@ -1585,11 +1118,6 @@
             {
               "name": "background/accent/blue/subtle",
               "description": "Use for vibrant blue backgrounds when there is no meaning tied to the color, such as colored tags.",
-              "_figmaId": "VariableID:25:1020",
-              "_aliasIds": {
-                "Light": "VariableID:11:145",
-                "Dark": "VariableID:11:151"
-              },
               "light": {
                 "hex": "92BFDB",
                 "alias": "blue-200"
@@ -1602,11 +1130,6 @@
             {
               "name": "background/accent/blue/bolder",
               "description": "Use for blue backgrounds when there is no meaning tied to the color, and the background needs to pass min 3:1 contrast requirements.",
-              "_figmaId": "VariableID:25:1021",
-              "_aliasIds": {
-                "Light": "VariableID:11:149",
-                "Dark": "VariableID:11:146"
-              },
               "light": {
                 "hex": "205EA6",
                 "alias": "blue-600"
@@ -1619,11 +1142,6 @@
             {
               "name": "background/accent/purple/subtlest",
               "description": "Use for purple backgrounds when there is no meaning tied to the color. Reserved for when you only want a hint of color.",
-              "_figmaId": "VariableID:25:1026",
-              "_aliasIds": {
-                "Light": "VariableID:11:155",
-                "Dark": "VariableID:11:167"
-              },
               "light": {
                 "hex": "F0EAEC",
                 "alias": "purple-50"
@@ -1636,11 +1154,6 @@
             {
               "name": "background/accent/purple/subtler",
               "description": "Use for purple backgrounds when there is no meaning tied to the color, such as colored tags.",
-              "_figmaId": "VariableID:25:1027",
-              "_aliasIds": {
-                "Light": "VariableID:11:156",
-                "Dark": "VariableID:11:166"
-              },
               "light": {
                 "hex": "E2D9E9",
                 "alias": "purple-100"
@@ -1653,11 +1166,6 @@
             {
               "name": "background/accent/purple/subtle",
               "description": "Use for vibrant purple backgrounds when there is no meaning tied to the color, such as colored tags.",
-              "_figmaId": "VariableID:25:1028",
-              "_aliasIds": {
-                "Light": "VariableID:11:158",
-                "Dark": "VariableID:11:164"
-              },
               "light": {
                 "hex": "C4B9E0",
                 "alias": "purple-200"
@@ -1670,11 +1178,6 @@
             {
               "name": "background/accent/purple/bolder",
               "description": "Use for purple backgrounds when there is no meaning tied to the color, and the background needs to pass min 3:1 contrast requirements.",
-              "_figmaId": "VariableID:25:1029",
-              "_aliasIds": {
-                "Light": "VariableID:11:162",
-                "Dark": "VariableID:11:159"
-              },
               "light": {
                 "hex": "5E409D",
                 "alias": "purple-600"
@@ -1687,11 +1190,6 @@
             {
               "name": "background/accent/magenta/subtlest",
               "description": "Use for magenta backgrounds when there is no meaning tied to the color. Reserved for when you only want a hint of color.",
-              "_figmaId": "VariableID:25:1034",
-              "_aliasIds": {
-                "Light": "VariableID:11:168",
-                "Dark": "VariableID:11:180"
-              },
               "light": {
                 "hex": "FEE4E5",
                 "alias": "magenta-50"
@@ -1704,11 +1202,6 @@
             {
               "name": "background/accent/magenta/subtler",
               "description": "Use for magenta backgrounds when there is no meaning tied to the color, such as colored tags.",
-              "_figmaId": "VariableID:25:1035",
-              "_aliasIds": {
-                "Light": "VariableID:11:169",
-                "Dark": "VariableID:11:179"
-              },
               "light": {
                 "hex": "FCCFDA",
                 "alias": "magenta-100"
@@ -1721,11 +1214,6 @@
             {
               "name": "background/accent/magenta/subtle",
               "description": "Use for vibrant magenta backgrounds when there is no meaning tied to the color, such as colored tags.",
-              "_figmaId": "VariableID:25:1036",
-              "_aliasIds": {
-                "Light": "VariableID:11:171",
-                "Dark": "VariableID:11:177"
-              },
               "light": {
                 "hex": "F4A4C2",
                 "alias": "magenta-200"
@@ -1738,11 +1226,6 @@
             {
               "name": "background/accent/magenta/bolder",
               "description": "Use for magenta backgrounds when there is no meaning tied to the color, and the background needs to pass min 3:1 contrast requirements.",
-              "_figmaId": "VariableID:25:1037",
-              "_aliasIds": {
-                "Light": "VariableID:11:175",
-                "Dark": "VariableID:11:172"
-              },
               "light": {
                 "hex": "A02F6F",
                 "alias": "magenta-600"
@@ -1760,11 +1243,6 @@
             {
               "name": "border/default",
               "description": "",
-              "_figmaId": "VariableID:25:938",
-              "_aliasIds": {
-                "Light": "VariableID:11:73",
-                "Dark": "VariableID:11:65"
-              },
               "light": {
                 "hex": "DAD8CE",
                 "alias": "base-150"
@@ -1777,11 +1255,6 @@
             {
               "name": "border/bold",
               "description": "",
-              "_figmaId": "VariableID:25:939",
-              "_aliasIds": {
-                "Light": "VariableID:11:71",
-                "Dark": "VariableID:11:68"
-              },
               "light": {
                 "hex": "B7B5AC",
                 "alias": "base-300"
@@ -1794,11 +1267,6 @@
             {
               "name": "border/bolder",
               "description": "",
-              "_figmaId": "VariableID:82:5598",
-              "_aliasIds": {
-                "Light": "VariableID:11:68",
-                "Dark": "VariableID:11:70"
-              },
               "light": {
                 "hex": "6F6E69",
                 "alias": "base-600"
@@ -1811,11 +1279,6 @@
             {
               "name": "border/boldest",
               "description": "",
-              "_figmaId": "VariableID:121:3166",
-              "_aliasIds": {
-                "Light": "VariableID:11:62",
-                "Dark": "VariableID:11:72"
-              },
               "light": {
                 "hex": "100F0F",
                 "alias": "base-1000"
@@ -1828,11 +1291,6 @@
             {
               "name": "border/inverse",
               "description": "",
-              "_figmaId": "VariableID:25:940",
-              "_aliasIds": {
-                "Light": "VariableID:11:76",
-                "Dark": "VariableID:11:62"
-              },
               "light": {
                 "hex": "FFFDF6",
                 "alias": "base-00"
@@ -1845,11 +1303,6 @@
             {
               "name": "border/focused",
               "description": "",
-              "_figmaId": "VariableID:25:941",
-              "_aliasIds": {
-                "Light": "VariableID:11:149",
-                "Dark": "VariableID:11:147"
-              },
               "light": {
                 "hex": "205EA6",
                 "alias": "blue-600"
@@ -1862,11 +1315,6 @@
             {
               "name": "border/focused/subtle",
               "description": "",
-              "_figmaId": "VariableID:123:25673",
-              "_aliasIds": {
-                "Light": "VariableID:11:145",
-                "Dark": "VariableID:11:151"
-              },
               "light": {
                 "hex": "92BFDB",
                 "alias": "blue-200"
@@ -1879,11 +1327,6 @@
             {
               "name": "border/input",
               "description": "",
-              "_figmaId": "VariableID:25:942",
-              "_aliasIds": {
-                "Light": "VariableID:11:73",
-                "Dark": "VariableID:11:65"
-              },
               "light": {
                 "hex": "DAD8CE",
                 "alias": "base-150"
@@ -1896,11 +1339,6 @@
             {
               "name": "border/disabled",
               "description": "",
-              "_figmaId": "VariableID:25:943",
-              "_aliasIds": {
-                "Light": "VariableID:11:74",
-                "Dark": "VariableID:11:65"
-              },
               "light": {
                 "hex": "E6E4D9",
                 "alias": "base-100"
@@ -1913,11 +1351,6 @@
             {
               "name": "border/brand",
               "description": "",
-              "_figmaId": "VariableID:25:944",
-              "_aliasIds": {
-                "Light": "VariableID:11:149",
-                "Dark": "VariableID:11:147"
-              },
               "light": {
                 "hex": "205EA6",
                 "alias": "blue-600"
@@ -1930,11 +1363,6 @@
             {
               "name": "border/brand/subtle",
               "description": "",
-              "_figmaId": "VariableID:123:25674",
-              "_aliasIds": {
-                "Light": "VariableID:11:145",
-                "Dark": "VariableID:11:151"
-              },
               "light": {
                 "hex": "92BFDB",
                 "alias": "blue-200"
@@ -1947,11 +1375,6 @@
             {
               "name": "border/selected",
               "description": "",
-              "_figmaId": "VariableID:25:945",
-              "_aliasIds": {
-                "Light": "VariableID:11:149",
-                "Dark": "VariableID:11:147"
-              },
               "light": {
                 "hex": "205EA6",
                 "alias": "blue-600"
@@ -1964,11 +1387,6 @@
             {
               "name": "border/selected/subtle",
               "description": "",
-              "_figmaId": "VariableID:123:25675",
-              "_aliasIds": {
-                "Light": "VariableID:11:145",
-                "Dark": "VariableID:11:151"
-              },
               "light": {
                 "hex": "92BFDB",
                 "alias": "blue-200"
@@ -1981,11 +1399,6 @@
             {
               "name": "border/danger",
               "description": "",
-              "_figmaId": "VariableID:25:946",
-              "_aliasIds": {
-                "Light": "VariableID:11:84",
-                "Dark": "VariableID:11:82"
-              },
               "light": {
                 "hex": "AF3029",
                 "alias": "red-600"
@@ -1998,11 +1411,6 @@
             {
               "name": "border/danger/subtle",
               "description": "",
-              "_figmaId": "VariableID:123:25676",
-              "_aliasIds": {
-                "Light": "VariableID:11:80",
-                "Dark": "VariableID:11:86"
-              },
               "light": {
                 "hex": "F89A8A",
                 "alias": "red-200"
@@ -2015,11 +1423,6 @@
             {
               "name": "border/warning",
               "description": "",
-              "_figmaId": "VariableID:25:947",
-              "_aliasIds": {
-                "Light": "VariableID:11:110",
-                "Dark": "VariableID:11:108"
-              },
               "light": {
                 "hex": "AD8301",
                 "alias": "yellow-600"
@@ -2032,11 +1435,6 @@
             {
               "name": "border/warning/subtle",
               "description": "",
-              "_figmaId": "VariableID:123:25677",
-              "_aliasIds": {
-                "Light": "VariableID:11:106",
-                "Dark": "VariableID:11:112"
-              },
               "light": {
                 "hex": "ECCB60",
                 "alias": "yellow-200"
@@ -2049,11 +1447,6 @@
             {
               "name": "border/success",
               "description": "",
-              "_figmaId": "VariableID:25:948",
-              "_aliasIds": {
-                "Light": "VariableID:11:123",
-                "Dark": "VariableID:11:121"
-              },
               "light": {
                 "hex": "66800B",
                 "alias": "green-600"
@@ -2066,11 +1459,6 @@
             {
               "name": "border/success/subtle",
               "description": "",
-              "_figmaId": "VariableID:123:25678",
-              "_aliasIds": {
-                "Light": "VariableID:11:119",
-                "Dark": "VariableID:11:125"
-              },
               "light": {
                 "hex": "BEC97E",
                 "alias": "green-200"
@@ -2083,11 +1471,6 @@
             {
               "name": "border/discovery",
               "description": "",
-              "_figmaId": "VariableID:25:949",
-              "_aliasIds": {
-                "Light": "VariableID:11:162",
-                "Dark": "VariableID:11:160"
-              },
               "light": {
                 "hex": "5E409D",
                 "alias": "purple-600"
@@ -2100,11 +1483,6 @@
             {
               "name": "border/discovery/subtle",
               "description": "",
-              "_figmaId": "VariableID:123:25679",
-              "_aliasIds": {
-                "Light": "VariableID:11:158",
-                "Dark": "VariableID:11:164"
-              },
               "light": {
                 "hex": "C4B9E0",
                 "alias": "purple-200"
@@ -2117,11 +1495,6 @@
             {
               "name": "border/information",
               "description": "",
-              "_figmaId": "VariableID:25:950",
-              "_aliasIds": {
-                "Light": "VariableID:11:149",
-                "Dark": "VariableID:11:147"
-              },
               "light": {
                 "hex": "205EA6",
                 "alias": "blue-600"
@@ -2134,11 +1507,6 @@
             {
               "name": "border/information/subtle",
               "description": "",
-              "_figmaId": "VariableID:123:25680",
-              "_aliasIds": {
-                "Light": "VariableID:11:145",
-                "Dark": "VariableID:11:151"
-              },
               "light": {
                 "hex": "92BFDB",
                 "alias": "blue-200"
@@ -2151,11 +1519,6 @@
             {
               "name": "border/accent/red/red",
               "description": "",
-              "_figmaId": "VariableID:25:985",
-              "_aliasIds": {
-                "Light": "VariableID:11:84",
-                "Dark": "VariableID:11:82"
-              },
               "light": {
                 "hex": "AF3029",
                 "alias": "red-600"
@@ -2168,11 +1531,6 @@
             {
               "name": "border/accent/red/sublte",
               "description": "",
-              "_figmaId": "VariableID:121:3158",
-              "_aliasIds": {
-                "Light": "VariableID:11:80",
-                "Dark": "VariableID:11:86"
-              },
               "light": {
                 "hex": "F89A8A",
                 "alias": "red-200"
@@ -2185,11 +1543,6 @@
             {
               "name": "border/accent/orange/orange",
               "description": "",
-              "_figmaId": "VariableID:25:993",
-              "_aliasIds": {
-                "Light": "VariableID:11:97",
-                "Dark": "VariableID:11:95"
-              },
               "light": {
                 "hex": "BC5215",
                 "alias": "orange-600"
@@ -2202,11 +1555,6 @@
             {
               "name": "border/accent/orange/subtle",
               "description": "",
-              "_figmaId": "VariableID:121:3159",
-              "_aliasIds": {
-                "Light": "VariableID:11:93",
-                "Dark": "VariableID:11:99"
-              },
               "light": {
                 "hex": "F9AE77",
                 "alias": "orange-200"
@@ -2219,11 +1567,6 @@
             {
               "name": "border/accent/yellow/yellow",
               "description": "",
-              "_figmaId": "VariableID:25:1001",
-              "_aliasIds": {
-                "Light": "VariableID:11:110",
-                "Dark": "VariableID:11:108"
-              },
               "light": {
                 "hex": "AD8301",
                 "alias": "yellow-600"
@@ -2236,11 +1579,6 @@
             {
               "name": "border/accent/yellow/subtle",
               "description": "",
-              "_figmaId": "VariableID:121:3160",
-              "_aliasIds": {
-                "Light": "VariableID:11:106",
-                "Dark": "VariableID:11:112"
-              },
               "light": {
                 "hex": "ECCB60",
                 "alias": "yellow-200"
@@ -2253,11 +1591,6 @@
             {
               "name": "border/accent/green/green",
               "description": "",
-              "_figmaId": "VariableID:25:1009",
-              "_aliasIds": {
-                "Light": "VariableID:11:123",
-                "Dark": "VariableID:11:121"
-              },
               "light": {
                 "hex": "66800B",
                 "alias": "green-600"
@@ -2270,11 +1603,6 @@
             {
               "name": "border/accent/green/subtle",
               "description": "",
-              "_figmaId": "VariableID:121:3157",
-              "_aliasIds": {
-                "Light": "VariableID:11:119",
-                "Dark": "VariableID:11:125"
-              },
               "light": {
                 "hex": "BEC97E",
                 "alias": "green-200"
@@ -2287,11 +1615,6 @@
             {
               "name": "border/accent/cyan/cyan",
               "description": "",
-              "_figmaId": "VariableID:25:1017",
-              "_aliasIds": {
-                "Light": "VariableID:11:136",
-                "Dark": "VariableID:11:134"
-              },
               "light": {
                 "hex": "24837B",
                 "alias": "cyan-600"
@@ -2304,11 +1627,6 @@
             {
               "name": "border/accent/cyan/subtle",
               "description": "",
-              "_figmaId": "VariableID:121:3161",
-              "_aliasIds": {
-                "Light": "VariableID:11:132",
-                "Dark": "VariableID:11:138"
-              },
               "light": {
                 "hex": "87D3C3",
                 "alias": "cyan-200"
@@ -2321,11 +1639,6 @@
             {
               "name": "border/accent/blue/blue",
               "description": "",
-              "_figmaId": "VariableID:25:1025",
-              "_aliasIds": {
-                "Light": "VariableID:11:149",
-                "Dark": "VariableID:11:147"
-              },
               "light": {
                 "hex": "205EA6",
                 "alias": "blue-600"
@@ -2338,11 +1651,6 @@
             {
               "name": "border/accent/blue/subtle",
               "description": "",
-              "_figmaId": "VariableID:121:3162",
-              "_aliasIds": {
-                "Light": "VariableID:11:145",
-                "Dark": "VariableID:11:151"
-              },
               "light": {
                 "hex": "92BFDB",
                 "alias": "blue-200"
@@ -2355,11 +1663,6 @@
             {
               "name": "border/accent/purple/purple",
               "description": "",
-              "_figmaId": "VariableID:25:1033",
-              "_aliasIds": {
-                "Light": "VariableID:11:162",
-                "Dark": "VariableID:11:160"
-              },
               "light": {
                 "hex": "5E409D",
                 "alias": "purple-600"
@@ -2372,11 +1675,6 @@
             {
               "name": "border/accent/purple/subtle",
               "description": "",
-              "_figmaId": "VariableID:121:3163",
-              "_aliasIds": {
-                "Light": "VariableID:11:158",
-                "Dark": "VariableID:11:164"
-              },
               "light": {
                 "hex": "C4B9E0",
                 "alias": "purple-200"
@@ -2389,11 +1687,6 @@
             {
               "name": "border/accent/magenta/magenta",
               "description": "",
-              "_figmaId": "VariableID:25:1041",
-              "_aliasIds": {
-                "Light": "VariableID:11:175",
-                "Dark": "VariableID:11:173"
-              },
               "light": {
                 "hex": "A02F6F",
                 "alias": "magenta-600"
@@ -2406,11 +1699,6 @@
             {
               "name": "border/accent/magenta/subtle",
               "description": "",
-              "_figmaId": "VariableID:121:3164",
-              "_aliasIds": {
-                "Light": "VariableID:11:171",
-                "Dark": "VariableID:11:177"
-              },
               "light": {
                 "hex": "F4A4C2",
                 "alias": "magenta-200"
@@ -2428,11 +1716,6 @@
             {
               "name": "icon/normal",
               "description": "Use for icon-only buttons, or icons paired with color.text",
-              "_figmaId": "VariableID:135:2728",
-              "_aliasIds": {
-                "Light": "VariableID:11:62",
-                "Dark": "VariableID:11:72"
-              },
               "light": {
                 "hex": "100F0F",
                 "alias": "base-1000"
@@ -2445,11 +1728,6 @@
             {
               "name": "icon/subtle",
               "description": "Use for icons paired with color.text.subtle",
-              "_figmaId": "VariableID:25:926",
-              "_aliasIds": {
-                "Light": "VariableID:11:68",
-                "Dark": "VariableID:11:69"
-              },
               "light": {
                 "hex": "6F6E69",
                 "alias": "base-600"
@@ -2462,11 +1740,6 @@
             {
               "name": "icon/subtlest",
               "description": "Use for icons paired with color.text.subtlest",
-              "_figmaId": "VariableID:25:927",
-              "_aliasIds": {
-                "Light": "VariableID:11:71",
-                "Dark": "VariableID:11:67"
-              },
               "light": {
                 "hex": "B7B5AC",
                 "alias": "base-300"
@@ -2479,11 +1752,6 @@
             {
               "name": "icon/inverse",
               "description": "Use for icons on bold backgrounds.",
-              "_figmaId": "VariableID:25:928",
-              "_aliasIds": {
-                "Light": "VariableID:11:76",
-                "Dark": "VariableID:11:62"
-              },
               "light": {
                 "hex": "FFFDF6",
                 "alias": "base-00"
@@ -2496,11 +1764,6 @@
             {
               "name": "icon/disabled",
               "description": "",
-              "_figmaId": "VariableID:25:929",
-              "_aliasIds": {
-                "Light": "VariableID:11:72",
-                "Dark": "VariableID:11:65"
-              },
               "light": {
                 "hex": "CECDC3",
                 "alias": "base-200"
@@ -2513,11 +1776,6 @@
             {
               "name": "icon/brand",
               "description": "Use for icons that reinforce our brand.",
-              "_figmaId": "VariableID:25:930",
-              "_aliasIds": {
-                "Light": "VariableID:11:149",
-                "Dark": "VariableID:11:147"
-              },
               "light": {
                 "hex": "205EA6",
                 "alias": "blue-600"
@@ -2530,11 +1788,6 @@
             {
               "name": "icon/selected",
               "description": "Use for icons in selected or opened states, such as those used in dropdown buttons.",
-              "_figmaId": "VariableID:25:931",
-              "_aliasIds": {
-                "Light": "VariableID:11:149",
-                "Dark": "VariableID:11:147"
-              },
               "light": {
                 "hex": "205EA6",
                 "alias": "blue-600"
@@ -2547,11 +1800,6 @@
             {
               "name": "icon/danger",
               "description": "Use for icons communicating critical information, such as those used in error handing.",
-              "_figmaId": "VariableID:25:932",
-              "_aliasIds": {
-                "Light": "VariableID:11:84",
-                "Dark": "VariableID:11:82"
-              },
               "light": {
                 "hex": "AF3029",
                 "alias": "red-600"
@@ -2564,11 +1812,6 @@
             {
               "name": "icon/danger/bolder",
               "description": "Use for icons communicating critical information, such as those used in error handing.",
-              "_figmaId": "VariableID:190:5245",
-              "_aliasIds": {
-                "Light": "VariableID:11:85",
-                "Dark": "VariableID:11:80"
-              },
               "light": {
                 "hex": "942822",
                 "alias": "red-700"
@@ -2581,11 +1824,6 @@
             {
               "name": "icon/warning",
               "description": "Use for icons communicating caution, such as those used in warning section messages.",
-              "_figmaId": "VariableID:25:933",
-              "_aliasIds": {
-                "Light": "VariableID:11:110",
-                "Dark": "VariableID:11:108"
-              },
               "light": {
                 "hex": "AD8301",
                 "alias": "yellow-600"
@@ -2598,11 +1836,6 @@
             {
               "name": "icon/warning/bolder",
               "description": "Use for icons communicating caution, such as those used in warning section messages.",
-              "_figmaId": "VariableID:190:5244",
-              "_aliasIds": {
-                "Light": "VariableID:11:111",
-                "Dark": "VariableID:11:106"
-              },
               "light": {
                 "hex": "8E6B01",
                 "alias": "yellow-700"
@@ -2615,11 +1848,6 @@
             {
               "name": "icon/warning/inverse",
               "description": "Use for icons when on bold warning backgrounds.",
-              "_figmaId": "VariableID:25:934",
-              "_aliasIds": {
-                "Light": "VariableID:11:62",
-                "Dark": "VariableID:11:62"
-              },
               "light": {
                 "hex": "100F0F",
                 "alias": "base-1000"
@@ -2632,11 +1860,6 @@
             {
               "name": "icon/success",
               "description": "Use for icons communicating a favorable outcome, such as those used in success section messaged.",
-              "_figmaId": "VariableID:25:935",
-              "_aliasIds": {
-                "Light": "VariableID:11:123",
-                "Dark": "VariableID:11:121"
-              },
               "light": {
                 "hex": "66800B",
                 "alias": "green-600"
@@ -2649,11 +1872,6 @@
             {
               "name": "icon/success/bolder",
               "description": "Use for icons communicating a favorable outcome, such as those used in success section messaged.",
-              "_figmaId": "VariableID:190:5243",
-              "_aliasIds": {
-                "Light": "VariableID:11:124",
-                "Dark": "VariableID:11:119"
-              },
               "light": {
                 "hex": "536907",
                 "alias": "green-700"
@@ -2666,11 +1884,6 @@
             {
               "name": "icon/discovery",
               "description": "Use for icons communicating change or something new, such as discovery section messages.",
-              "_figmaId": "VariableID:25:936",
-              "_aliasIds": {
-                "Light": "VariableID:11:162",
-                "Dark": "VariableID:11:160"
-              },
               "light": {
                 "hex": "5E409D",
                 "alias": "purple-600"
@@ -2683,11 +1896,6 @@
             {
               "name": "icon/discovery/bolder",
               "description": "Use for icons communicating change or something new, such as discovery section messages.",
-              "_figmaId": "VariableID:190:5242",
-              "_aliasIds": {
-                "Light": "VariableID:11:163",
-                "Dark": "VariableID:11:158"
-              },
               "light": {
                 "hex": "4F3685",
                 "alias": "purple-700"
@@ -2700,11 +1908,6 @@
             {
               "name": "icon/information",
               "description": "Use for icons communicating information or something in-progress, such as information section messages.",
-              "_figmaId": "VariableID:25:937",
-              "_aliasIds": {
-                "Light": "VariableID:11:149",
-                "Dark": "VariableID:11:147"
-              },
               "light": {
                 "hex": "205EA6",
                 "alias": "blue-600"
@@ -2717,11 +1920,6 @@
             {
               "name": "icon/information/bolder",
               "description": "Use for icons communicating information or something in-progress, such as information section messages.",
-              "_figmaId": "VariableID:190:5241",
-              "_aliasIds": {
-                "Light": "VariableID:11:150",
-                "Dark": "VariableID:11:145"
-              },
               "light": {
                 "hex": "1A4F8C",
                 "alias": "blue-700"
@@ -2734,11 +1932,6 @@
             {
               "name": "icon/accent/red",
               "description": "Use for red icons on non-bold backgrounds when there is no meaning tied to the color, such as file type icons.",
-              "_figmaId": "VariableID:25:984",
-              "_aliasIds": {
-                "Light": "VariableID:11:82",
-                "Dark": "VariableID:11:82"
-              },
               "light": {
                 "hex": "D14D41",
                 "alias": "red-400"
@@ -2751,11 +1944,6 @@
             {
               "name": "icon/accent/orange",
               "description": "Use for orange icons on non-bold backgrounds when there is no meaning tied to the color, such as file type icons.",
-              "_figmaId": "VariableID:25:992",
-              "_aliasIds": {
-                "Light": "VariableID:11:95",
-                "Dark": "VariableID:11:95"
-              },
               "light": {
                 "hex": "DA702C",
                 "alias": "orange-400"
@@ -2768,11 +1956,6 @@
             {
               "name": "icon/accent/yellow",
               "description": "Use for yellow icons on non-bold backgrounds when there is no meaning tied to the color, such as file type icons.",
-              "_figmaId": "VariableID:25:1000",
-              "_aliasIds": {
-                "Light": "VariableID:11:108",
-                "Dark": "VariableID:11:108"
-              },
               "light": {
                 "hex": "D0A215",
                 "alias": "yellow-400"
@@ -2785,11 +1968,6 @@
             {
               "name": "icon/accent/green",
               "description": "Use for green icons on non-bold backgrounds when there is no meaning tied to the color, such as file type icons.",
-              "_figmaId": "VariableID:25:1008",
-              "_aliasIds": {
-                "Light": "VariableID:11:121",
-                "Dark": "VariableID:11:121"
-              },
               "light": {
                 "hex": "879A39",
                 "alias": "green-400"
@@ -2802,11 +1980,6 @@
             {
               "name": "icon/accent/cyan",
               "description": "Use for cyan icons on non-bold backgrounds when there is no meaning tied to the color, such as file type icons.",
-              "_figmaId": "VariableID:25:1016",
-              "_aliasIds": {
-                "Light": "VariableID:11:134",
-                "Dark": "VariableID:11:134"
-              },
               "light": {
                 "hex": "3AA99F",
                 "alias": "cyan-400"
@@ -2819,11 +1992,6 @@
             {
               "name": "icon/accent/blue",
               "description": "Use for blue icons on non-bold backgrounds when there is no meaning tied to the color, such as file type icons.",
-              "_figmaId": "VariableID:25:1024",
-              "_aliasIds": {
-                "Light": "VariableID:11:147",
-                "Dark": "VariableID:11:147"
-              },
               "light": {
                 "hex": "4385BE",
                 "alias": "blue-400"
@@ -2836,11 +2004,6 @@
             {
               "name": "icon/accent/purple",
               "description": "Use for purple icons on non-bold backgrounds when there is no meaning tied to the color, such as file type icons.",
-              "_figmaId": "VariableID:25:1032",
-              "_aliasIds": {
-                "Light": "VariableID:11:160",
-                "Dark": "VariableID:11:160"
-              },
               "light": {
                 "hex": "8B7EC8",
                 "alias": "purple-400"
@@ -2853,11 +2016,6 @@
             {
               "name": "icon/accent/magenta",
               "description": "Use for magenta icons on non-bold backgrounds when there is no meaning tied to the color, such as file type icons.",
-              "_figmaId": "VariableID:25:1040",
-              "_aliasIds": {
-                "Light": "VariableID:11:173",
-                "Dark": "VariableID:11:173"
-              },
               "light": {
                 "hex": "CE5D97",
                 "alias": "magenta-400"
@@ -2875,11 +2033,6 @@
             {
               "name": "link/default",
               "description": "Use for links in a default or hovered state. Add an underline for hovered states.",
-              "_figmaId": "VariableID:25:923",
-              "_aliasIds": {
-                "Light": "VariableID:11:136",
-                "Dark": "VariableID:11:134"
-              },
               "light": {
                 "hex": "24837B",
                 "alias": "cyan-600"
@@ -2892,11 +2045,6 @@
             {
               "name": "link/pressed",
               "description": "Use for links in a default or hovered state. Add an underline for hovered states.",
-              "_figmaId": "VariableID:25:924",
-              "_aliasIds": {
-                "Light": "VariableID:11:137",
-                "Dark": "VariableID:11:133"
-              },
               "light": {
                 "hex": "1C6C66",
                 "alias": "cyan-700"
@@ -2909,11 +2057,6 @@
             {
               "name": "link/visited",
               "description": "Use for links in a default or hovered state. Add an underline for hovered states.",
-              "_figmaId": "VariableID:175:2",
-              "_aliasIds": {
-                "Light": "VariableID:11:175",
-                "Dark": "VariableID:11:173"
-              },
               "light": {
                 "hex": "A02F6F",
                 "alias": "magenta-600"
@@ -2926,11 +2069,6 @@
             {
               "name": "link/visited/pressed",
               "description": "Use for links in a default or hovered state. Add an underline for hovered states.",
-              "_figmaId": "VariableID:175:3",
-              "_aliasIds": {
-                "Light": "VariableID:11:176",
-                "Dark": "VariableID:11:172"
-              },
               "light": {
                 "hex": "87285E",
                 "alias": "magenta-700"
@@ -2948,11 +2086,6 @@
             {
               "name": "skeleton/default",
               "description": "",
-              "_figmaId": "VariableID:25:951",
-              "_aliasIds": {
-                "Light": "VariableID:11:74",
-                "Dark": "VariableID:11:65"
-              },
               "light": {
                 "hex": "E6E4D9",
                 "alias": "base-100"
@@ -2965,11 +2098,6 @@
             {
               "name": "skeleton/subtle",
               "description": "",
-              "_figmaId": "VariableID:25:952",
-              "_aliasIds": {
-                "Light": "VariableID:11:75",
-                "Dark": "VariableID:11:64"
-              },
               "light": {
                 "hex": "F7F6ED",
                 "alias": "base-50"
@@ -2987,11 +2115,6 @@
             {
               "name": "text/default",
               "description": "Use for headings, section headers, and body text where not specified otherwise.",
-              "_figmaId": "VariableID:25:905",
-              "_aliasIds": {
-                "Light": "VariableID:11:62",
-                "Dark": "VariableID:11:72"
-              },
               "light": {
                 "hex": "100F0F",
                 "alias": "base-1000"
@@ -3004,11 +2127,6 @@
             {
               "name": "text/subtle",
               "description": "Use for main body text or where text with less emphasis is needed. Use also for secondary text, such as navigation, subtle button links, input field labels.",
-              "_figmaId": "VariableID:25:906",
-              "_aliasIds": {
-                "Light": "VariableID:11:68",
-                "Dark": "VariableID:11:69"
-              },
               "light": {
                 "hex": "6F6E69",
                 "alias": "base-600"
@@ -3021,11 +2139,6 @@
             {
               "name": "text/subtlest",
               "description": "Use for tertiary text, such as meta-data, breadcrumbs, input field placeholder and helper text.",
-              "_figmaId": "VariableID:25:907",
-              "_aliasIds": {
-                "Light": "VariableID:11:71",
-                "Dark": "VariableID:11:67"
-              },
               "light": {
                 "hex": "B7B5AC",
                 "alias": "base-300"
@@ -3038,11 +2151,6 @@
             {
               "name": "text/disabled",
               "description": "",
-              "_figmaId": "VariableID:25:922",
-              "_aliasIds": {
-                "Light": "VariableID:11:71",
-                "Dark": "VariableID:11:67"
-              },
               "light": {
                 "hex": "B7B5AC",
                 "alias": "base-300"
@@ -3055,11 +2163,6 @@
             {
               "name": "text/inverse",
               "description": "Use for text on bold backgrounds.",
-              "_figmaId": "VariableID:25:908",
-              "_aliasIds": {
-                "Light": "VariableID:11:76",
-                "Dark": "VariableID:11:62"
-              },
               "light": {
                 "hex": "FFFDF6",
                 "alias": "base-00"
@@ -3072,11 +2175,6 @@
             {
               "name": "text/brand",
               "description": "Use for text that reinforces our brand.",
-              "_figmaId": "VariableID:25:909",
-              "_aliasIds": {
-                "Light": "VariableID:11:149",
-                "Dark": "VariableID:11:146"
-              },
               "light": {
                 "hex": "205EA6",
                 "alias": "blue-600"
@@ -3089,11 +2187,6 @@
             {
               "name": "text/selected",
               "description": "Use for text in selected or opened states, such as tabs and dropdown buttons.",
-              "_figmaId": "VariableID:25:910",
-              "_aliasIds": {
-                "Light": "VariableID:11:149",
-                "Dark": "VariableID:11:146"
-              },
               "light": {
                 "hex": "205EA6",
                 "alias": "blue-600"
@@ -3106,11 +2199,6 @@
             {
               "name": "text/danger",
               "description": "Use for critical text, such as input field error messaging.",
-              "_figmaId": "VariableID:25:911",
-              "_aliasIds": {
-                "Light": "VariableID:11:84",
-                "Dark": "VariableID:11:81"
-              },
               "light": {
                 "hex": "AF3029",
                 "alias": "red-600"
@@ -3123,11 +2211,6 @@
             {
               "name": "text/danger/bolder",
               "description": "Use for text on top of danger semantic labels to ensure accessibility and desired visual appearance.",
-              "_figmaId": "VariableID:25:912",
-              "_aliasIds": {
-                "Light": "VariableID:11:85",
-                "Dark": "VariableID:11:80"
-              },
               "light": {
                 "hex": "942822",
                 "alias": "red-700"
@@ -3140,11 +2223,6 @@
             {
               "name": "text/warning",
               "description": "Use for text to emphasize caution.",
-              "_figmaId": "VariableID:25:913",
-              "_aliasIds": {
-                "Light": "VariableID:11:110",
-                "Dark": "VariableID:11:107"
-              },
               "light": {
                 "hex": "AD8301",
                 "alias": "yellow-600"
@@ -3157,11 +2235,6 @@
             {
               "name": "text/warning/inverse",
               "description": "Use for text when on bold warning backgrounds.",
-              "_figmaId": "VariableID:25:914",
-              "_aliasIds": {
-                "Light": "VariableID:11:62",
-                "Dark": "VariableID:11:103"
-              },
               "light": {
                 "hex": "100F0F",
                 "alias": "base-1000"
@@ -3174,11 +2247,6 @@
             {
               "name": "text/warning/bolder",
               "description": "Use for text when on bold warning backgrounds.",
-              "_figmaId": "VariableID:25:915",
-              "_aliasIds": {
-                "Light": "VariableID:11:111",
-                "Dark": "VariableID:11:106"
-              },
               "light": {
                 "hex": "8E6B01",
                 "alias": "yellow-700"
@@ -3191,11 +2259,6 @@
             {
               "name": "text/success",
               "description": "Use for text to communicate a favorable outcome, such as input field success messaging.",
-              "_figmaId": "VariableID:25:916",
-              "_aliasIds": {
-                "Light": "VariableID:11:124",
-                "Dark": "VariableID:11:120"
-              },
               "light": {
                 "hex": "536907",
                 "alias": "green-700"
@@ -3208,11 +2271,6 @@
             {
               "name": "text/success/bolder",
               "description": "Use for text on top of success semantic labels to ensure accessibility and desired visual appearance.",
-              "_figmaId": "VariableID:25:917",
-              "_aliasIds": {
-                "Light": "VariableID:11:126",
-                "Dark": "VariableID:11:119"
-              },
               "light": {
                 "hex": "313D07",
                 "alias": "green-850"
@@ -3225,11 +2283,6 @@
             {
               "name": "text/information",
               "description": "Use for informative text or to communicate something is in progress.",
-              "_figmaId": "VariableID:25:918",
-              "_aliasIds": {
-                "Light": "VariableID:11:149",
-                "Dark": "VariableID:11:146"
-              },
               "light": {
                 "hex": "205EA6",
                 "alias": "blue-600"
@@ -3242,11 +2295,6 @@
             {
               "name": "text/information/bolder",
               "description": "Use for text on top of information semantic labels to ensure accessibility and desired visual appearance.",
-              "_figmaId": "VariableID:25:919",
-              "_aliasIds": {
-                "Light": "VariableID:11:150",
-                "Dark": "VariableID:11:145"
-              },
               "light": {
                 "hex": "1A4F8C",
                 "alias": "blue-700"
@@ -3259,11 +2307,6 @@
             {
               "name": "text/discovery",
               "description": "Use for text to emphasize change or something new, such as in new lozenges.",
-              "_figmaId": "VariableID:25:920",
-              "_aliasIds": {
-                "Light": "VariableID:11:162",
-                "Dark": "VariableID:11:159"
-              },
               "light": {
                 "hex": "5E409D",
                 "alias": "purple-600"
@@ -3276,11 +2319,6 @@
             {
               "name": "text/discovery/bolder",
               "description": "Use for text on top of discovery semantic labels to ensure accessibility and desired visual appearance.",
-              "_figmaId": "VariableID:25:921",
-              "_aliasIds": {
-                "Light": "VariableID:11:163",
-                "Dark": "VariableID:11:158"
-              },
               "light": {
                 "hex": "4F3685",
                 "alias": "purple-700"
@@ -3293,11 +2331,6 @@
             {
               "name": "text/accent/red",
               "description": "Use for red text on subtlest and subtler red accent backgrounds when there is no meaning tied to the color.",
-              "_figmaId": "VariableID:25:982",
-              "_aliasIds": {
-                "Light": "VariableID:11:84",
-                "Dark": "VariableID:11:81"
-              },
               "light": {
                 "hex": "AF3029",
                 "alias": "red-600"
@@ -3310,11 +2343,6 @@
             {
               "name": "text/accent/red/bolder",
               "description": "Use for red text on subtle red accent backgrounds when there is no meaning tied to the color.",
-              "_figmaId": "VariableID:25:983",
-              "_aliasIds": {
-                "Light": "VariableID:11:85",
-                "Dark": "VariableID:11:80"
-              },
               "light": {
                 "hex": "942822",
                 "alias": "red-700"
@@ -3327,11 +2355,6 @@
             {
               "name": "text/accent/orange",
               "description": "Use for orange text on subtlest and subtler orange accent backgrounds when there is no meaning tied to the color.",
-              "_figmaId": "VariableID:25:990",
-              "_aliasIds": {
-                "Light": "VariableID:11:97",
-                "Dark": "VariableID:11:94"
-              },
               "light": {
                 "hex": "BC5215",
                 "alias": "orange-600"
@@ -3344,11 +2367,6 @@
             {
               "name": "text/accent/orange/bolder",
               "description": "Use for orange text on subtle orange accent backgrounds when there is no meaning tied to the color.",
-              "_figmaId": "VariableID:25:991",
-              "_aliasIds": {
-                "Light": "VariableID:11:98",
-                "Dark": "VariableID:11:93"
-              },
               "light": {
                 "hex": "9D4310",
                 "alias": "orange-700"
@@ -3361,11 +2379,6 @@
             {
               "name": "text/accent/yellow",
               "description": "Use for yellow text on subtlest and subtler yellow accent backgrounds when there is no meaning tied to the color.",
-              "_figmaId": "VariableID:25:998",
-              "_aliasIds": {
-                "Light": "VariableID:11:110",
-                "Dark": "VariableID:11:107"
-              },
               "light": {
                 "hex": "AD8301",
                 "alias": "yellow-600"
@@ -3378,11 +2391,6 @@
             {
               "name": "text/accent/yellow/bolder",
               "description": "Use for yellow text on subtle yellow accent backgrounds when there is no meaning tied to the color.",
-              "_figmaId": "VariableID:25:999",
-              "_aliasIds": {
-                "Light": "VariableID:11:63",
-                "Dark": "VariableID:11:106"
-              },
               "light": {
                 "hex": "1C1B1A",
                 "alias": "base-950"
@@ -3395,11 +2403,6 @@
             {
               "name": "text/accent/green",
               "description": "Use for green text on subtlest and subtler green accent backgrounds when there is no meaning tied to the color.",
-              "_figmaId": "VariableID:25:1006",
-              "_aliasIds": {
-                "Light": "VariableID:11:123",
-                "Dark": "VariableID:11:120"
-              },
               "light": {
                 "hex": "66800B",
                 "alias": "green-600"
@@ -3412,11 +2415,6 @@
             {
               "name": "text/accent/green/bolder",
               "description": "Use for green text on subtle green accent backgrounds when there is no meaning tied to the color.",
-              "_figmaId": "VariableID:25:1007",
-              "_aliasIds": {
-                "Light": "VariableID:11:124",
-                "Dark": "VariableID:11:119"
-              },
               "light": {
                 "hex": "536907",
                 "alias": "green-700"
@@ -3429,11 +2427,6 @@
             {
               "name": "text/accent/cyan",
               "description": "Use for cyan text on subtlest and subtler green accent backgrounds when there is no meaning tied to the color.",
-              "_figmaId": "VariableID:25:1014",
-              "_aliasIds": {
-                "Light": "VariableID:11:136",
-                "Dark": "VariableID:11:133"
-              },
               "light": {
                 "hex": "24837B",
                 "alias": "cyan-600"
@@ -3446,11 +2439,6 @@
             {
               "name": "text/accent/cyan/bolder",
               "description": "Use for cyan text on subtle red accent backgrounds when there is no meaning tied to the color.",
-              "_figmaId": "VariableID:25:1015",
-              "_aliasIds": {
-                "Light": "VariableID:11:137",
-                "Dark": "VariableID:11:132"
-              },
               "light": {
                 "hex": "1C6C66",
                 "alias": "cyan-700"
@@ -3463,11 +2451,6 @@
             {
               "name": "text/accent/blue",
               "description": "Use for blue text on subtlest and subtler blue accent backgrounds when there is no meaning tied to the color.",
-              "_figmaId": "VariableID:25:1022",
-              "_aliasIds": {
-                "Light": "VariableID:11:149",
-                "Dark": "VariableID:11:146"
-              },
               "light": {
                 "hex": "205EA6",
                 "alias": "blue-600"
@@ -3480,11 +2463,6 @@
             {
               "name": "text/accent/blue/bolder",
               "description": "Use for blue text on subtle blue accent backgrounds when there is no meaning tied to the color.",
-              "_figmaId": "VariableID:25:1023",
-              "_aliasIds": {
-                "Light": "VariableID:11:150",
-                "Dark": "VariableID:11:145"
-              },
               "light": {
                 "hex": "1A4F8C",
                 "alias": "blue-700"
@@ -3497,11 +2475,6 @@
             {
               "name": "text/accent/purple",
               "description": "Use for purple text on subtlest and subtler purple accent backgrounds when there is no meaning tied to the color.",
-              "_figmaId": "VariableID:25:1030",
-              "_aliasIds": {
-                "Light": "VariableID:11:162",
-                "Dark": "VariableID:11:159"
-              },
               "light": {
                 "hex": "5E409D",
                 "alias": "purple-600"
@@ -3514,11 +2487,6 @@
             {
               "name": "text/accent/purple/bolder",
               "description": "Use for purple text on subtle purple accent backgrounds when there is no meaning tied to the color.",
-              "_figmaId": "VariableID:25:1031",
-              "_aliasIds": {
-                "Light": "VariableID:11:163",
-                "Dark": "VariableID:11:158"
-              },
               "light": {
                 "hex": "4F3685",
                 "alias": "purple-700"
@@ -3531,11 +2499,6 @@
             {
               "name": "text/accent/magenta",
               "description": "Use for magenta text on subtlest and subtler magenta accent backgrounds when there is no meaning tied to the color.",
-              "_figmaId": "VariableID:25:1038",
-              "_aliasIds": {
-                "Light": "VariableID:11:175",
-                "Dark": "VariableID:11:172"
-              },
               "light": {
                 "hex": "A02F6F",
                 "alias": "magenta-600"
@@ -3548,11 +2511,6 @@
             {
               "name": "text/accent/magenta/bolder",
               "description": "Use for magenta text on subtle magenta accent backgrounds when there is no meaning tied to the color.",
-              "_figmaId": "VariableID:25:1039",
-              "_aliasIds": {
-                "Light": "VariableID:11:176",
-                "Dark": "VariableID:11:171"
-              },
               "light": {
                 "hex": "87285E",
                 "alias": "magenta-700"
@@ -3570,7 +2528,6 @@
             {
               "name": "opacity/subtle",
               "description": "",
-              "_figmaId": "VariableID:113:224",
               "light": {
                 "value": 60
               },
@@ -3581,7 +2538,6 @@
             {
               "name": "opacity/disabled",
               "description": "",
-              "_figmaId": "VariableID:113:225",
               "light": {
                 "value": 40
               },
@@ -3592,7 +2548,6 @@
             {
               "name": "opacity/hidden",
               "description": "",
-              "_figmaId": "VariableID:117:1548",
               "light": {
                 "value": 0
               },
@@ -3606,12 +2561,6 @@
     },
     "typography": {
       "name": "Typography",
-      "_meta": {
-        "collectionId": "VariableCollectionId:13:686",
-        "modes": {
-          "Default": "13:7"
-        }
-      },
       "groups": {
         "family": {
           "label": "Family",
@@ -3619,19 +2568,16 @@
             {
               "name": "font/family/body",
               "description": "Primary app font",
-              "_figmaId": "VariableID:34:31",
               "value": "Outfit"
             },
             {
               "name": "font/family/code",
               "description": "Use for displaying code (inline and blocks)",
-              "_figmaId": "VariableID:34:32",
               "value": "JetBrains Mono"
             },
             {
               "name": "font/family/technical",
               "description": "Use for numbers in tables and special labels",
-              "_figmaId": "VariableID:146:3802",
               "value": "JetBrains Mono"
             }
           ]
@@ -3642,25 +2588,21 @@
             {
               "name": "font/weight/regular",
               "description": "Use for all primary body text",
-              "_figmaId": "VariableID:34:27",
               "value": "Regular"
             },
             {
               "name": "font/weight/medium",
               "description": "Use for text that needs a bit more emphasis (like primary titles in table rows), labels next to checkboxes and switches, etc.",
-              "_figmaId": "VariableID:34:28",
               "value": "Medium"
             },
             {
               "name": "font/weight/semibold",
               "description": "Use for inline section headers, helping to group related content",
-              "_figmaId": "VariableID:34:29",
               "value": "Semibold"
             },
             {
               "name": "font/weight/bold",
               "description": "",
-              "_figmaId": "VariableID:34:30",
               "value": "Bold"
             }
           ]
@@ -3671,55 +2613,46 @@
             {
               "name": "font/size/1000",
               "description": "For H1 headings",
-              "_figmaId": "VariableID:34:18",
               "value": 48
             },
             {
               "name": "font/size/900",
               "description": "For H2 headings",
-              "_figmaId": "VariableID:43:73",
               "value": 40
             },
             {
               "name": "font/size/800",
               "description": "For H3 headings",
-              "_figmaId": "VariableID:43:74",
               "value": 32
             },
             {
               "name": "font/size/700",
               "description": "For H4 headings",
-              "_figmaId": "VariableID:43:75",
               "value": 24
             },
             {
               "name": "font/size/600",
               "description": "For H5 headings and sub-titles beneath larger headings",
-              "_figmaId": "VariableID:43:76",
               "value": 18
             },
             {
               "name": "font/size/500",
               "description": "Default text size. Use for main body text.",
-              "_figmaId": "VariableID:43:78",
               "value": 16
             },
             {
               "name": "font/size/400",
               "description": "Smaller text size. Use for input titles, secondary text, small callouts, in toasts, etc.",
-              "_figmaId": "VariableID:43:79",
               "value": 14
             },
             {
               "name": "font/size/300",
               "description": "For use in tags and for both inline code and code blocks",
-              "_figmaId": "VariableID:43:80",
               "value": 13
             },
             {
               "name": "font/size/200",
               "description": "Use for tertiary text, like disclaimers. Use sparingly, as its accessibility is limited.",
-              "_figmaId": "VariableID:43:81",
               "value": 12
             }
           ]
@@ -3730,55 +2663,46 @@
             {
               "name": "font/height/1000",
               "description": "H1 line-height",
-              "_figmaId": "VariableID:36:20",
               "value": 60
             },
             {
               "name": "font/height/900",
               "description": "H2 line-height",
-              "_figmaId": "VariableID:36:21",
               "value": 48
             },
             {
               "name": "font/height/800",
               "description": "H3 line-height",
-              "_figmaId": "VariableID:36:22",
               "value": 40
             },
             {
               "name": "font/height/700",
               "description": "H4 line-height",
-              "_figmaId": "VariableID:36:23",
               "value": 32
             },
             {
               "name": "font/height/600",
               "description": "Use to set line-height for H5 headings and default body text (at 16px font-size)",
-              "_figmaId": "VariableID:36:24",
               "value": 24
             },
             {
               "name": "font/height/500",
               "description": "Use to set line-height for secondary text (14px)",
-              "_figmaId": "VariableID:36:25",
               "value": 22
             },
             {
               "name": "font/height/400",
               "description": "Use only for inline code or code blocks (not for technical text)",
-              "_figmaId": "VariableID:36:26",
               "value": 20
             },
             {
               "name": "font/height/300",
               "description": "Use for 12px font-size",
-              "_figmaId": "VariableID:43:82",
               "value": 18
             },
             {
               "name": "font/height/200",
               "description": "Use to set line-height in tags",
-              "_figmaId": "VariableID:43:140",
               "value": 16
             }
           ]
@@ -3789,13 +2713,11 @@
             {
               "name": "font/spacing/normal",
               "description": "Use for all text styles except H1, H2, H3, H4 headings",
-              "_figmaId": "VariableID:43:83",
               "value": 0
             },
             {
               "name": "font/spacing/tight",
               "description": "Use for H1, H2, H3, H4 headings",
-              "_figmaId": "VariableID:43:84",
               "value": -0.5
             }
           ]
@@ -3804,12 +2726,6 @@
     },
     "size": {
       "name": "Size",
-      "_meta": {
-        "collectionId": "VariableCollectionId:13:730",
-        "modes": {
-          "Mode 1": "13:8"
-        }
-      },
       "groups": {
         "spacing": {
           "label": "Spacing",
@@ -3817,80 +2733,67 @@
             {
               "name": "spacing/25",
               "value": 2,
-              "description": "Use for small and compact pieces of UI.",
-              "_figmaId": "VariableID:13:771"
+              "description": "Use for small and compact pieces of UI."
             },
             {
               "name": "spacing/50",
               "value": 4,
-              "description": "Use for small and compact pieces of UI.",
-              "_figmaId": "VariableID:13:770"
+              "description": "Use for small and compact pieces of UI."
             },
             {
               "name": "spacing/75",
               "value": 6,
-              "description": "Use for small and compact pieces of UI.",
-              "_figmaId": "VariableID:13:766"
+              "description": "Use for small and compact pieces of UI."
             },
             {
               "name": "spacing/100",
               "value": 8,
-              "description": "Use for small and compact pieces of UI.",
-              "_figmaId": "VariableID:13:769"
+              "description": "Use for small and compact pieces of UI."
             },
             {
               "name": "spacing/150",
               "value": 12,
-              "description": "Use for larger and less dense pieces of UI",
-              "_figmaId": "VariableID:13:768"
+              "description": "Use for larger and less dense pieces of UI"
             },
             {
               "name": "spacing/200",
               "value": 16,
-              "description": "Use for larger and less dense pieces of UI",
-              "_figmaId": "VariableID:13:763"
+              "description": "Use for larger and less dense pieces of UI"
             },
             {
               "name": "spacing/250",
               "value": 20,
-              "description": "Use for larger and less dense pieces of UI",
-              "_figmaId": "VariableID:13:765"
+              "description": "Use for larger and less dense pieces of UI"
             },
             {
               "name": "spacing/300",
               "value": 24,
-              "description": "Use for larger and less dense pieces of UI",
-              "_figmaId": "VariableID:13:767"
+              "description": "Use for larger and less dense pieces of UI"
             },
             {
               "name": "spacing/400",
               "value": 32,
-              "description": "Use for the largest pieces of the UI and for layout elements.",
-              "_figmaId": "VariableID:13:764"
+              "description": "Use for the largest pieces of the UI and for layout elements."
             },
             {
               "name": "spacing/500",
               "value": 40,
-              "description": "Use for the largest pieces of the UI and for layout elements.",
-              "_figmaId": "VariableID:142:3563"
+              "description": "Use for the largest pieces of the UI and for layout elements."
             },
             {
               "name": "spacing/600",
               "value": 48,
-              "description": "Use for the largest pieces of the UI and for layout elements.",
-              "_figmaId": "VariableID:13:760"
+              "description": "Use for the largest pieces of the UI and for layout elements."
             },
             {
               "name": "spacing/800",
               "value": 64,
-              "description": "Use for the largest pieces of the UI and for layout elements.",
-              "_figmaId": "VariableID:13:759"
+              "description": "Use for the largest pieces of the UI and for layout elements."
             },
             {
               "name": "spacing/1000",
               "value": 80,
-              "description": "Use for the largest pieces of the UI and for layout elements.",
-              "_figmaId": "VariableID:13:762"
+              "description": "Use for the largest pieces of the UI and for layout elements."
             }
           ]
         },
@@ -3900,56 +2803,47 @@
             {
               "name": "radius/square",
               "value": 0,
-              "description": "No radius applied. Use sparingly.",
-              "_figmaId": "VariableID:13:806"
+              "description": "No radius applied. Use sparingly."
             },
             {
               "name": "radius/25",
               "value": 2,
-              "description": "Use for small detail elements: badges, checkboxes, avatar labels, keyboard shortcuts...",
-              "_figmaId": "VariableID:13:804"
+              "description": "Use for small detail elements: badges, checkboxes, avatar labels, keyboard shortcuts..."
             },
             {
               "name": "radius/50",
               "value": 4,
-              "description": "Use for supporting elements: labels, lozenges, timestamps, tags, dates, tooltip containers, imagery inside a table, compact buttons.",
-              "_figmaId": "VariableID:13:807"
+              "description": "Use for supporting elements: labels, lozenges, timestamps, tags, dates, tooltip containers, imagery inside a table, compact buttons."
             },
             {
               "name": "radius/75",
               "value": 6,
-              "description": "Use for interactive elements: buttons, inputs, text areas, selects, navigation items, smart links.",
-              "_figmaId": "VariableID:13:805"
+              "description": "Use for interactive elements: buttons, inputs, text areas, selects, navigation items, smart links."
             },
             {
               "name": "radius/100",
               "value": 8,
-              "description": "Use for containment elements: buttons, small cards cards, in-page containers, floating UI, dropdown menus.",
-              "_figmaId": "VariableID:13:803"
+              "description": "Use for containment elements: buttons, small cards cards, in-page containers, floating UI, dropdown menus."
             },
             {
               "name": "radius/150",
               "value": 12,
-              "description": "Use for larger page elements: small to medium cards, photos",
-              "_figmaId": "VariableID:13:802"
+              "description": "Use for larger page elements: small to medium cards, photos"
             },
             {
               "name": "radius/200",
               "value": 16,
-              "description": "Use for larger page elements: large cards",
-              "_figmaId": "VariableID:13:801"
+              "description": "Use for larger page elements: large cards"
             },
             {
               "name": "radius/300",
               "value": 24,
-              "description": "Use for largest UI elements, like modals",
-              "_figmaId": "VariableID:13:800"
+              "description": "Use for largest UI elements, like modals"
             },
             {
               "name": "radius/round",
               "value": 999,
-              "description": "Use for circular elements",
-              "_figmaId": "VariableID:13:808"
+              "description": "Use for circular elements"
             }
           ]
         },
@@ -3959,26 +2853,22 @@
             {
               "name": "stroke/default",
               "value": 1,
-              "description": "Default stroke width for dividers, inputs, small cards",
-              "_figmaId": "VariableID:30:14"
+              "description": "Default stroke width for dividers, inputs, small cards"
             },
             {
               "name": "stroke/bold",
               "value": 2,
-              "description": "Bolder width for components or elements requiring more emphasis, like large cards",
-              "_figmaId": "VariableID:31:15"
+              "description": "Bolder width for components or elements requiring more emphasis, like large cards"
             },
             {
               "name": "stroke/focused",
               "value": 2,
-              "description": "Use for focus states on interactive elements like inputs",
-              "_figmaId": "VariableID:31:16"
+              "description": "Use for focus states on interactive elements like inputs"
             },
             {
               "name": "stroke/selected",
               "value": 2,
-              "description": "Use to indicate a selected elements, like inputs, cards",
-              "_figmaId": "VariableID:31:17"
+              "description": "Use to indicate a selected elements, like inputs, cards"
             }
           ]
         }
@@ -4405,12 +3295,6 @@
       "modes": [
         "default"
       ],
-      "_meta": {
-        "collectionId": "VariableCollectionId:123:3627",
-        "modes": {
-          "Mode 1": "123:0"
-        }
-      },
       "groups": {
         "interaction": {
           "label": "Interaction",
@@ -4419,8 +3303,7 @@
               "name": "Dark mode",
               "type": "BOOLEAN",
               "value": false,
-              "description": "",
-              "_figmaId": "VariableID:123:3628"
+              "description": ""
             }
           ]
         }
@@ -4598,89 +3481,6 @@
         "removed": 0
       },
       "notes": "Initial tracked sync. Added background/neutral/subtlest token. Updated accent icon colors, text/default, background input states, and technical text styles."
-    },
-    {
-      "date": "2026-02-27T21:22:03.633797+00:00",
-      "changes": [
-        {
-          "type": "added",
-          "collection": "color",
-          "group": "background",
-          "name": "background/neutral/subtle"
-        },
-        {
-          "type": "removed",
-          "collection": "color",
-          "group": "background",
-          "name": "background/neutral/default"
-        },
-        {
-          "type": "changed",
-          "collection": "color",
-          "group": "background",
-          "name": "background/neutral/subtler",
-          "before": {
-            "name": "background/neutral/subtler",
-            "description": "",
-            "light": {
-              "hex": "E6E4D9",
-              "alias": "base-100"
-            },
-            "dark": {
-              "hex": "282726",
-              "alias": "base-900"
-            }
-          },
-          "after": {
-            "name": "background/neutral/subtler",
-            "description": "",
-            "light": {
-              "hex": "F7F6ED",
-              "alias": "base-50"
-            },
-            "dark": {
-              "hex": "282726",
-              "alias": "base-900"
-            }
-          }
-        },
-        {
-          "type": "changed",
-          "collection": "color",
-          "group": "background",
-          "name": "background/neutral/subtlest",
-          "before": {
-            "name": "background/neutral/subtlest",
-            "description": "",
-            "light": {
-              "hex": "E6E4D9",
-              "alias": "base-100"
-            },
-            "dark": {
-              "hex": "100F0F",
-              "alias": "base-1000"
-            }
-          },
-          "after": {
-            "name": "background/neutral/subtlest",
-            "description": "",
-            "light": {
-              "hex": "FFFDF6",
-              "alias": "base-00"
-            },
-            "dark": {
-              "hex": "100F0F",
-              "alias": "base-1000"
-            }
-          }
-        }
-      ],
-      "summary": {
-        "added": 1,
-        "changed": 2,
-        "removed": 1
-      },
-      "notes": "Routine sync. No variable changes detected in Figma collections."
     }
   ]
 }
